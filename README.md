@@ -2,6 +2,7 @@
 
 ## Team members 
 **Chu Thi Thanh** 
+
 **Nguyen Hong Ngoc** 
 
 ## What is Funfit? 
