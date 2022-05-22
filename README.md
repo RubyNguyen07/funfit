@@ -1,8 +1,8 @@
 # NUS Orbital Project 2022 - Funfit
 
 ## Team members 
-** Chu Thi Thanh ** 
-** Nguyen Hong Ngoc ** 
+**Chu Thi Thanh** 
+**Nguyen Hong Ngoc** 
 
 ## What is Funfit? 
 Funfit is a mobile application that helps users stick with their workout routines, thus promoting a healhty lifestyle. 
@@ -33,6 +33,6 @@ In the hussle and bussle of modern life, it is difficult to strike a balance bet
 ### Plans for milestones 
 | Milestones | Tasks | 
 | ---------- | ---------- | 
-| Milestone 1 | - Frontend Web Routing for Profile page, Calendar, Routine page, Story page, Chat page, Notifications | 
+| Milestone 1 | - Frontend Web Routing for Profile page, Calendar, Routine page, Story page, Chat page, Notifications 
                 - Backend API Endpoints & Database 
-                - Token Authentication 
+                - Token Authentication | 
