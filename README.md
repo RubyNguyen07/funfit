@@ -33,6 +33,5 @@ In the hussle and bussle of modern life, it is difficult to strike a balance bet
 ### Plans for milestones 
 | Milestones | Tasks | 
 | ---------- | ---------- | 
-| Milestone 1 | - Frontend Web Routing for Profile page, Calendar, Routine page, Story page, Chat page, Notifications 
-                - Backend API Endpoints & Database 
-                - Token Authentication | 
+| Milestone 1 | <ul> <li> Frontend Web Routing for Profile page, Calendar, Routine page, Story page, Chat page, Notifications </li> <li>  Backend API Endpoints & Database </li> <li> Token Authentication </li> </ul> | 
+           
