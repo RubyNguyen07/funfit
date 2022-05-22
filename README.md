@@ -33,5 +33,15 @@ In the hussle and bussle of modern life, it is difficult to strike a balance bet
 ### Plans for milestones 
 | Milestones | Tasks | 
 | ---------- | ---------- | 
-| Milestone 1 | <ul> <li> Frontend Web Routing for Profile page, Calendar, Routine page, Story page, Chat page, Notifications </li> <li>  Backend API Endpoints & Database </li> <li> Token Authentication </li> </ul> | 
-           
+| Milestone 1 | <ul> <li> Create demo on Figma </li> <li> Frontend Web Routing for Profile page, Calendar, Routine page, Story page, Chat page, Notifications </li> <li>  Backend API Endpoints & Database </li> <li> Token Authentication </li> </ul> | 
+| Milestone 2 | <ul> <li> Complete core features of Routine page: view routines, create new routines, view a separate routine </li> <li> Complete core features of Notifications: view notifications, click on each notification </li> <li> Complete core features of Story: view stories, create stories, delete stories </li> <li> Complete core features of Chat: view chats, sends message, delete message </li> </ul> | 
+| Milestone 3 | <ul> <li> Complete Scoring system </li> <li> Complete Calendar features </li> <li> Testing </li> </ul> | 
+
+## Instructions for pull requests 
+1. Ensure the branch you are working on is named semantically based on the task at hand. Eg. fe-add-faq-page (for frontend), be-add-message-routes (for backend)
+2. Submit the Pull Request with master as the target branch.
+3. If any, link the GitHub issue to the Pull Request.
+4. Ensure all CI checks are passing.
+5. Assign a reviewer to review the Pull Request (optional).
+6. Once the reviewer has approved the Pull Request, merge it and delete the source branch.
+More information: https://docs.github.com/en/get-started/quickstart/github-flow 
