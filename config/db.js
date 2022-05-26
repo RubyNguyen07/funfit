@@ -1,6 +1,6 @@
 var mongoose = require('mongoose'); 
 
-var db_url = "mongodb+srv://admin:12345@cluster0.ari3y.gcp.mongodb.net/?retryWrites=true&w=majority"
+var db_url = process.env.DB_URL || "mongodb+srv://admin:12345@cluster0.ari3y.gcp.mongodb.net/?retryWrites=true&w=majority"
 
 var InitiateMongoServer = async () => {
     try {

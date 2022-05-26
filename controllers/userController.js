@@ -1,7 +1,6 @@
 var User = require('../models/User'); 
 var bcrypt = require('bcryptjs/dist/bcrypt');
 var jwt = require('jsonwebtoken');
-var configSecret = require('../config/auth.config'); 
 
 
 exports.signup = async (req, res) => {
@@ -28,7 +27,7 @@ exports.signup = async (req, res) => {
 
         jwt.sign(
             payload, 
-            configSecret.secret, 
+            process.env.SECRET_KEY, 
             {
                 expiresIn: 10000
             }, 
@@ -67,13 +66,12 @@ exports.login = async (req, res) => {
 
         jwt.sign(
             payload, 
-            configSecret.secret, 
+            process.env.SECRET_KEY, 
             {
                 expiresIn: 10000
             }, 
             (err, token) => {
                 if (err) throw err; 
-                req.session.token = token; 
                 res.status(200).json({
                     token
                 }); 
