@@ -20,6 +20,4 @@ router.use(authMiddleware.auth)
 // Get profile 
 router.get('/me', userController.me); 
 
-
-
 module.exports = router; 
