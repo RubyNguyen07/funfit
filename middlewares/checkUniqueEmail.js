@@ -1,17 +1,17 @@
 var User = require('../models/User'); 
 
-exports.checkUniqueEmail = (req, res, next) => {
+exports.checkUniqueEmail = async (req, res, next) => {
+    
     User.findOne({
         email: req.body.email
     }, (err, result) => {
         if (err) {
-            res.status(500).send({message: err}); 
+            return res.status(500).send({message: err}); 
         }
-        if (result) {
-            res.status(400).send({message: "User already existed"}); 
+        else if (result) {
+            return res.status(400).send({message: "User already existed"}); 
         }
-        return; 
+        next(); 
     })
-    next(); 
 }
 
