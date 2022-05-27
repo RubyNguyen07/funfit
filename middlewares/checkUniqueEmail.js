@@ -3,7 +3,7 @@ var User = require('../models/User');
 exports.checkUniqueEmail = async (req, res, next) => {
     
     User.findOne({
-        email: req.body.email
+        email: req.body.email.toLowerCase()
     }, (err, result) => {
         if (err) {
             return res.status(500).send({message: err}); 
