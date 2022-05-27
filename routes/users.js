@@ -12,7 +12,7 @@ router.post('/signup', checkUniqueMiddleware.checkUniqueEmail, userController.si
 router.post('/login', userController.login); 
 
 // Log out 
-router.get('/loggout', userController.logout); 
+router.get('/logout', userController.logout); 
 
 // Authenticate the following part
 router.use(authMiddleware.auth)
