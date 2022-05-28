@@ -18,7 +18,7 @@ exports.signup = async (req, res) => {
             name: req.body.name, 
         })
 
-        const salt = await bcrypt.genSalt(10); 
+        const salt = await bcrypt.genSalt(process.env.BCRYPT_SALT); 
         user.password = await bcrypt.hash(user.password, salt); 
 
         await user.save(); 
@@ -34,7 +34,7 @@ exports.signup = async (req, res) => {
             payload, 
             process.env.SECRET_KEY, 
             {
-                expiresIn: 60 * 60 * 1000
+                expiresIn: process.env.TOKEN_TIME
             }, 
             (err, token) => {
                 if (err) throw err; 
@@ -64,7 +64,7 @@ exports.login = async (req, res) => {
         }
 
         var autoToken = uuidv4(); 
-        const salt = await bcrypt.genSalt(10); 
+        const salt = await bcrypt.genSalt(process.env.BCRYPT_SALT); 
         const hashedToken = await bcrypt.hash(autoToken, salt); 
 
         const refreshToken = new RefreshToken({
@@ -85,7 +85,7 @@ exports.login = async (req, res) => {
             payload, 
             process.env.SECRET_KEY, 
             {
-                expiresIn: 60 * 60 * 1000
+                expiresIn: process.env.TOKEN_TIME
             }, 
             (err, token) => {
                 if (err) throw err; 
@@ -122,7 +122,7 @@ exports.refreshToken = async (req, res) => {
             payload, 
             process.env.SECRET_KEY, 
             {
-                expiresIn: 60 * 60 * 1000
+                expiresIn: process.env.TOKEN_TIME
             }, 
             (err, token) => {
                 if (err) throw err; 
@@ -150,7 +150,7 @@ exports.forgotPassword = async (req, res) => {
         }
 
         const code = randomstring.generate({length: 7, charset: 'alphanumeric'}); 
-        const hashedCode = await bcrypt.hash(code, 10); 
+        const hashedCode = await bcrypt.hash(code, process.env.BCRYPT_SALT); 
 
         await new ResetToken({
             userId: user._id, 
@@ -185,7 +185,7 @@ exports.passwordReset = async (req, res) => {
         return res.status(400).send("Invalid password reset token"); 
     }
 
-    const hash = await bcrypt.hash(password, 10); 
+    const hash = await bcrypt.hash(password, process.env.BCRYPT_SALT); 
 
     await User.updateOne(
         {
