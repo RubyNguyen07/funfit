@@ -1,5 +1,4 @@
 var mongoose = require('mongoose'); 
-var { getNames } = require('country-list'); 
 var { isEmail } = require('validator'); 
 
 var Schema = mongoose.Schema; 
@@ -24,7 +23,6 @@ var UserSchema = new Schema({
     country: {
         type: String, 
         required: true, 
-        enum: getNames()
     }, 
     profilePic: {
         type: String, 

@@ -15,7 +15,7 @@ var TokenSchema = new Schema({
     },
     expiredAt: {
         type: Date, 
-        expires: process.env.RESET_TOKEN_TIME, 
+        expires: Number(process.env.RESET_TOKEN_TIME), 
     }
 })
 
