@@ -2,6 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser'); 
 var cookieParser = require('cookie-parser'); 
 var helmet = require("helmet"); 
+var cors = require('cors'); 
 require('dotenv').config(); 
 var InitiateMongoServer = require('./config/db'); 
 
@@ -15,6 +16,7 @@ const port = process.env.PORT || 3000;
 app.use(bodyParser.json()); 
 app.use(cookieParser());
 app.use(helmet());
+app.use(cors()); 
 
 app.use('/user', user); 
 
