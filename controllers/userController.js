@@ -1,6 +1,11 @@
 var User = require('../models/User'); 
 var bcrypt = require('bcryptjs/dist/bcrypt');
 var jwt = require('jsonwebtoken');
+var RefreshToken = require('../models/RefreshToken'); 
+var ResetToken = require('../models/ResetToken'); 
+var randomstring = require('randomstring');
+var { sendEmail } = require('../utils/email/sendEmail'); 
+var { v4: uuidv4 } = require('uuid'); 
 
 
 exports.signup = async (req, res) => {
@@ -29,7 +34,7 @@ exports.signup = async (req, res) => {
             payload, 
             process.env.SECRET_KEY, 
             {
-                expiresIn: 10000
+                expiresIn: 60 * 60 * 1000
             }, 
             (err, token) => {
                 if (err) throw err; 
@@ -58,6 +63,18 @@ exports.login = async (req, res) => {
             return res.status(400).send("Incorrect password"); 
         }
 
+        var autoToken = uuidv4(); 
+        const salt = await bcrypt.genSalt(10); 
+        const hashedToken = await bcrypt.hash(autoToken, salt); 
+
+        const refreshToken = new RefreshToken({
+            userId: user._id, 
+            token: hashedToken, 
+            expiredAt: new Date()
+        })
+
+        await refreshToken.save(); 
+
         const payload = {
             user: {
                 id: user._id
@@ -68,7 +85,44 @@ exports.login = async (req, res) => {
             payload, 
             process.env.SECRET_KEY, 
             {
-                expiresIn: 10000
+                expiresIn: 60 * 60 * 1000
+            }, 
+            (err, token) => {
+                if (err) throw err; 
+                res.status(200).json({
+                    token: token, 
+                    refreshToken: hashedToken
+                }); 
+            }
+        )
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+}
+
+exports.refreshToken = async (req, res) => {
+    try {
+        if (req.body.refreshToken == null) {
+            return res.status(500).send(err.message); 
+        }
+
+        const token = await RefreshToken.findOne({token: req.body.refreshToken}); 
+
+        if (!token) {
+            return res.status(400).send("Refresh token expired or did not exist"); 
+        }
+
+        const payload =  {
+            user: {
+                id: token.userId
+            }
+        };
+
+        jwt.sign(
+            payload, 
+            process.env.SECRET_KEY, 
+            {
+                expiresIn: 60 * 60 * 1000
             }, 
             (err, token) => {
                 if (err) throw err; 
@@ -78,8 +132,85 @@ exports.login = async (req, res) => {
             }
         )
     } catch (err) {
-        res.status(500).send(err.message);
+        res.status(500).send(err.message); 
     }
+}
+
+exports.forgotPassword = async (req, res) => {
+    try {
+        const user = await User.findOne({email: req.body.email}); 
+        
+        if (!user) {
+            return res.status(400).send("User does not exist"); 
+        } 
+
+        const refreshToken = await RefreshToken.findOne({ userId: user._id}); 
+        if (refreshToken) {
+            await refreshToken.deleteOne(); 
+        }
+
+        const code = randomstring.generate({length: 7, charset: 'alphanumeric'}); 
+        const hashedCode = await bcrypt.hash(code, 10); 
+
+        await new ResetToken({
+            userId: user._id, 
+            token: hashedCode, 
+            expiredAt: new Date()
+        }).save() 
+
+        sendEmail(
+            user.email, 
+            "Password Reset Request", 
+            "Hi " + user.name + ", you have requested to reset your password on Funfit. Please enter the following code to reset password: " + code + "." 
+        );
+        res.status(200).send({id: user._id}); 
+
+    } catch (err) {
+        res.status(500).send(err.message); 
+    }
+} 
+
+exports.passwordReset = async (req, res) => {
+    var { userId, password, code } = req.body; 
+
+    var passwordResetToken = await ResetToken.findOne({userId: userId}); 
+
+    if (!passwordResetToken) {
+        return res.status(400).send("Invalid or expired password reset token"); 
+    }
+
+    const isMatch = await bcrypt.compare(code, passwordResetToken.token); 
+
+    if (!isMatch) {
+        return res.status(400).send("Invalid password reset token"); 
+    }
+
+    const hash = await bcrypt.hash(password, 10); 
+
+    await User.updateOne(
+        {
+            _id: userId, 
+        }, 
+        {
+            $set: {
+                password: hash
+            }
+        }, 
+        {
+            new: true
+        }
+    ); 
+
+    const user = await User.findById({_id: userId});
+
+    sendEmail(
+        user.email, 
+        "Password Reset Successfully", 
+        "Hi " + user.name + ", you have successfully reset your password on Funfit"
+    ); 
+
+    await passwordResetToken.deleteOne(); 
+    return res.status(200).send("Password reset successfully"); 
 }
 
 exports.me = async (req, res) => {
