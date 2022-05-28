@@ -163,7 +163,7 @@ exports.forgotPassword = async (req, res) => {
             "Password Reset Request", 
             "Hi " + user.name + ", you have requested to reset your password on Funfit. Please enter the following code to reset password: " + code + "." 
         );
-        res.status(200).send({id: user._id}); 
+        res.status(200).send({userId: user._id}); 
 
     } catch (err) {
         res.status(500).send(err.message); 
