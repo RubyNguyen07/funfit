@@ -58,7 +58,7 @@ With the fascinating journey of building the app, we expect to help students lik
 - View each date, there shows exercises done in that particular date.
 
 3. Routine page:
-- View all routines, including recommended ones and self-created ones.
+- View all routines, including recommended ones (filterd based on user's interests) and self-created ones.
 - View each routine.
 - Create a routine by setting the goal for the routine, filling in exercises' name and according timing. Every day the user does the routine, points will be added to the user’s rank. Once the final goal is reached, extra points will be added to the user’s profile. 
 - Schedule the routine and set reminders.
@@ -77,31 +77,22 @@ With the fascinating journey of building the app, we expect to help students lik
 
 
 5. Rank feature 
-There will be 27 levels in total. Lower levels will require less points to reach while higher levels will require much more points
-Points will be added when the user completes a daily routine 
-Each level corresponds to a badge   
+- There will be 27 levels in total. Lower levels will require less points to reach while higher levels will require much more points
+- Points will be added when the user completes a daily routine 
 
 6. Story feature
-- When a routine is successfully completed, the user could share the result on the app’s feed or through social media 
-
-Allows users to post photos of their achievements that automatically disappear within 24 hours
-Unlimited stories 
-Functionalities: 
-+ View all stories 
-+ View each story 
-+ Like and reply stories 
-+ Create a story 
-+ Delete a story 
-COMMENT: Should we archive the stories? 
+- Create a story based on a routine achievement (story automatically disappears within 24 hours)
+- View all recommended stories (filtered based on location and shared interests) 
+- View each story 
+- Like and reply stories 
+- Delete a story 
 
 7. Chat feature
-Allows users to send messages to each other (A user who are interested in a person’s story on the app can click on their profile and send a direct message)
-Chat suggestions are filtered based on location and shared interests.
-Functionalities: 
-+ View all messages 
-+ View a conversation 
-+ Send messages
-+ Delete conversation 
+- Send messages to recommended users (A user who are interested in a person’s story on the app can click on their profile and send a direct message)
+- View all messages 
+- View a conversation 
+- View all conversations
+- Delete conversation 
 
 ### Plans for milestones 
 | Milestones | Tasks | 
@@ -112,6 +103,8 @@ Functionalities:
 
 
 ### Work log 
+
+### Project scope
 
 ## Instructions for pull requests 
 1. Ensure the branch you are working on is named semantically based on the task at hand. Eg. fe-add-faq-page (for frontend), be-add-message-routes (for backend)
