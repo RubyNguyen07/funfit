@@ -173,6 +173,10 @@ exports.forgotPassword = async (req, res) => {
 exports.passwordReset = async (req, res) => {
     var { userId, password, code } = req.body; 
 
+    if (code.length <= 1) {
+        return res.status(400).send("Invalid password reset token"); 
+    }
+
     var passwordResetToken = await ResetToken.findOne({userId: userId}); 
 
     if (!passwordResetToken) {
