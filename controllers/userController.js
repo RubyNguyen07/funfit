@@ -149,7 +149,7 @@ exports.forgotPassword = async (req, res) => {
             await refreshToken.deleteOne(); 
         }
 
-        const code = randomstring.generate({length: 7, charset: 'alphanumeric'}); 
+        const code = randomstring.generate({length: Number(process.env.CODE_LENGTH), charset: 'alphanumeric'}); 
         const hashedCode = await bcrypt.hash(code, Number(process.env.BCRYPT_SALT)); 
 
         await new ResetToken({
@@ -173,9 +173,13 @@ exports.forgotPassword = async (req, res) => {
 exports.passwordReset = async (req, res) => {
     var { userId, password, code } = req.body; 
 
-    if (code.length <= 1) {
+    if (code.length != Number(process.env.CODE_LENGTH)) {
         return res.status(400).send("Invalid password reset token"); 
     }
+
+    if (password.length == 0) {
+        return res.status(400).send("New password missing");
+    } 
 
     var passwordResetToken = await ResetToken.findOne({userId: userId}); 
 
