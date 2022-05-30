@@ -173,13 +173,17 @@ exports.forgotPassword = async (req, res) => {
 exports.passwordReset = async (req, res) => {
     var { userId, password, code } = req.body; 
 
+    if (!code) {
+        return res.status(400).send("Code missing"); 
+    }
+
+    if (!password || password.length == 0) {
+        return res.status(400).send("New password missing"); 
+    }
+
     if (code.length != Number(process.env.CODE_LENGTH)) {
         return res.status(400).send("Invalid password reset token"); 
     }
-
-    if (password.length == 0) {
-        return res.status(400).send("New password missing");
-    } 
 
     var passwordResetToken = await ResetToken.findOne({userId: userId}); 
 
