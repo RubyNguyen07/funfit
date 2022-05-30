@@ -138,13 +138,13 @@ exports.refreshToken = async (req, res) => {
 
 exports.forgotPassword = async (req, res) => {
     try {
-        const user = await User.findOne({email: req.body.email}); 
+        const user = await User.findOne({email: req.body.email.toLowerCase()}); 
         
         if (!user) {
             return res.status(400).send("User does not exist"); 
         } 
 
-        const refreshToken = await RefreshToken.findOne({ userId: user._id}); 
+        const refreshToken = await RefreshToken.findOne({ userId: user._id }); 
         if (refreshToken) {
             await refreshToken.deleteOne(); 
         }
