@@ -39,14 +39,12 @@ With the fascinating journey of building the app, we expect to help students lik
 + Find workout friends. 
 
 ## Design and plans 
-### Design of fe + be 
-
 ### Tech stack
 - Frontend: React Native 
 - Backend: Express.js 
 - Deployment: Heroku 
 - Database: MongoDB 
-- Quality Assurance: Postman 
+- Quality Assurance: Postman + Jest 
 
 ### Detailed functionalities 
 1. Profile page:
@@ -99,12 +97,8 @@ With the fascinating journey of building the app, we expect to help students lik
 | ---------- | ---------- | 
 | Milestone 1 | <ul> <li> Create demo on Figma </li> <li> Frontend Web Routing for Profile page, Calendar, Routine page, Story page, Chat page, Notifications </li> <li>  Backend API Endpoints & Database </li> <li> Token Authentication </li> </ul> | 
 | Milestone 2 | <ul> <li> Complete core features of Routine page: view routines, create new routines, view a separate routine </li> <li> Complete core features of Notifications: view notifications, click on each notification </li> <li> Complete core features of Story: view stories, create stories, delete stories </li> <li> Complete core features of Chat: view chats, sends message, delete message </li> </ul> | 
-| Milestone 3 | <ul> <li> Complete Scoring system </li> <li> Complete Calendar features </li> <li> Testing </li> </ul> | 
+| Milestone 3 | <ul> <li> Complete Ranking system </li> <li> Complete Calendar features </li> <li> Testing </li> </ul> | 
 
-
-### Work log 
-
-### Project scope
 
 ## Instructions for pull requests 
 1. Ensure the branch you are working on is named semantically based on the task at hand. Eg. fe-add-faq-page (for frontend), be-add-message-routes (for backend)
