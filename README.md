@@ -9,10 +9,10 @@
 Apollo 11
 
 ## What is Funfit? 
-Funfit is a mobile application that helps users stick with their workout routines, thus promoting a healhty lifestyle. 
+Funfit is a mobile application that helps users stick with their workout routines, thus promoting a healthy lifestyle. 
 
 ## Problem motivation 
-As both of us are interested in exercising, it was not diffcult for us to come up with the idea of Funfit for Orbital 2022. As we have used fitness apps before, we are excited to enhance the efficiency of the app more. Not only through the friendly and refreshing design, but we also plan to implement algorithms to improve user experience. One algorithm is the suggestion algorithm, which recommends workout routines to user based on their indicated interests. The other is similar to friend suggestion algorithm, which we are also thrilled to discover more about (partly because we got the opportunity to know in detailed how Facebook recommends our friends). 
+As both of us are interested in exercising, it was not diffcult for us to come up with the idea of Funfit for Orbital 2022. As we have used fitness apps before, we are excited to enhance the efficiency of the app. Not only through the friendly and refreshing design, but we also plan to implement algorithms to improve user experience. One algorithm is the suggestion algorithm, which recommends workout routines to user based on their indicated interests. The other is similar to friend suggestion algorithm, which we are also thrilled to discover more about (partly because we got the opportunity to know in detailed how Facebook recommends our friends). 
 
 With the fascinating journey of building the app, we expect to help students like us to maintain a healthy lifestyle that entails exercising and together build a supportive and inspiring community. 
 
