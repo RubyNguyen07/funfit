@@ -44,6 +44,10 @@ exports.getRoutinesByGenre = async (req, res) => {
 
 exports.createNewRoutine = async (req, res) => {
     try {
+        if (req.body.steps.length !== req.body.timings.length) {
+            return res.status(400).send("Number of steps is not equal to that of timings"); 
+        }
+        
         const newRoutine = new MyRoutine ({
             name: req.body.name, 
             duration: req.body.duration,
