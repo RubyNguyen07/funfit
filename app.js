@@ -7,6 +7,7 @@ require('dotenv').config();
 var InitiateMongoServer = require('./config/db'); 
 
 var user = require('./routes/users'); 
+var routine = require('./routes/routines'); 
 
 InitiateMongoServer(); 
 
@@ -19,10 +20,12 @@ app.use(helmet());
 app.use(cors()); 
 
 app.use('/user', user); 
+app.use('/routine', routine); 
 
 app.get('/', (req, res) => {
     res.status(200); 
     res.send("Welcome, Ruby"); 
+    
 })
 
 app.listen(port, (err) => {
@@ -32,4 +35,6 @@ app.listen(port, (err) => {
         console.log("Error: " + err); 
     }
 })
+
+
 

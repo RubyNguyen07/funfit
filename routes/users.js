@@ -4,6 +4,9 @@ var userController = require('../controllers/userController');
 var checkUniqueMiddleware = require('../middlewares/checkUniqueEmail'); 
 var authMiddleware = require('../middlewares/auth'); 
 
+//Tesing 
+router.get('/getAll', userController.getAll);
+
 // Sign up 
 router.post('/signup', checkUniqueMiddleware.checkUniqueEmail, userController.signup); 
 
@@ -27,5 +30,8 @@ router.use(authMiddleware.auth)
 
 // Get profile 
 router.get('/me', userController.me); 
+
+// Update profile 
+router.post('/updateProfile', userController.updateProfile); 
 
 module.exports = router; 
