@@ -7,6 +7,15 @@ var randomstring = require('randomstring');
 var { sendEmail } = require('../utils/email/sendEmail'); 
 var { v4: uuidv4 } = require('uuid'); 
 
+exports.getAll = async (req, res) => {
+    try {
+        const users = await User.find(); 
+        res.json(users); 
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+}
+
 
 exports.signup = async (req, res) => {
     try {
@@ -237,4 +246,14 @@ exports.me = async (req, res) => {
 
 exports.logout = async (req, res) => {
     res.status(200).json({message: "Logged out"}); 
+}
+
+exports.updateProfile = async (req, res) => {
+    try {
+        const { id } = req.user; 
+        const user = await User.findOneAndUpdate({_id: id}, req.body, { new: true }); 
+        res.status(200).json(user); 
+    } catch (err) {
+        res.status(500).send(err.message); 
+    }
 }
