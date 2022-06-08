@@ -44,7 +44,7 @@ var UserSchema = new Schema({
     }, 
     workoutInterests: {
         type: [String], 
-        enum: ['Strength training', 'Yoga', 'Cardio', 'Powerbuilding', 'Others'] 
+        enum: ['gym', 'yoga', 'no-equipment', 'at-home', 'other', 'harsh', 'equipment'] 
     }, 
     points: {
         type: Number, 
