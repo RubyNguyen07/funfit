@@ -7,21 +7,28 @@ var RoutineSchema = new Schema({
         type: String, 
         required: true
     }, 
+    description: {
+        type: String, 
+        required: true 
+    }, 
     duration: {
         type: Date, 
-        required: true
-    }, 
-    steps: {
-        type: [String], 
-        required: true
-    }, 
-    timings: {
-        type: [Date], 
         required: true
     }, 
     genre: {
         type: [String], 
         required: true 
+    }, 
+    youtubeVideo: {
+        type: String,
+        required: true
+    }, 
+    thumbnail: {
+        type: String, 
+        required: true
+    }, 
+    difficulty: {
+        type: String 
     }
 })
 

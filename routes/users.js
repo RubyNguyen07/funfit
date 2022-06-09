@@ -3,6 +3,7 @@ var router = express.Router();
 var userController = require('../controllers/userController'); 
 var checkUniqueMiddleware = require('../middlewares/checkUniqueEmail'); 
 var authMiddleware = require('../middlewares/auth'); 
+var uploadController = require('../controllers/uploadController');
 
 //Tesing 
 router.get('/getAll', userController.getAll);
@@ -33,5 +34,14 @@ router.get('/me', userController.me);
 
 // Update profile 
 router.post('/updateProfile', userController.updateProfile); 
+
+// Upload profile picture 
+router.post('/upload', uploadController.uploadFile); 
+
+// Get information about profile pic needed to download pic 
+router.get('/getPicInfo', uploadController.getProfilePic);
+
+// Download pic 
+router.get('/downloadPic', uploadController.download); 
 
 module.exports = router; 

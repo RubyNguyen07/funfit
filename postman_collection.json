@@ -1,0 +1,462 @@
+{
+	"info": {
+		"_postman_id": "1c53d18d-c37f-4c88-881c-8df52a7f1ac9",
+		"name": "Funfit",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "/user/me",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI5MWRlOGQwYzI5NDA0YTBlNWMxNTAyIn0sImlhdCI6MTY1MzcyNzEyOCwiZXhwIjo0MjQ1NzI3MTI4fQ.HhIGjTC3LH8iLx4NktHKHMZhpx-QvkIsG2Kaauqc1Js",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://orbital-funfit.herokuapp.com/user/me",
+					"protocol": "https",
+					"host": [
+						"orbital-funfit",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"user",
+						"me"
+					]
+				},
+				"description": "Get user profile by passing in token in Authorization Bearer Token"
+			},
+			"response": []
+		},
+		{
+			"name": "/user/logout",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"description": "Log out"
+			},
+			"response": []
+		},
+		{
+			"name": "/user/signup",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://orbital-funfit.herokuapp.com/user/signup",
+					"protocol": "https",
+					"host": [
+						"orbital-funfit",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"user",
+						"signup"
+					]
+				},
+				"description": "Sign up with the following required fields:  \n\\+ Email: String  \n\\+ Password: minimum length = 5  \n\\+ Name: String  \n\\+ Country: String  \n\\+ Sex: “Female”, “Male” or “Others”\n\nOutput:  \n\\+ New authorization token (valid in 1 hour)"
+			},
+			"response": []
+		},
+		{
+			"name": "/user/login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\":\"rubynguyen2003@gmail.com\",\n    \"password\":\"1234567890\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://orbital-funfit.herokuapp.com/user/login",
+					"protocol": "https",
+					"host": [
+						"orbital-funfit",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"user",
+						"login"
+					]
+				},
+				"description": "Log in with the following required fields:  \n\\+ Email  \n\\+ Password  \n  \nOutput:  \n\\+ New authorization token (valid in 1 hour)  \n\\+ Refresh token (valid in 30 days)"
+			},
+			"response": []
+		},
+		{
+			"name": "/user/refreshToken",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"refreshToken\": \"\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://orbital-funfit.herokuapp.com/user/refreshToken",
+					"protocol": "https",
+					"host": [
+						"orbital-funfit",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"user",
+						"refreshToken"
+					]
+				},
+				"description": "Generate new token when the old token expired with the following required fields:  \n\\+ refreshToken (generated when logged in, expire after 30 days since logged in)  \n  \nOutput:  \n\\+ New authorization token (valid in 1 hour)"
+			},
+			"response": []
+		},
+		{
+			"name": "/user/forgotPassword",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://orbital-funfit.herokuapp.com/user/forgotPassword",
+					"protocol": "https",
+					"host": [
+						"orbital-funfit",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"user",
+						"forgotPassword"
+					]
+				},
+				"description": "Get the code to reset password sent to mail by providing the following required fields:  \n\\+ Email\n\nOutput:  \n\\+ userId  \n\\+ Email to user that includes code to reset password"
+			},
+			"response": []
+		},
+		{
+			"name": "/user/resetPassword",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": \"\", \n    \"code\": \"\", \n    \"password\": \"\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://orbital-funfit.herokuapp.com/user/resetPassword",
+					"protocol": "https",
+					"host": [
+						"orbital-funfit",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"user",
+						"resetPassword"
+					]
+				},
+				"description": "Reset password by providing the following required fields:  \n\\+ userId  \n\\+ code   \n\\+ new password\n\nOutput:  \n\\+ Message: “Password reset successfully”"
+			},
+			"response": []
+		},
+		{
+			"name": "/routine/getMyRoutines",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI5MWRlOGQwYzI5NDA0YTBlNWMxNTAyIn0sImlhdCI6MTY1NDYyMjczMCwiZXhwIjoxNjU4MjIyNzMwfQ.IF-sDyiq8RTFwvoUgSUIZPkuSvKJaZpCa0Zo4T08w6g",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://orbital-funfit.herokuapp.com/routine/getMyRoutines",
+					"protocol": "https",
+					"host": [
+						"orbital-funfit",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"routine",
+						"getMyRoutines"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/routine/getRecRoutines",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI5MWRlOGQwYzI5NDA0YTBlNWMxNTAyIn0sImlhdCI6MTY1NDYyMjczMCwiZXhwIjoxNjU4MjIyNzMwfQ.IF-sDyiq8RTFwvoUgSUIZPkuSvKJaZpCa0Zo4T08w6g",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://orbital-funfit.herokuapp.com/routine/getRecRoutines",
+					"protocol": "https",
+					"host": [
+						"orbital-funfit",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"routine",
+						"getRecRoutines"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/routine/getRoutinesByGenre",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"genre\": \"\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://orbital-funfit.herokuapp.com/routine/getRoutinesByGenre",
+					"protocol": "https",
+					"host": [
+						"orbital-funfit",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"routine",
+						"getRoutinesByGenre"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/routine/myRoutine",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://orbital-funfit.herokuapp.com/routine/myRoutine",
+					"protocol": "https",
+					"host": [
+						"orbital-funfit",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"routine",
+						"myRoutine"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/routine/deleteRoutine",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://orbital-funfit.herokuapp.com/routine/deleteRoutine",
+					"protocol": "https",
+					"host": [
+						"orbital-funfit",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"routine",
+						"deleteRoutine"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/routine/recRoutine",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://orbital-funfit.herokuapp.com/routine/recRoutine",
+					"protocol": "https",
+					"host": [
+						"orbital-funfit",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"routine",
+						"recRoutine"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/routine/newRoutine",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"\",\n    \"duration\": \"\", \n    \"steps\": [\"\"],  \n    \"timings\": [\"\"],\n    \"genre\": \"\",\n    \"reminder\": \"\" \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://orbital-funfit.herokuapp.com/routine/newRoutine",
+					"protocol": "https",
+					"host": [
+						"orbital-funfit",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"routine",
+						"newRoutine"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/routine/editRoutine",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"\",\n    \"name\": \"\",\n    \"duration\": \"\", \n    \"steps\": [\"\"],  \n    \"timings\": [\"\"],\n    \"genre\": \"\",\n    \"reminder\": \"\" \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://orbital-funfit.herokuapp.com/routine/editRoutine",
+					"protocol": "https",
+					"host": [
+						"orbital-funfit",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"routine",
+						"editRoutine"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

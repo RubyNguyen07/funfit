@@ -15,12 +15,6 @@ exports.getSimilarRoutines = async (req, res) => {
 
         let routines = []; 
 
-        // similarRoutines.forEach(async (item) => {
-        //     const routine = await RecRoutine.findById(item._id.toString());
-        //     routines.push(routine); 
-        //     console.log(routines)
-        // })
-
         for (let i = 0; i < similarRoutines.length; i++) {
             var item = similarRoutines[i]; 
             const routine = await RecRoutine.findById(item._id.toString());
