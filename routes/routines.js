@@ -5,9 +5,6 @@ var routineController = require('../controllers/routineController');
 var recRoutineController = require('../controllers/routineRecommenderController');  
 var middleware = require('../middlewares/auth'); 
 
-// //Play a routine 
-// router.get('/playRoutine', routineController.playRoutine); 
-
 //Authorization 
 router.use(middleware.auth); 
 
@@ -35,6 +32,10 @@ router.delete('/deleteRoutine', routineController.deleteRoutine);
 // Edit a routine 
 router.put('/editRoutine', routineController.editRoutine); 
 
+//Generate audio files from a routine 
+router.get('/generateAudioFiles', routineController.generateAudioFiles); 
 
+//Add days to routine 
+router.post('/addDaysFollow', routineController.addRoutineDay); 
 
 module.exports = router; 

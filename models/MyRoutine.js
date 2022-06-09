@@ -8,7 +8,7 @@ var MyRoutineSchema = new Schema({
         required: true
     }, 
     duration: {
-        type: Date, 
+        type: [String], 
         required: true
     }, 
     steps: {
@@ -16,7 +16,7 @@ var MyRoutineSchema = new Schema({
         required: true
     }, 
     timings: {
-        type: [Date], 
+        type: [[String]], 
         required: true
     }, 
     genre: {
@@ -30,6 +30,22 @@ var MyRoutineSchema = new Schema({
     }, 
     daysFollow: {
         type: [Date]
+    }, 
+    audioGenerated: {
+        type: Schema.Types.Boolean, 
+        default: false 
+    }, 
+    youtubeVideo: {
+        type: String
+    }, 
+    thumbnail: {
+        type: String
+    }, 
+    difficulty: {
+        type: String 
+    },
+    description: {
+        type: String
     }
 })
 

@@ -1,6 +1,6 @@
 var RecRoutine = require('../models/Routine'); 
 var MyRoutine = require('../models/MyRoutine'); 
-// const say = require('say'); 
+const GTTS = require('gtts');
 
 exports.getMyRoutines = async (req, res) => {
     try {
@@ -44,8 +44,14 @@ exports.getRoutinesByGenre = async (req, res) => {
 
 exports.createNewRoutine = async (req, res) => {
     try {
-        if (req.body.steps.length !== req.body.timings.length) {
+        if (req.body.steps !== null && (req.body.steps.length !== req.body.timings.length)) {
             return res.status(400).send("Number of steps is not equal to that of timings"); 
+        }
+
+        const hasExisted = await MyRoutine.find({name: req.body.name})
+
+        if (hasExisted !== null) {
+            return res.status(400).send("Please choose a different name"); 
         }
         
         const newRoutine = new MyRoutine ({
@@ -55,7 +61,10 @@ exports.createNewRoutine = async (req, res) => {
             timings: req.body.timings,   
             genre: req.body.genre, 
             userId: req.user.id, 
-            reminder: req.body.reminder
+            reminder: req.body.reminder, 
+            youtubeVideo: req.body.youtubeVideo, 
+            difficulty: req.body.difficulty, 
+            description: req.body.description
         })
 
         await newRoutine.save(); 
@@ -86,7 +95,10 @@ exports.editRoutine = async (req, res) => {
             steps: req.body.steps,
             timings: req.body.timings,   
             genre: req.body.genre, 
-            reminder: req.body.reminder
+            reminder: req.body.reminder,
+            youtubeVideo: req.body.youtubeVideo, 
+            difficulty: req.body.difficulty, 
+            description: req.body.description
         }; 
 
         await MyRoutine.findByIdAndUpdate(id, updatedFields); 
@@ -97,45 +109,52 @@ exports.editRoutine = async (req, res) => {
     }
 }
 
-// exports.playRoutine = async (req, res) => {
-//     try {
-//         const { key, region, phrase, file } = req.body; 
+// Should download it to user's phone or else it might be too much to get the audio aroung all the time 
+exports.generateAudioFiles = async (req, res) => {
+    try {
+        const { id } = req.body; 
+        const routine = await MyRoutine.findById(id); 
 
-//         if ( !key || !region || !phrase ) {
-//             res.status(404).send("Missing information"); 
-//         }
+        if (routine == null) {
+            return res.status(400).send("Routine does not exist"); 
+        }
 
-//         let fileName = null; 
+        if (routine.audioGenerated) {
+            return res.status(400).send("Audio already generated"); 
+        }
 
-//         if  (file && file) {
-//             fileName =  `./temp/stream-from-file-${timeStamp()}.mp3`; 
-//         }
+        const { steps } = routine; 
+        const fileName = id + ".mp3"; 
+        for (let i = 0; i < steps.length; i++) {
+            var gtts = new GTTS(steps[i], 'en'); 
+            gtts.save(i + "-" + fileName, (err, result) => {
+                if (err) {
+                    return res.send(err.message); 
+                }
+            })
+        }
+        
+        await MyRoutine.findByIdAndUpdate(id, {audioGenerated: true}); 
+        return res.status(200).send("Routine audio created");
 
-//         const audioStream = await textToSpeech(key, region, phrase, fileName); 
-//         res.set({
-//             'Content-Type': 'audio/mpeg', 
-//             'Transfer-Encoding': 'chunked'
-//         }); 
-//         audioStream.pipe(res); 
-//     } catch (err) {
-//         res.status(500).send(err.message); 
-//     }
-// }
+    } catch (err) {
+        return res.status(500).send(err.message); 
+    }
+}
 
-// exports.playRoutine = async (req, res) => {
-//     try {
-//         const { text } = req.body; 
-//         const  toReturn = say.export(text, 1, '.mp3', (err) => {
-//             if (err) {
-//                 return res.status(500).send(err.message); 
-//             }
-//         })
-//         res.set({
-//             'Content-Type': 'audio/mpeg'
-//         }); 
-//         toReturn.pipe(res);
-//         return res.status(200).json("Okay"); 
-//     } catch (err) {
-//         res.status(500).send(err.message); 
-//     }
-// }
+exports.addRoutineDay = async (req, res) => {
+    try {
+        const { id } = req.body; 
+        const routine = await MyRoutine.findById(id); 
+        if (routine == null) {
+            return res.status(400).send("Routine does not exist"); 
+        }
+    
+        const oldDaysFollow = routine.daysFollow; 
+        await MyRoutine.findByIdAndUpdate(id, {daysFollow: oldDaysFollow.push(Date.now())}); 
+        return res.status(200).send("Date added"); 
+    } catch (err) {
+        return res.status(500).send(err.message)
+    }
+
+}
