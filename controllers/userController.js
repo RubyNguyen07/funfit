@@ -5,11 +5,7 @@ var RefreshToken = require('../models/RefreshToken');
 var ResetToken = require('../models/ResetToken'); 
 var randomstring = require('randomstring');
 var { sendEmail } = require('../utils/email/sendEmail'); 
-var { v4: uuidv4 } = require('uuid'); 
-var fs = require('fs'); 
-var multer = require('multer'); 
-var Buffer = require('buffer');
-
+var { v4: uuidv4 } = require('uuid');
 
 exports.getAll = async (req, res) => {
     try {
