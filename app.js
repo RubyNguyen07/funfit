@@ -8,10 +8,9 @@ var InitiateMongoServer = require('./config/db');
 
 var user = require('./routes/users'); 
 var routine = require('./routes/routines'); 
-////
-var homeController = require('./controllers/homeController'); 
+// var homeController = require('./controllers/homeController'); 
 
-InitiateMongoServer(); 
+InitiateMongoServer();
 
 const app = express(); 
 const port = process.env.PORT || 3000; 
@@ -20,17 +19,14 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(helmet());
 app.use(cors()); 
-app.set("view engine", "ejs");
 
 app.use('/user', user); 
 app.use('/routine', routine); 
 
-app.get('/', homeController.getHome); 
-// app.get('/', (req, res) => {
-//     res.status(200); 
-//     res.send("Welcome, Ruby"); 
-//     // res.render("index"); 
-// })
+app.get('/', (req, res) => {
+    res.status(200); 
+    res.send("Welcome, Ruby"); 
+})
 
 app.listen(port, (err) => {
     if (!err) {
