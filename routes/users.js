@@ -44,4 +44,5 @@ router.get('/getPicInfo', uploadController.getProfilePic);
 // Download pic 
 router.get('/downloadPic', uploadController.download); 
 
+
 module.exports = router; 

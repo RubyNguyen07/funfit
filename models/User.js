@@ -24,10 +24,6 @@ var UserSchema = new Schema({
         type: String, 
         required: true, 
     }, 
-    profilePic: {
-        type: String, 
-        default: ""
-    }, 
     name: {
         type: String, 
         required: true
@@ -44,7 +40,7 @@ var UserSchema = new Schema({
     }, 
     workoutInterests: {
         type: [String], 
-        enum: ['Strength training', 'Yoga', 'Cardio', 'Powerbuilding', 'Others'] 
+        enum: ['cardio', 'yoga', 'pilates', 'fat-burning', 'no-equipment', 'full-body-workout'] 
     }, 
     points: {
         type: Number, 

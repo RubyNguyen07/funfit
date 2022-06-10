@@ -8,7 +8,7 @@ var InitiateMongoServer = require('./config/db');
 
 var user = require('./routes/users'); 
 var routine = require('./routes/routines'); 
-// var homeController = require('./controllers/homeController'); 
+var homeController = require('./controllers/homeController'); 
 
 InitiateMongoServer();
 
@@ -23,10 +23,12 @@ app.use(cors());
 app.use('/user', user); 
 app.use('/routine', routine); 
 
-app.get('/', (req, res) => {
-    res.status(200); 
-    res.send("Welcome, Ruby"); 
-})
+// app.get('/', (req, res) => {
+//     res.status(200); 
+//     res.send("Welcome, Ruby"); 
+// })
+
+app.get('/user', homeController.getHome); 
 
 app.listen(port, (err) => {
     if (!err) {
