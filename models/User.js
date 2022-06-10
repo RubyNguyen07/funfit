@@ -40,7 +40,7 @@ var UserSchema = new Schema({
     }, 
     workoutInterests: {
         type: [String], 
-        enum: ['cardio', 'yoga', 'pilates', 'fat-burning', 'no-equipment', 'full-body-workout'] 
+        enum: ['cardio', 'yoga', 'pilates', 'fat-burning', 'no-equipment', 'full-body-workout']
     }, 
     points: {
         type: Number, 
