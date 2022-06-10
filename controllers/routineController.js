@@ -48,7 +48,7 @@ exports.createNewRoutine = async (req, res) => {
             return res.status(400).send("Number of steps is not equal to that of timings"); 
         }
 
-        const hasExisted = await MyRoutine.find({name: req.body.name})
+        const hasExisted = await MyRoutine.find({userId: req.user.id, name: req.body.name})
 
         if (hasExisted !== null) {
             return res.status(400).send("Please choose a different name"); 
