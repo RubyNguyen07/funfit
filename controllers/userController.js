@@ -238,9 +238,9 @@ exports.passwordReset = async (req, res) => {
 exports.me = async (req, res) => {
     try {
         const user = await User.findById(req.user.id); 
-        res.json(user);
+        return res.status(200).json(user);
     } catch (err) {
-        res.status(500).json({message: "Error in fetching user"}); 
+        return res.status(500).json({message: "Error in fetching user"}); 
     }
 }
 
@@ -257,6 +257,7 @@ exports.updateProfile = async (req, res) => {
         res.status(500).send(err.message); 
     }
 }
+
 
 
 

@@ -49,6 +49,7 @@
     "sendmail": "^1.6.1",
     "stream": "^0.0.2",
     "text-to-mp3": "^1.0.4",
+    "throw-error": "^1.0.0",
     "util": "^0.12.4",
     "uuid": "^8.3.2",
     "validator": "^13.7.0",
