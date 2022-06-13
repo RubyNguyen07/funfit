@@ -50,7 +50,7 @@ exports.createNewRoutine = async (req, res) => {
 
         const hasExisted = await MyRoutine.find({userId: req.user.id, name: req.body.name})
 
-        if (hasExisted !== null) {
+        if (hasExisted.length > 0) {
             return res.status(400).send("Please choose a different name"); 
         }
         
