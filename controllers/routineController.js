@@ -4,8 +4,8 @@ const GTTS = require('gtts');
 
 exports.getMyRoutines = async (req, res) => {
     try {
-        const { userId } = req.user; 
-        const routines = await MyRoutine.find({userId: userId}); 
+        const { id } = req.user; 
+        const routines = await MyRoutine.find({userId: id}); 
         res.status(200).json(routines); 
     } catch (err) {
         res.status(500).send(err.message); 
