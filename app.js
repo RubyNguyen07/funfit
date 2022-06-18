@@ -9,6 +9,7 @@ var InitiateMongoServer = require('./config/db');
 var user = require('./routes/users'); 
 var routine = require('./routes/routines'); 
 var homeController = require('./controllers/homeController'); 
+var noti = require('./routes/notis');
 
 InitiateMongoServer();
 
@@ -22,6 +23,7 @@ app.use(cors());
 
 app.use('/user', user); 
 app.use('/routine', routine); 
+app.use('/noti', noti);
 
 // app.get('/', (req, res) => {
 //     res.status(200); 
