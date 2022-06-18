@@ -28,6 +28,9 @@ app.use('/routine', routine);
 //     res.send("Welcome, Ruby"); 
 // })
 
+// var utilss = require('./utils/friendsRecommender'); 
+// utilss.findNeighbors("6291de8d0c29404a0e5c1502"); 
+
 app.get('/user', homeController.getHome); 
 
 app.listen(port, (err) => {
