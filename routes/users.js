@@ -10,7 +10,8 @@ var checkExpoMiddleware = require('../middlewares/checkExpoPushToken');
 router.get('/getAll', userController.getAll);
 
 // Sign up 
-router.post('/signup', checkUniqueMiddleware.checkUniqueEmail, checkExpoMiddleware.checkPushToken, userController.signup); 
+// router.post('/signup', checkUniqueMiddleware.checkUniqueEmail, checkExpoMiddleware.checkPushToken, userController.signup); 
+router.post('/signup', checkUniqueMiddleware.checkUniqueEmail, userController.signup); 
 
 // Log in 
 router.post('/login', userController.login); 
@@ -22,7 +23,8 @@ router.get('/logout', userController.logout);
 router.post('/refreshToken', userController.refreshToken);
 
 // Reset password
-router.post('/resetPassword', checkExpoMiddleware.checkPushToken, userController.passwordReset); 
+// router.post('/resetPassword', checkExpoMiddleware.checkPushToken, userController.passwordReset); 
+router.post('/resetPassword', userController.passwordReset); 
 
 // Forgot password 
 router.post('/forgotPassword', userController.forgotPassword); 
