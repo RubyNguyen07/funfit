@@ -34,12 +34,12 @@ exports.signup = async (req, res) => {
 
         await user.save(); 
 
-        try {
-            var message = 'Congratulations on your decision to build a healthier life! We are here to support you!'
-            await sendNoti(expoPushToken, 'template', 'Welcome to Funfit', message, req.body.name); 
-        } catch (err) {
-            console.log(err.message); 
-        }
+        // try {
+        //     var message = 'Congratulations on your decision to build a healthier life! We are here to support you!'
+        //     await sendNoti(expoPushToken, 'template', 'Welcome to Funfit', message, req.body.name); 
+        // } catch (err) {
+        //     console.log(err.message); 
+        // }
         
         const payload = {
             user: {
