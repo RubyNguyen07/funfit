@@ -4,12 +4,13 @@ var userController = require('../controllers/userController');
 var checkUniqueMiddleware = require('../middlewares/checkUniqueEmail'); 
 var authMiddleware = require('../middlewares/auth'); 
 var uploadController = require('../controllers/uploadController');
+var checkExpoMiddleware = require('../middlewares/checkExpoPushToken');
 
 //Tesing 
 router.get('/getAll', userController.getAll);
 
 // Sign up 
-router.post('/signup', checkUniqueMiddleware.checkUniqueEmail, userController.signup); 
+router.post('/signup', checkUniqueMiddleware.checkUniqueEmail, checkExpoMiddleware.checkPushToken, userController.signup); 
 
 // Log in 
 router.post('/login', userController.login); 
@@ -21,7 +22,7 @@ router.get('/logout', userController.logout);
 router.post('/refreshToken', userController.refreshToken);
 
 // Reset password
-router.post('/resetPassword', userController.passwordReset); 
+router.post('/resetPassword', checkExpoMiddleware.checkPushToken, userController.passwordReset); 
 
 // Forgot password 
 router.post('/forgotPassword', userController.forgotPassword); 
