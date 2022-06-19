@@ -16,23 +16,25 @@ exports.formatRoutine = (rawData) => {
     return formattedData; 
 }
 
-exports.formatUser = (rawData) => {
-    var formattedData = []; 
+exports.formatUser = (rawData, userId) => {
+    var formattedData = [];
 
     for (let i = 0; i < rawData.length; i++) {
-        let curr = rawData[i].workoutInterests;
-        if (curr) {
-            let newWI = curr.forEach(genre => {
-                genre.replace(/\s+/g, '').toLowerCase(); 
-            })
-            let formattedInfo = newWI.join(" ") + " " + rawData[i].country.replace(/\s+/g, '').toLowerCase(); 
-            formattedData.push({
-                _id: rawData[i]._id, 
-                info: formattedInfo
-            })
+        if (userId != rawData[i]._id) {
+            let curr = rawData[i].workoutInterests;
+            if (curr.length > 0) {
+                curr.map(genre => {
+                    genre.replace(/\s+/g, '').toLowerCase(); 
+                })
+
+                let formattedInfo = curr.join(" ") + " " + rawData[i].country.replace(/\s+/g, '').toLowerCase(); 
+                formattedData.push({
+                    _id: rawData[i]._id, 
+                    info: formattedInfo
+                })
+            }
         }
     }
-
     return formattedData; 
 }
 
@@ -80,10 +82,11 @@ exports.createVectorFromUser = (user) => {
 
 exports.createVectorForUserRec = (user) => {
     const tfidf = new TfIdf(); 
-    let newWI = user.workoutInterests.forEach(genre => {
+    var curr = user.workoutInterests;
+    curr.map(genre => {
         genre.replace(/\s+/g, '').toLowerCase(); 
     })
-    let formattedInfo = newWI.join(" ") + " " + user.country.replace(/\s+/g, '').toLowerCase();     
+    let formattedInfo = curr.join(" ") + " " + user.country.replace(/\s+/g, '').toLowerCase();     
     tfidf.addDocument(formattedInfo); 
 
     var coordinates = {}; 
