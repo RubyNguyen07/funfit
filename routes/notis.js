@@ -18,3 +18,5 @@ router.post('/sendANoti', notiController.sendANoti);
 
 // Delete a noti 
 router.delete('/deleteNoti', notiController.deleteNoti);
+
+module.exports = router; 
