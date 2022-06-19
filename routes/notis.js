@@ -3,6 +3,7 @@ var router = express.Router();
 
 var notiController = require('../controllers/notiController');  
 var middleware = require('../middlewares/auth'); 
+var expoPushTokenMiddleware = require('../middlewares/checkExpoPushToken');
 
 //Authorization 
 router.use(middleware.auth);
@@ -14,7 +15,7 @@ router.get('/getAllNotis', notiController.getAllNotis);
 router.get('/getNoti', notiController.getNoti);
 
 // Send a noti 
-router.post('/sendANoti', notiController.sendANoti);
+router.post('/sendANoti', expoPushTokenMiddleware.checkPushToken, notiController.sendANoti);
 
 // Delete a noti 
 router.delete('/deleteNoti', notiController.deleteNoti);

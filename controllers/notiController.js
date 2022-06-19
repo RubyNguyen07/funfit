@@ -57,7 +57,7 @@ exports.sendANoti = async (req, res) => {
 
         const messageStatus = await courier.getMessage(requestId); 
         if (messageStatus === "error") {
-            return res.status(500).send(err.message); 
+            return res.status(400).send(err.message); 
         }
 
         return res.status(200).send("Noti is sent"); 
