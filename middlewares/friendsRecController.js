@@ -55,40 +55,39 @@ exports.getRecommededFriends = async (req, res) => {
                 expiredAt: new Date()
             }).save();
 
-            return res.status(200).send(res);
-        }
-
-        var recUsersFromGraph = graphUtil.findNeighbors(graphHelper.graph, id); 
-        // recFriendsId.forEach(async id => {
-        //     const newFriend = await User.findById(id); 
-        //     recUsersFromGraph.push(newFriend);
-        // })
-
-        var currLen = recUsersFromGraph.length;
-        if (currLen < userToReturn) {
-            await getFriendsFromInterests(); 
-            recUsersFromGraph.push(...recUsersFromVectors.slice(0, userToReturn - currLen));
-
-            await new RecFriends({
-                userId: id, 
-                recFriends: recUsersFromGraph, 
-                expiredAt: new Date()
-            }).save();
-
-            return res.status(200).send(recUsersFromGraph);
+            req.idArray = res; 
         } else {
-            var res = recUsersFromGraph.slice(0, userToReturn); 
-
-            await new RecFriends({
-                userId: id, 
-                recFriends: res, 
-                expiredAt: new Date()
-            }).save();
-
-            return res.status(200).send(res);
+            var recUsersFromGraph = graphUtil.findNeighbors(graphHelper.graph, id); 
+            // recFriendsId.forEach(async id => {
+            //     const newFriend = await User.findById(id); 
+            //     recUsersFromGraph.push(newFriend);
+            // })
+    
+            var currLen = recUsersFromGraph.length;
+            if (currLen < userToReturn) {
+                await getFriendsFromInterests(); 
+                recUsersFromGraph.push(...recUsersFromVectors.slice(0, userToReturn - currLen));
+    
+                await new RecFriends({
+                    userId: id, 
+                    recFriends: recUsersFromGraph, 
+                    expiredAt: new Date()
+                }).save();
+    
+                req.idArray = recUsersFromGraph;
+            } else {
+                var res = recUsersFromGraph.slice(0, userToReturn); 
+    
+                await new RecFriends({
+                    userId: id, 
+                    recFriends: res, 
+                    expiredAt: new Date()
+                }).save();
+    
+                req.idArray = res;
+            }
         }
-
     } catch (err) {
-        res.status(500).send(err.message);
+        return res.status(500).send(err.message);
     }
 }
