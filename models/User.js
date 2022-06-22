@@ -1,6 +1,5 @@
 var mongoose = require('mongoose'); 
 var { isEmail } = require('validator'); 
-var Story = require('./Story');
 
 var Schema = mongoose.Schema; 
 
@@ -58,9 +57,13 @@ var UserSchema = new Schema({
         }
     }, 
     friends: [{
-        type: Schema.Types.ObjectId, 
-        ref: 'UserSchema'
+        type: mongoose.Types.ObjectId, 
+        ref: 'User'
     }], 
+    conversations: [{
+        type: mongoose.Types.ObjectId, 
+        ref: 'Conversation'
+    }]
 })
 
 module.exports = mongoose.model('User', UserSchema);

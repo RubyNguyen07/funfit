@@ -3,13 +3,16 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser'); 
 var helmet = require("helmet"); 
 var cors = require('cors'); 
+var socket = require('socket.io');
 require('dotenv').config(); 
-var InitiateMongoServer = require('./config/db'); 
+var InitiateMongoServer = require('./config/db');
+var { chatConfig } = require('./utils/chat'); 
 
 var user = require('./routes/users'); 
 var routine = require('./routes/routines'); 
 var homeController = require('./controllers/homeController'); 
 var noti = require('./routes/notis');
+var chat = require('./routes/chats');
 
 InitiateMongoServer();
 
@@ -24,6 +27,7 @@ app.use(cors());
 app.use('/user', user); 
 app.use('/routine', routine); 
 app.use('/noti', noti);
+app.use('/chat', chat);
 
 // app.get('/', (req, res) => {
 //     res.status(200); 
@@ -32,7 +36,7 @@ app.use('/noti', noti);
 
 app.get('/user', homeController.getHome); 
 
-app.listen(port, (err) => {
+var server = app.listen(port, (err) => {
     if (!err) {
         console.log("Server is running and listening on port: " + port); 
     } else {
@@ -40,4 +44,6 @@ app.listen(port, (err) => {
     }
 })
 
-
+var io = socket(server); 
+var chatFunfit = io.of('/chatFunfit');
+chatConfig(chatFunfit); 
