@@ -65,7 +65,7 @@ app.use('/story', story);
 // var utilss = require('./utils/friendsRecommender'); 
 // utilss.findNeighbors("6291de8d0c29404a0e5c1502"); 
 
-app.get('/user', homeController.getHome); 
+app.get('/story', homeController.getHome); 
 
 app.listen(port, (err) => {
     if (!err) {

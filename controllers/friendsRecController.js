@@ -4,7 +4,7 @@ var graphHelper = require('../app');
 var User = require('../models/User');
 var RecFriends = require('../models/RecFriends');
 
-exports.getRecommededFriends = async (req, res) => {
+exports.getRecommendedFriends = async (req, res) => {
     try {
         const { id } = req.user; 
 
