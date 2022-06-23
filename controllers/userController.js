@@ -6,6 +6,7 @@ var ResetToken = require('../models/ResetToken');
 var randomstring = require('randomstring');
 var { sendEmail } = require('../utils/email/sendEmail'); 
 var { v4: uuidv4 } = require('uuid');
+var sendNoti = require('../utils/sendNoti');
 
 exports.getAll = async (req, res) => {
     try {
@@ -19,6 +20,7 @@ exports.getAll = async (req, res) => {
 
 exports.signup = async (req, res) => {
     try {
+        const { expoPushToken } = req.body; 
         const user = new User({
             email: req.body.email.toLowerCase(), 
             password: req.body.password, 
@@ -32,6 +34,12 @@ exports.signup = async (req, res) => {
 
         await user.save(); 
 
+        // try {
+        //     var message = 'Congratulations on your decision to build a healthier life! We are here to support you!'
+        //     await sendNoti(expoPushToken, 'template', 'Welcome to Funfit', message, req.body.name); 
+        // } catch (err) {
+        //     console.log(err.message); 
+        // }
         
         const payload = {
             user: {
@@ -180,7 +188,7 @@ exports.forgotPassword = async (req, res) => {
 } 
 
 exports.passwordReset = async (req, res) => {
-    var { userId, password, code } = req.body; 
+    var { userId, password, code,  expoPushToken } = req.body; 
 
     if (!code) {
         return res.status(400).send("Code missing"); 
@@ -232,6 +240,14 @@ exports.passwordReset = async (req, res) => {
     ); 
 
     await passwordResetToken.deleteOne(); 
+
+    try {
+        var message = 'You have just reset your password!'
+        await sendNoti(expoPushToken, 'template', 'Changed password', message, req.body.name); 
+    } catch (err) {
+        console.log(err.message); 
+    }
+
     return res.status(200).send("Password reset successfully"); 
 }
 

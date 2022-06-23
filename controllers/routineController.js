@@ -1,6 +1,6 @@
 var RecRoutine = require('../models/Routine'); 
 var MyRoutine = require('../models/MyRoutine'); 
-const GTTS = require('gtts');
+var GTTS = require('gtts');
 
 exports.getMyRoutines = async (req, res) => {
     try {

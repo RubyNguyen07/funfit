@@ -57,8 +57,12 @@ var UserSchema = new Schema({
         }
     }, 
     friends: [{
-        type: Schema.Types.ObjectId, 
-        ref: 'UserSchema'
+        type: mongoose.Types.ObjectId, 
+        ref: 'User'
+    }], 
+    conversations: [{
+        type: mongoose.Types.ObjectId, 
+        ref: 'Conversation'
     }]
 })
 
