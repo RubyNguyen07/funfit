@@ -47,5 +47,7 @@ router.get('/getPicInfo', uploadController.getProfilePic);
 // Download pic 
 router.get('/downloadPic', uploadController.download); 
 
+// Retrieve information about other user's profile
+router.get('/getUserProfile', userController.getUserProfile);
 
 module.exports = router; 
