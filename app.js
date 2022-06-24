@@ -27,29 +27,6 @@ InitiateMongoServer().then(async () => {
 
 exports.graph = inputGraph; 
 
-// InitiateMongoServer().then(async () => {
-//     await User.find().cursor().eachAsync(doc => {
-//         inputGraph.createNode(doc._id, {email: doc.email});
-//     })
-
-//     let run_through = []; 
-
-//     await User.find().cursor().eachAsync((doc) => {
-//         if (!(doc._id in run_through)) {        
-//             let friends = doc.friends; 
-//             let curr = inputGraph.nodes(doc._id).query().first(); 
-//             run_through.push(doc._id);
-//             for (let i = 0; i < friends.length; i++) {
-//                 run_through.push(friends[i]._id);
-//                 inputGraph.createEdge('friends').link(curr, inputGraph.nodes(friends[i]._id).query().first()); 
-//             }
-//         }   
-//     })
-
-//     console.log(inputGraph.nodes("6291de8d0c29404a0e5c1502").query().first());
-
-// });
-
 const app = express(); 
 const port = process.env.PORT || 3000; 
 
@@ -83,6 +60,11 @@ var server = app.listen(port, (err) => {
     }
 })
 
-var io = socket(server); 
+var io = socket(server, {
+    cors: {
+        origin: true,
+    }
+}); 
+
 var chatFunfit = io.of('/chatFunfit');
 chatConfig(chatFunfit); 
