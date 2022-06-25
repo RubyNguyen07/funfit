@@ -70,6 +70,11 @@ exports.initiateChat = async (req, res) => {
         const userId = req.user.id; 
         const { anotherUserId } = req.body; 
 
+        const anotherUser = await User.findById(anotherUserId);
+        if (!anotherUser) {
+            return res.status(400).send("This user does not exist");
+        }
+
         const user = await User.findById(userId, 'friends');
         const friends = user.friends; 
 
@@ -87,7 +92,6 @@ exports.initiateChat = async (req, res) => {
             user.conversations.push(newConvo._id); 
             await user.save(); 
 
-            const anotherUser = await User.findById(anotherUserId);
             anotherUser.friends.push(userId); 
             anotherUser.conversations.push(newConvo._id); 
             await anotherUser.save(); 
@@ -127,14 +131,3 @@ exports.deleteConvo = async (req, res) => {
         res.status(500).send(err.message); 
     }
 }
-
-// exports.createConvo = async (req, res) => {
-//     try {
-//         new Conversation({
-//             users: [req.user.id, req.body.anotherId]
-//         }).save()  
-//         res.status(200).send("Okay")
-//     } catch (err) {
-//         res.status(500).send(err.message);
-//     }
-// }
