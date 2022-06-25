@@ -14,7 +14,7 @@ exports.getMyRoutines = async (req, res) => {
 
 exports.getMyRoutine = async (req, res) => {
     try {
-        const { id } = req.body; 
+        const { id } = req.params; 
         const routine = await MyRoutine.findById(id); 
         res.status(200).json(routine); 
     } catch (err) {
@@ -24,7 +24,7 @@ exports.getMyRoutine = async (req, res) => {
 
 exports.getRecRoutine = async (req, res) => {
     try {
-        const { id } = req.body; 
+        const { id } = req.params; 
         const routine = await RecRoutine.findById(id); 
         res.status(200).json(routine); 
     } catch (err) {
@@ -34,7 +34,7 @@ exports.getRecRoutine = async (req, res) => {
 
 exports.getRoutinesByGenre = async (req, res) => {
     try {
-        const { genre } = req.body; 
+        const { genre } = req.params; 
         const routines = await RecRoutine.find({ genre: genre }); 
         res.status(200).json(routines); 
     } catch (err) {

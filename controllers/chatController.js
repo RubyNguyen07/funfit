@@ -16,7 +16,7 @@ exports.getAllConversations = async (req, res) => {
                 }, 
                 {
                     path: 'messages', 
-                    select: 'content createdAt', 
+                    select: 'sender content createdAt', 
                     model: 'Message'
                 }
             ], 
@@ -44,7 +44,7 @@ exports.getAllConversations = async (req, res) => {
 
 exports.getConversationById = async (req, res) => {
     try {
-        const { convoId } = req.body; 
+        const { convoId } = req.params; 
 
         const convo = await Conversation.findById(convoId, 'users messages updatedAt').populate([
             {
@@ -54,7 +54,7 @@ exports.getConversationById = async (req, res) => {
             },
             {
                 path: 'messages',
-                select: 'content createdAt', 
+                select: 'sender content createdAt', 
                 model: 'Message'
             }
         ]); 

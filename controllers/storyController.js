@@ -20,7 +20,7 @@ exports.uploadFile = async (req, res) => {
 
 exports.getStoriesInfo = async (req, res) => {
 	try {
-        const { userId }  = req.body; 
+        const { userId }  = req.params; 
 
 		const stories = await Story.find( { userId: userId } , 'filename contentType'); 
 
