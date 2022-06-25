@@ -14,7 +14,7 @@ exports.getAllNotis = async (req, res) => {
 
 exports.getNoti = async (req, res) => {
     try {
-        const { id } = req.body; 
+        const { id } = req.query; 
         const noti = await Noti.findById(id); 
         if (!noti) {
             return res.status(400).send("No notification found");

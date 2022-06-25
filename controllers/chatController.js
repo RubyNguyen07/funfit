@@ -44,7 +44,7 @@ exports.getAllConversations = async (req, res) => {
 
 exports.getConversationById = async (req, res) => {
     try {
-        const { convoId } = req.params; 
+        const { convoId } = req.query; 
 
         const convo = await Conversation.findById(convoId, 'users messages updatedAt').populate([
             {

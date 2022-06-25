@@ -14,7 +14,7 @@ router.post('/initiateConvo', chatController.initiateChat);
 router.get('/getAllConvos', chatController.getAllConversations);
 
 // Get a conversation by id 
-router.get('/getAConvo/:convoId', chatController.getConversationById);
+router.get('/getAConvo', chatController.getConversationById);
 
 // Delete a conversation 
 router.delete('/deleteConvo', chatController.deleteConvo); 

@@ -11,7 +11,7 @@ router.use(authMiddleware.auth);
 router.get('/recommendedFriends', friendsRecController.getRecommendedFriends);
 
 // Retrieve list of stories 
-router.get('/getStoriesInfo/:userId', storyController.getStoriesInfo);
+router.get('/getStoriesInfo', storyController.getStoriesInfo);
 
 // Download a story 
 router.get('/getStory', storyController.downloadStory); 

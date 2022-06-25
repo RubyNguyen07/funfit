@@ -18,10 +18,10 @@ router.get('/getRecRoutines', recRoutineController.getSimilarRoutines);
 router.get('/getRoutinesByGenre', routineController.getRoutinesByGenre); 
 
 //Retrieve information about a routine from my library 
-router.get('/myRoutine/:id', routineController.getMyRoutine); 
+router.get('/myRoutine', routineController.getMyRoutine); 
 
 //Retrieve information about a routine from recommended lists 
-router.get('/recRoutine/:id', routineController.getRecRoutine); 
+router.get('/recRoutine', routineController.getRecRoutine); 
 
 //Create a new routine or Add a recommended routine to user's library 
 router.post('/newRoutine', routineController.createNewRoutine); 
