@@ -277,7 +277,7 @@ exports.updateProfile = async (req, res) => {
 
 exports.getUserProfile = async (req, res) => {
     try {
-        const { otherId } = req.params; 
+        const { otherId } = req.query; 
         const user = await User.findById(otherId, 'sex country name age lifestyleTarget workoutInterests points level'); 
 
         if (!user) {

@@ -48,6 +48,6 @@ router.get('/getPicInfo', uploadController.getProfilePic);
 router.get('/downloadPic', uploadController.download); 
 
 // Retrieve information about other user's profile
-router.get('/getUserProfile/:otherId', userController.getUserProfile);
+router.get('/getUserProfile', userController.getUserProfile);
 
 module.exports = router; 

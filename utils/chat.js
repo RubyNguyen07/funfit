@@ -27,7 +27,7 @@ exports.chatConfig = (io) => {
                 convo.messages.push(newMessage); 
                 await convo.save(); 
 
-                socket.to(socket.activeConvo).emit('receive new message', { sender: userId, content: content }); 
+                socket.to(socket.activeConvo).emit('receive new message', newMessage ); 
             } catch (err) {
                 // Change into log later 
                 console.error(e); 
