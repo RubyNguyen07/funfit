@@ -36,7 +36,7 @@ router.use(authMiddleware.auth)
 router.get('/me', userController.me); 
 
 // Update profile 
-router.post('/updateProfile', userController.updateProfile); 
+router.put('/updateProfile', userController.updateProfile); 
 
 // Upload profile picture 
 router.post('/upload', uploadController.uploadFile); 
