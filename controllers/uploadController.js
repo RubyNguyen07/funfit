@@ -15,7 +15,7 @@ exports.uploadFile = async (req, res) => {
 		if (req.file == undefined) {
 			return res.status(400).send("You must select a file!");
 		}
-		return res.status(200).send("File has been uploaded.");
+		return res.status(201).send("File has been uploaded.");
 	} catch (err) {
         return res.status(500).send(err.message);
 	}

@@ -69,7 +69,7 @@ exports.createNewRoutine = async (req, res) => {
 
         await newRoutine.save(); 
         //Later change to save successfully 
-        res.status(200).send(newRoutine); 
+        res.status(201).send(newRoutine); 
 
     } catch (err) {
         res.status(500).send(err.message); 
@@ -80,7 +80,7 @@ exports.deleteRoutine = async (req, res) => {
     try {
         const { id } = req.body; 
         await MyRoutine.findByIdAndDelete(id); 
-        res.status(200).send("Routine deleted from my library");
+        res.status(204).send("Routine deleted from my library");
     } catch (err) {
         res.status(500).send(err.message); 
     }
