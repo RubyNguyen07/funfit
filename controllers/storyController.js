@@ -12,7 +12,7 @@ exports.uploadFile = async (req, res) => {
 		if (req.file == undefined) {
 			return res.status(400).send("You must select a picture!");
 		}
-		return res.status(200).send("Picture has been uploaded.");
+		return res.status(201).send("Picture has been uploaded.");
 	} catch (err) {
         return res.status(500).send(err.message);
 	}
@@ -71,7 +71,7 @@ exports.deleteStory = async (req, res) => {
 			return res.status(400).send('Story does not exist');
 		}
 		
-		return res.status(200).send("Story has been deleted");
+		return res.status(204).send("Story has been deleted");
 	} catch (err) {
 		res.status(500).send(err.message);
 	}

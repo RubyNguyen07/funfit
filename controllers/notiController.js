@@ -29,7 +29,7 @@ exports.deleteNoti = async (req, res) => {
     try {
         const { id } = req.body; 
         const noti = await Noti.findByIdAndDelete(id); 
-        return res.status(200).send('Notification is deleted'); 
+        return res.status(204).send('Notification is deleted'); 
     } catch (err) {
         res.status(500).send(err.message);       
     }
@@ -60,7 +60,7 @@ exports.sendANoti = async (req, res) => {
             return res.status(400).send(err.message); 
         }
 
-        return res.status(200).send("Noti is sent"); 
+        return res.status(201).send("Noti is sent"); 
     } catch (err) {
         return res.status(500).send(err.message)
     }

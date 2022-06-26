@@ -55,7 +55,7 @@ exports.signup = async (req, res) => {
             }, 
             (err, token) => {
                 if (err) throw err; 
-                res.status(200).json({
+                res.status(201).json({
                     token
                 }); 
             }
@@ -143,7 +143,7 @@ exports.refreshToken = async (req, res) => {
             }, 
             (err, token) => {
                 if (err) throw err; 
-                res.status(200).json({
+                res.status(201).json({
                     token
                 }); 
             }

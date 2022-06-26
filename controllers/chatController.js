@@ -96,7 +96,7 @@ exports.initiateChat = async (req, res) => {
             anotherUser.conversations.push(newConvo._id); 
             await anotherUser.save(); 
 
-            return res.status(200).send("New conversation started");
+            return res.status(201).send("New conversation started");
         }
 
         return res.status(400).send("Already has conversation with this person or This person has been blocked");
@@ -122,7 +122,7 @@ exports.deleteConvo = async (req, res) => {
         await anotherUser.save(); 
 
         if (hasDeleted) {
-            return res.status(200).send("Conversation deleted")
+            return res.status(204).send("Conversation deleted")
         }
 
         return res.status(400).send("Conversation does not exist"); 
