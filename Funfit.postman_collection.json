@@ -64,7 +64,7 @@
 					"script": {
 						"exec": [
 							"pm.test(\"Status code\", () => {",
-							"    pm.response.to.have.status(200);",
+							"    pm.response.to.have.status(400);",
 							"})"
 						],
 						"type": "text/javascript"
@@ -125,7 +125,7 @@
 							"};",
 							"",
 							"pm.test(\"Status code\", () => {",
-							"    pm.response.to.have.status(201);",
+							"    pm.response.to.have.status(400);",
 							"})",
 							"",
 							"pm.test(\"Validate schema\", () => {",
@@ -183,7 +183,7 @@
 							"};",
 							"",
 							"pm.test(\"Status code\", () => {",
-							"    pm.response.to.have.status(201);",
+							"    pm.response.to.have.status(500);",
 							"})",
 							"",
 							"pm.test(\"Validate schema\", () => {",
@@ -250,6 +250,15 @@
 						],
 						"type": "text/javascript"
 					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
 				}
 			],
 			"request": {
@@ -257,7 +266,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\": \"Unique\",\n    \"email\":\"Unique@gmail.com\",\n    \"password\":\"12345678\",\n    \"country\":\"Argentina\",\n    \"sex\":\"Female\"\n}",
+					"raw": "{\n    \"name\": \"Unique\",\n    \"email\":\"{{$randomFirstName}}@gmail.com\",\n    \"password\":\"12345678\",\n    \"country\":\"Argentina\",\n    \"sex\":\"Female\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -363,7 +372,7 @@
 							"};",
 							"",
 							"pm.test(\"Status code\", () => {",
-							"    pm.response.to.have.status(200);",
+							"    pm.response.to.have.status(400);",
 							"})",
 							"",
 							"pm.test(\"Validate schema\", () => {",
@@ -708,7 +717,7 @@
 					"script": {
 						"exec": [
 							"pm.test(\"Status code\", () => {",
-							"    pm.response.to.have.status(200);",
+							"    pm.response.to.have.status(500);",
 							"})"
 						],
 						"type": "text/javascript"
