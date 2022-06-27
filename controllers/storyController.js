@@ -36,7 +36,7 @@ exports.getStoriesInfo = async (req, res) => {
 
 exports.downloadStory = async (req, res) => {
 	try {
-        const { contentType, name } = req.body;
+        const { contentType, name } = req.query;
 		await mongoClient.connect();
 		const database = mongoClient.db(process.env.DB);
 		const bucket = new GridFSBucket(database, {
