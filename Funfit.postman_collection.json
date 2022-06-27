@@ -1,0 +1,842 @@
+{
+	"info": {
+		"_postman_id": "21bfeb1f-bb5b-43d2-982f-5823e3b8110e",
+		"name": "Funfit Copy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "/user/getUserProfile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code\", () => {",
+							"    pm.response.to.have.status(200);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI5MWRlOGQwYzI5NDA0YTBlNWMxNTAyIn0sImlhdCI6MTY1NjE0OTQxMSwiZXhwIjoxNjU5NzQ5NDExfQ.xepwI448ObcNDIYsNDAJaj6CNu9hukKcgAEbQG1_zX0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://orbital-funfit.herokuapp.com/user/getUserProfile?otherId=628b584b988dca06a2db3282",
+					"protocol": "https",
+					"host": [
+						"orbital-funfit",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"user",
+						"getUserProfile"
+					],
+					"query": [
+						{
+							"key": "otherId",
+							"value": "628b584b988dca06a2db3282"
+						}
+					]
+				},
+				"description": "Get user profile by passing in token in Authorization Bearer Token"
+			},
+			"response": []
+		},
+		{
+			"name": "/user/getUserProfile Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code\", () => {",
+							"    pm.response.to.have.status(200);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI5MWRlOGQwYzI5NDA0YTBlNWMxNTAyIn0sImlhdCI6MTY1NjE0OTQxMSwiZXhwIjoxNjU5NzQ5NDExfQ.xepwI448ObcNDIYsNDAJaj6CNu9hukKcgAEbQG1_zX0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://orbital-funfit.herokuapp.com/user/getUserProfile?otherId=628b584b988dca07a2db3282",
+					"protocol": "https",
+					"host": [
+						"orbital-funfit",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"user",
+						"getUserProfile"
+					],
+					"query": [
+						{
+							"key": "otherId",
+							"value": "628b584b988dca07a2db3282"
+						}
+					]
+				},
+				"description": "Get user profile by passing in token in Authorization Bearer Token"
+			},
+			"response": []
+		},
+		{
+			"name": "/user/signup",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {",
+							"    \"type\": \"object\", ",
+							"    \"properties\": {",
+							"        \"token\": {",
+							"            \"type\":  \"string\"",
+							"        }",
+							"    }, ",
+							"    \"require\": [\"token\"]",
+							"};",
+							"",
+							"pm.test(\"Status code\", () => {",
+							"    pm.response.to.have.status(201);",
+							"})",
+							"",
+							"pm.test(\"Validate schema\", () => {",
+							"    pm.response.to.have.jsonSchema(schema); ",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Shel\",\n    \"email\":\"shel@gmail.com\",\n    \"password\":\"12345\",\n    \"country\":\"Vietnam\",\n    \"sex\":\"Male\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://orbital-funfit.herokuapp.com/user/signup",
+					"protocol": "https",
+					"host": [
+						"orbital-funfit",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"user",
+						"signup"
+					]
+				},
+				"description": "Sign up with the following required fields:  \n\\+ Email: String  \n\\+ Password: minimum length = 5  \n\\+ Name: String  \n\\+ Country: String  \n\\+ Sex: “Female”, “Male” or “Others”\n\nOutput:  \n\\+ New authorization token (valid in 1 hour)"
+			},
+			"response": []
+		},
+		{
+			"name": "/user/signup Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {",
+							"    \"type\": \"object\", ",
+							"    \"properties\": {",
+							"        \"token\": {",
+							"            \"type\":  \"string\"",
+							"        }",
+							"    }, ",
+							"    \"require\": [\"token\"]",
+							"};",
+							"",
+							"pm.test(\"Status code\", () => {",
+							"    pm.response.to.have.status(201);",
+							"})",
+							"",
+							"pm.test(\"Validate schema\", () => {",
+							"    pm.response.to.have.jsonSchema(schema); ",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"\",\n    \"email\":\"\",\n    \"password\":\"\",\n    \"country\":\"\",\n    \"sex\":\"\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://orbital-funfit.herokuapp.com/user/signup",
+					"protocol": "https",
+					"host": [
+						"orbital-funfit",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"user",
+						"signup"
+					]
+				},
+				"description": "Sign up with the following required fields:  \n\\+ Email: String  \n\\+ Password: minimum length = 5  \n\\+ Name: String  \n\\+ Country: String  \n\\+ Sex: “Female”, “Male” or “Others”\n\nOutput:  \n\\+ New authorization token (valid in 1 hour)"
+			},
+			"response": []
+		},
+		{
+			"name": "/user/signup Copy 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {",
+							"    \"type\": \"object\", ",
+							"    \"properties\": {",
+							"        \"token\": {",
+							"            \"type\":  \"string\"",
+							"        }",
+							"    }, ",
+							"    \"require\": [\"token\"]",
+							"};",
+							"",
+							"pm.test(\"Status code\", () => {",
+							"    pm.response.to.have.status(201);",
+							"})",
+							"",
+							"pm.test(\"Validate schema\", () => {",
+							"    pm.response.to.have.jsonSchema(schema); ",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Unique\",\n    \"email\":\"Unique@gmail.com\",\n    \"password\":\"12345678\",\n    \"country\":\"Argentina\",\n    \"sex\":\"Female\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://orbital-funfit.herokuapp.com/user/signup",
+					"protocol": "https",
+					"host": [
+						"orbital-funfit",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"user",
+						"signup"
+					]
+				},
+				"description": "Sign up with the following required fields:  \n\\+ Email: String  \n\\+ Password: minimum length = 5  \n\\+ Name: String  \n\\+ Country: String  \n\\+ Sex: “Female”, “Male” or “Others”\n\nOutput:  \n\\+ New authorization token (valid in 1 hour)"
+			},
+			"response": []
+		},
+		{
+			"name": "/user/login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {",
+							"    \"type\": \"object\", ",
+							"    \"properties\": {",
+							"        \"token\": {",
+							"            \"type\":  \"string\"",
+							"        }, ",
+							"        \"refreshToken\": {",
+							"            \"type\": \"string\"",
+							"        }",
+							"    }, ",
+							"    \"require\": [\"token\", \"refreshToken\"]",
+							"};",
+							"",
+							"pm.test(\"Status code\", () => {",
+							"    pm.response.to.have.status(200);",
+							"})",
+							"",
+							"pm.test(\"Validate schema\", () => {",
+							"    pm.response.to.have.jsonSchema(schema); ",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\":\"rubynguyen2003@gmail.com\",\n    \"password\":\"1234567890\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://orbital-funfit.herokuapp.com/user/login",
+					"protocol": "https",
+					"host": [
+						"orbital-funfit",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"user",
+						"login"
+					]
+				},
+				"description": "Log in with the following required fields:  \n\\+ Email  \n\\+ Password  \n  \nOutput:  \n\\+ New authorization token (valid in 1 hour)  \n\\+ Refresh token (valid in 30 days)"
+			},
+			"response": []
+		},
+		{
+			"name": "/user/login Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {",
+							"    \"type\": \"object\", ",
+							"    \"properties\": {",
+							"        \"token\": {",
+							"            \"type\":  \"string\"",
+							"        }, ",
+							"        \"refreshToken\": {",
+							"            \"type\": \"string\"",
+							"        }",
+							"    }, ",
+							"    \"require\": [\"token\", \"refreshToken\"]",
+							"};",
+							"",
+							"pm.test(\"Status code\", () => {",
+							"    pm.response.to.have.status(200);",
+							"})",
+							"",
+							"pm.test(\"Validate schema\", () => {",
+							"    pm.response.to.have.jsonSchema(schema); ",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\":\"rubynguyen2003@gmail.com\",\n    \"password\":\"12345678\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://orbital-funfit.herokuapp.com/user/login",
+					"protocol": "https",
+					"host": [
+						"orbital-funfit",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"user",
+						"login"
+					]
+				},
+				"description": "Log in with the following required fields:  \n\\+ Email  \n\\+ Password  \n  \nOutput:  \n\\+ New authorization token (valid in 1 hour)  \n\\+ Refresh token (valid in 30 days)"
+			},
+			"response": []
+		},
+		{
+			"name": "/routine/getMyRoutines",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code\", () => {",
+							"    pm.response.to.have.status(200);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI5MWRlOGQwYzI5NDA0YTBlNWMxNTAyIn0sImlhdCI6MTY1NDYyMjczMCwiZXhwIjoxNjU4MjIyNzMwfQ.IF-sDyiq8RTFwvoUgSUIZPkuSvKJaZpCa0Zo4T08w6g",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://orbital-funfit.herokuapp.com/routine/getMyRoutines",
+					"protocol": "https",
+					"host": [
+						"orbital-funfit",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"routine",
+						"getMyRoutines"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/routine/getRecRoutines",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code\", () => {",
+							"    pm.response.to.have.status(200);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI5MWRlOGQwYzI5NDA0YTBlNWMxNTAyIn0sImlhdCI6MTY1NDYyMjczMCwiZXhwIjoxNjU4MjIyNzMwfQ.IF-sDyiq8RTFwvoUgSUIZPkuSvKJaZpCa0Zo4T08w6g",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://orbital-funfit.herokuapp.com/routine/getRecRoutines",
+					"protocol": "https",
+					"host": [
+						"orbital-funfit",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"routine",
+						"getRecRoutines"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/routine/deleteRoutine",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code\", () => {",
+							"    pm.response.to.have.status(204);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI5MWRlOGQwYzI5NDA0YTBlNWMxNTAyIn0sImlhdCI6MTY1NDgzNTAyMSwiZXhwIjoxNjU4NDM1MDIxfQ.QkVGXUhZzYJpDEYHLmfFu_b9H2reZhijF1D-jHJKd_Y",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"629f7bf06c8c336b297a8c41\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://orbital-funfit.herokuapp.com/routine/deleteRoutine",
+					"protocol": "https",
+					"host": [
+						"orbital-funfit",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"routine",
+						"deleteRoutine"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/routine/newRoutine",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code\", () => {",
+							"    pm.response.to.have.status(201);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI5MWRlOGQwYzI5NDA0YTBlNWMxNTAyIn0sImlhdCI6MTY1NDgzNTAyMSwiZXhwIjoxNjU4NDM1MDIxfQ.QkVGXUhZzYJpDEYHLmfFu_b9H2reZhijF1D-jHJKd_Y",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"yoga hi hihiih\",\n    \"duration\": [\"1\", \"1\", \"1\"], \n    \"steps\": [\"1\", \"1\"],  \n    \"timings\": [[\"1\", \"1\", \"1\"], [\"1\", \"1\", \"1\"]],\n    \"genre\": \"yoga\",\n    \"reminder\": \"\" \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://orbital-funfit.herokuapp.com/routine/newRoutine",
+					"protocol": "https",
+					"host": [
+						"orbital-funfit",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"routine",
+						"newRoutine"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/chat/deleteConvo",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code\", () => {",
+							"    pm.response.to.have.status(204);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI5MWRlOGQwYzI5NDA0YTBlNWMxNTAyIn0sImlhdCI6MTY1NDgzNTAyMSwiZXhwIjoxNjU4NDM1MDIxfQ.QkVGXUhZzYJpDEYHLmfFu_b9H2reZhijF1D-jHJKd_Y",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"convoId\": \"\",\n    \"anotherUserId\": \"\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://orbital-funfit.herokuapp.com/chat/deleteConvo",
+					"protocol": "https",
+					"host": [
+						"orbital-funfit",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"chat",
+						"deleteConvo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/chat/getAConvo",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code\", () => {",
+							"    pm.response.to.have.status(200);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI5MWRlOGQwYzI5NDA0YTBlNWMxNTAyIn0sImlhdCI6MTY1NDgzNTAyMSwiZXhwIjoxNjU4NDM1MDIxfQ.QkVGXUhZzYJpDEYHLmfFu_b9H2reZhijF1D-jHJKd_Y",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://orbital-funfit.herokuapp.com/chat/getAConvo?convoId=62b7350f6657f343d05034f6",
+					"protocol": "https",
+					"host": [
+						"orbital-funfit",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"chat",
+						"getAConvo"
+					],
+					"query": [
+						{
+							"key": "convoId",
+							"value": "62b7350f6657f343d05034f6"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/chat/getAConvo Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code\", () => {",
+							"    pm.response.to.have.status(200);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI5MWRlOGQwYzI5NDA0YTBlNWMxNTAyIn0sImlhdCI6MTY1NDgzNTAyMSwiZXhwIjoxNjU4NDM1MDIxfQ.QkVGXUhZzYJpDEYHLmfFu_b9H2reZhijF1D-jHJKd_Y",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://orbital-funfit.herokuapp.com/chat/getAConvo?convoId",
+					"protocol": "https",
+					"host": [
+						"orbital-funfit",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"chat",
+						"getAConvo"
+					],
+					"query": [
+						{
+							"key": "convoId",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/chat/getAllConvos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code\", () => {",
+							"    pm.response.to.have.status(200);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI5MWRlOGQwYzI5NDA0YTBlNWMxNTAyIn0sImlhdCI6MTY1NDgzNTAyMSwiZXhwIjoxNjU4NDM1MDIxfQ.QkVGXUhZzYJpDEYHLmfFu_b9H2reZhijF1D-jHJKd_Y",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://orbital-funfit.herokuapp.com/chat/getAllConvos",
+					"protocol": "https",
+					"host": [
+						"orbital-funfit",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"chat",
+						"getAllConvos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/story/recommendedFriends",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code\", () => {",
+							"    pm.response.to.have.status(200);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI5MWRlOGQwYzI5NDA0YTBlNWMxNTAyIn0sImlhdCI6MTY1NDgzNTAyMSwiZXhwIjoxNjU4NDM1MDIxfQ.QkVGXUhZzYJpDEYHLmfFu_b9H2reZhijF1D-jHJKd_Y",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://orbital-funfit.herokuapp.com/story/recommendedFriends",
+					"protocol": "https",
+					"host": [
+						"orbital-funfit",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"story",
+						"recommendedFriends"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
