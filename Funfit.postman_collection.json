@@ -114,23 +114,11 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"const schema = {",
-							"    \"type\": \"object\", ",
-							"    \"properties\": {",
-							"        \"token\": {",
-							"            \"type\":  \"string\"",
-							"        }",
-							"    }, ",
-							"    \"require\": [\"token\"]",
-							"};",
 							"",
 							"pm.test(\"Status code\", () => {",
 							"    pm.response.to.have.status(400);",
 							"})",
-							"",
-							"pm.test(\"Validate schema\", () => {",
-							"    pm.response.to.have.jsonSchema(schema); ",
-							"})"
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -172,23 +160,11 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"const schema = {",
-							"    \"type\": \"object\", ",
-							"    \"properties\": {",
-							"        \"token\": {",
-							"            \"type\":  \"string\"",
-							"        }",
-							"    }, ",
-							"    \"require\": [\"token\"]",
-							"};",
 							"",
 							"pm.test(\"Status code\", () => {",
 							"    pm.response.to.have.status(500);",
 							"})",
-							"",
-							"pm.test(\"Validate schema\", () => {",
-							"    pm.response.to.have.jsonSchema(schema); ",
-							"})"
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -230,23 +206,10 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"const schema = {",
-							"    \"type\": \"object\", ",
-							"    \"properties\": {",
-							"        \"token\": {",
-							"            \"type\":  \"string\"",
-							"        }",
-							"    }, ",
-							"    \"require\": [\"token\"]",
-							"};",
-							"",
 							"pm.test(\"Status code\", () => {",
 							"    pm.response.to.have.status(201);",
 							"})",
-							"",
-							"pm.test(\"Validate schema\", () => {",
-							"    pm.response.to.have.jsonSchema(schema); ",
-							"})"
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -266,7 +229,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\": \"Unique\",\n    \"email\":\"{{$randomFirstName}}@gmail.com\",\n    \"password\":\"12345678\",\n    \"country\":\"Argentina\",\n    \"sex\":\"Female\"\n}",
+					"raw": "{\n    \"name\": \"Unique\",\n    \"email\":\"{{$randomEmail}}\",\n    \"password\":\"12345678\",\n    \"country\":\"Argentina\",\n    \"sex\":\"Female\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -358,25 +321,9 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"const schema = {",
-							"    \"type\": \"object\", ",
-							"    \"properties\": {",
-							"        \"token\": {",
-							"            \"type\":  \"string\"",
-							"        }, ",
-							"        \"refreshToken\": {",
-							"            \"type\": \"string\"",
-							"        }",
-							"    }, ",
-							"    \"require\": [\"token\", \"refreshToken\"]",
-							"};",
 							"",
 							"pm.test(\"Status code\", () => {",
 							"    pm.response.to.have.status(400);",
-							"})",
-							"",
-							"pm.test(\"Validate schema\", () => {",
-							"    pm.response.to.have.jsonSchema(schema); ",
 							"})"
 						],
 						"type": "text/javascript"
@@ -501,59 +448,6 @@
 			"response": []
 		},
 		{
-			"name": "/routine/deleteRoutine",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code\", () => {",
-							"    pm.response.to.have.status(204);",
-							"})"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI5MWRlOGQwYzI5NDA0YTBlNWMxNTAyIn0sImlhdCI6MTY1NDgzNTAyMSwiZXhwIjoxNjU4NDM1MDIxfQ.QkVGXUhZzYJpDEYHLmfFu_b9H2reZhijF1D-jHJKd_Y",
-							"type": "string"
-						}
-					]
-				},
-				"method": "DELETE",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"id\": \"629f7bf06c8c336b297a8c41\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "https://orbital-funfit.herokuapp.com/routine/deleteRoutine",
-					"protocol": "https",
-					"host": [
-						"orbital-funfit",
-						"herokuapp",
-						"com"
-					],
-					"path": [
-						"routine",
-						"deleteRoutine"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "/routine/newRoutine",
 			"event": [
 				{
@@ -583,7 +477,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\": \"yoga hi hihiih\",\n    \"duration\": [\"1\", \"1\", \"1\"], \n    \"steps\": [\"1\", \"1\"],  \n    \"timings\": [[\"1\", \"1\", \"1\"], [\"1\", \"1\", \"1\"]],\n    \"genre\": \"yoga\",\n    \"reminder\": \"\" \n}",
+					"raw": "{\n    \"name\": \"{{$randomNoun}}\",\n    \"duration\": [\"1\", \"1\", \"1\"], \n    \"steps\": [\"1\", \"1\"],  \n    \"timings\": [[\"1\", \"1\", \"1\"], [\"1\", \"1\", \"1\"]],\n    \"genre\": \"yoga\",\n    \"reminder\": \"\" \n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -601,59 +495,6 @@
 					"path": [
 						"routine",
 						"newRoutine"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/chat/deleteConvo",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code\", () => {",
-							"    pm.response.to.have.status(204);",
-							"})"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI5MWRlOGQwYzI5NDA0YTBlNWMxNTAyIn0sImlhdCI6MTY1NDgzNTAyMSwiZXhwIjoxNjU4NDM1MDIxfQ.QkVGXUhZzYJpDEYHLmfFu_b9H2reZhijF1D-jHJKd_Y",
-							"type": "string"
-						}
-					]
-				},
-				"method": "DELETE",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"convoId\": \"\",\n    \"anotherUserId\": \"\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "https://orbital-funfit.herokuapp.com/chat/deleteConvo",
-					"protocol": "https",
-					"host": [
-						"orbital-funfit",
-						"herokuapp",
-						"com"
-					],
-					"path": [
-						"chat",
-						"deleteConvo"
 					]
 				}
 			},
