@@ -54,7 +54,7 @@ exports.download = async (req, res) => {
 		let downloadStream = bucket.openDownloadStreamByName(req.user.id);
 
 		res.set({
-			"Content-Type": req.body.contentType,
+			"Content-Type": req.query.contentType,
 		});
 
 		downloadStream.on("error", function (err) {
