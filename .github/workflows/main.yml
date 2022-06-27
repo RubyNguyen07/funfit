@@ -43,3 +43,12 @@ jobs:
           heroku_email: "rubynguyen2003@gmail.com"
 
 
+  newman: 
+    runs-on: ubuntu-latest
+    needs: [deploy] 
+    steps:
+      - uses: actions/checkout@master
+      - uses: matt-ball/newman-action@master
+        with:
+          collection: Funfit.postman_collection.json
+
