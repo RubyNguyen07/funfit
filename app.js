@@ -35,7 +35,10 @@ app.use(cookieParser());
 app.use(helmet());
 app.use(cors()); 
 
+
 app.use('/user', user); 
+app.use('/user', homeController.getHome);
+
 app.use('/routine', routine); 
 
 app.use('/story', story);
@@ -50,7 +53,7 @@ app.use('/chat', chat);
 // var utilss = require('./utils/friendsRecommender'); 
 // utilss.findNeighbors("6291de8d0c29404a0e5c1502"); 
 
-app.get('/story', homeController.getHome); 
+// app.get('/story', homeController.getHome); 
 
 var server = app.listen(port, (err) => {
     if (!err) {
