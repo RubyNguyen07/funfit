@@ -20,9 +20,9 @@ exports.uploadFile = async (req, res) => {
 
 exports.getStoriesInfo = async (req, res) => {
 	try {
-        const { userId }  = req.query; 
+        const { id }  = req.query; 
 
-		const stories = await Story.find( { userId: userId } , 'filename contentType'); 
+		const stories = await Story.find( { userId: id } , 'filename contentType'); 
 
 		if (stories == null) {
 			return res.status(400).send("No pics found!");
