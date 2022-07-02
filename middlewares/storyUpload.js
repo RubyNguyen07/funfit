@@ -7,7 +7,7 @@ var storage = new GridFsStorage({
 	url: process.env.DB_URL,
 	options: { useNewUrlParser: true, useUnifiedTopology: true },
 	file: async (req, file) => {
-		const name = req.user.id + ' ' + new Date();
+		const name = req.user.id + '' + new Date().getTime();
 
 		await new Story({
 			userId: req.user.id, 

@@ -37,7 +37,6 @@ exports.getStoriesInfo = async (req, res) => {
 
 exports.downloadStory = async (req, res) => {
 	try {
-        const { contentType, name } = req.query;
 		await mongoClient.connect();
 		const database = mongoClient.db(process.env.DB);
 		const bucket = new GridFSBucket(database, {
@@ -45,10 +44,10 @@ exports.downloadStory = async (req, res) => {
 		});
 
         // Try downloading by id 
-		let downloadStream = bucket.openDownloadStreamByName(name + "");
+		let downloadStream = bucket.openDownloadStreamByName(req.query.name + "");
 
 		res.set({
-			"Content-Type": contentType + "",
+			"Content-Type": req.query.contentType + "",
 		});
 
 		downloadStream.on("error", function (err) {
