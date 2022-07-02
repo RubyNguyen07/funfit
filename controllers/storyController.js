@@ -22,9 +22,9 @@ exports.getStoriesInfo = async (req, res) => {
 	try {
         const { id }  = req.query; 
 
-		const stories = await Story.find( { userId: id } , 'filename contentType'); 
+		const stories = await Story.find({ userId: new ObjectId(id) }, 'filename contentType'); 
 
-		if (stories == null) {
+		if (stories.length == 0) {
 			return res.status(400).send("No pics found!");
 		}
 
