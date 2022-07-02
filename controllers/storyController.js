@@ -4,6 +4,7 @@ var GridFSBucket = require("mongodb").GridFSBucket;
 var url = process.env.DB_URL;
 var mongoClient = new MongoClient(url);
 var Story = require('../models/Story');
+var mongoose = require('mongoose');
 
 exports.uploadFile = async (req, res) => {
 	try {
@@ -22,7 +23,7 @@ exports.getStoriesInfo = async (req, res) => {
 	try {
         const { id }  = req.query; 
 
-		const stories = await Story.find({ userId: new ObjectId(id) }, 'filename contentType'); 
+		const stories = await Story.find({ userId: mongoose.Types.ObjectId(id) }, 'filename contentType'); 
 
 		if (stories.length == 0) {
 			return res.status(400).send("No pics found!");
