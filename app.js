@@ -37,11 +37,12 @@ app.use(cors());
 
 
 app.use('/user', user); 
-app.use('/user', homeController.getHome);
 
 app.use('/routine', routine); 
 
 app.use('/story', story);
+app.use('/story', homeController.getHome);
+
 app.use('/noti', noti);
 app.use('/chat', chat);
 
