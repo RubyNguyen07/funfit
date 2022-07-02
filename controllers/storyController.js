@@ -45,7 +45,7 @@ exports.downloadStory = async (req, res) => {
 		});
 
         // Try downloading by id 
-		let downloadStream = bucket.openDownloadStreamByName(name);
+		let downloadStream = bucket.openDownloadStreamByName(name + "");
 
 		res.set({
 			"Content-Type": contentType + "",
