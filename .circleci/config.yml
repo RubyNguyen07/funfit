@@ -28,9 +28,9 @@ jobs:
       - run: 
           command: npm install 
           name: Install packages
-      - run:
-          command: npm run start
-          name: Build app
+#       - run:
+#           command: npm run start
+#           name: Build app
           
   test: 
     executor: newman/postman-newman-docker
