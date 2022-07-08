@@ -414,7 +414,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\": \"{{randomWords}}\",\n    \"duration\": [\"1\", \"1\", \"1\"], \n    \"steps\": [\"1\", \"1\"],  \n    \"timings\": [[\"1\", \"1\", \"1\"], [\"1\", \"1\", \"1\"]],\n    \"genre\": \"yoga\",\n    \"reminder\": \"\" \n}",
+					"raw": "{\n    \"name\": \"{{$timestamp}}\",\n    \"duration\": [\"1\", \"1\", \"1\"], \n    \"steps\": [\"1\", \"1\"],  \n    \"timings\": [[\"1\", \"1\", \"1\"], [\"1\", \"1\", \"1\"]],\n    \"genre\": \"yoga\",\n    \"reminder\": \"\" \n}",
 					"options": {
 						"raw": {
 							"language": "json"
