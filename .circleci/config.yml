@@ -12,6 +12,7 @@ orbs:
   # NOTE: Environment variables containing the necessary secrets can be setup in the CircleCI UI
   # See here https://circleci.com/docs/2.0/env-vars/#setting-an-environment-variable-in-a-project
   heroku: circleci/heroku@1.2
+  newman: postman/newman@0.0.2
 
 workflows:
   # Below is the definition of your workflow.
@@ -20,13 +21,17 @@ workflows:
   # For more details on extending your workflow, see the configuration docs: https://circleci.com/docs/2.0/configuration-reference/#workflows
   sample:
     jobs:
-      - node/test
+      - newman/test:
+          steps: 
+            - checkout
+            - newman/newman-run:
+                collection: ./Funfit.postman_collection.json
       - heroku/deploy-via-git:
           force: true # this parameter instructs the push to use a force flag when pushing to the heroku remote, see: https://devcenter.heroku.com/articles/git
           requires:
-            - node/test # only run deploy-via-git job if the build job has completed
+            - newman/test # only run deploy-via-git job if the build job has completed
           filters:
             branches:
               # This sample config runs this job on any branch matching the regex below, however, it's more likely you want to only run this job on master.
-              only: /.*-heroku-deploy/ # Delete this line
-              # only: master  # Uncomment this line
+              only: main  # Uncomment this line
+                
