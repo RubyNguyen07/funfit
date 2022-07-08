@@ -12,7 +12,7 @@ orbs:
   # NOTE: Environment variables containing the necessary secrets can be setup in the CircleCI UI
   # See here https://circleci.com/docs/2.0/env-vars/#setting-an-environment-variable-in-a-project
   heroku: circleci/heroku@1.2
-  newman: postman/newman@0.0.2
+  newman: postman/newman@1.0.0
 
 
 jobs:
