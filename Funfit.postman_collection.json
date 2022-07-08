@@ -108,6 +108,106 @@
 			"response": []
 		},
 		{
+			"name": "/user/signup",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"pm.test(\"Status code\", () => {",
+							"    pm.response.to.have.status(400);",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Shel\",\n    \"email\":\"shel@gmail.com\",\n    \"password\":\"12345\",\n    \"country\":\"Vietnam\",\n    \"sex\":\"Male\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://orbital-funfit.herokuapp.com/user/signup",
+					"protocol": "https",
+					"host": [
+						"orbital-funfit",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"user",
+						"signup"
+					]
+				},
+				"description": "Sign up with the following required fields:  \n\\+ Email: String  \n\\+ Password: minimum length = 5  \n\\+ Name: String  \n\\+ Country: String  \n\\+ Sex: “Female”, “Male” or “Others”\n\nOutput:  \n\\+ New authorization token (valid in 1 hour)"
+			},
+			"response": []
+		},
+		{
+			"name": "/user/signup Copy 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code\", () => {",
+							"    pm.response.to.have.status(201);",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Unique\",\n    \"email\":\"{{$randomEmail}}\",\n    \"password\":\"12345678\",\n    \"country\":\"Argentina\",\n    \"sex\":\"Female\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://orbital-funfit.herokuapp.com/user/signup",
+					"protocol": "https",
+					"host": [
+						"orbital-funfit",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"user",
+						"signup"
+					]
+				},
+				"description": "Sign up with the following required fields:  \n\\+ Email: String  \n\\+ Password: minimum length = 5  \n\\+ Name: String  \n\\+ Country: String  \n\\+ Sex: “Female”, “Male” or “Others”\n\nOutput:  \n\\+ New authorization token (valid in 1 hour)"
+			},
+			"response": []
+		},
+		{
 			"name": "/user/login",
 			"event": [
 				{
