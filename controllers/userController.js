@@ -7,6 +7,7 @@ var randomstring = require('randomstring');
 var { sendEmail } = require('../utils/email/sendEmail'); 
 var { v4: uuidv4 } = require('uuid');
 var sendNoti = require('../utils/sendNoti');
+var mongoose = require('mongoose');
 
 exports.getAll = async (req, res) => {
     try {
@@ -217,21 +218,36 @@ exports.passwordReset = async (req, res) => {
     const salt = await bcrypt.genSalt(Number(process.env.BCRYPT_SALT)); 
     const hash = await bcrypt.hash(password, salt); 
 
-    await User.updateOne(
-        {
-            _id: userId, 
-        }, 
-        {
-            $set: {
-                password: hash
-            }
-        }, 
-        {
-            new: true
-        }
-    ); 
-
     const user = await User.findById({_id: userId});
+
+    try {
+        const sess = await mongoose.startSession(); 
+        sess.startTransaction(); 
+
+        await User.updateOne(
+            {
+                _id: userId, 
+            }, 
+            {
+                $set: {
+                    password: hash
+                }
+            }, 
+            {
+                new: true
+            }, 
+            {
+                session: sess
+            }
+        ); 
+
+        await passwordResetToken.deleteOne({ session: sess }); 
+
+        await sess.commitTransaction(); 
+
+    } catch (err) {
+        return res.status(500).send(err.message);
+    }
 
     sendEmail(
         user.email, 
@@ -239,7 +255,6 @@ exports.passwordReset = async (req, res) => {
         "Hi " + user.name + ", you have successfully reset your password on Funfit"
     ); 
 
-    await passwordResetToken.deleteOne(); 
 
     try {
         var message = 'You have just reset your password!'
@@ -285,6 +300,14 @@ exports.getUserProfile = async (req, res) => {
         }
 
         return res.status(200).send(user);
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+}
+
+exports.getDaysFollow = async (req, res) => {
+    try {
+        const rawData = await User.find(req.user.id, 'daysFollow'); 
     } catch (err) {
         res.status(500).send(err.message);
     }

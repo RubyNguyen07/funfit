@@ -12,7 +12,7 @@ var RoutineSchema = new Schema({
         required: true 
     }, 
     duration: {
-        type: Date, 
+        type: [String], 
         required: true
     }, 
     genre: {

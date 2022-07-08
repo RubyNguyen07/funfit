@@ -31,10 +31,6 @@ var MyRoutineSchema = new Schema({
     daysFollow: {
         type: [Date]
     }, 
-    audioGenerated: {
-        type: Schema.Types.Boolean, 
-        default: false 
-    }, 
     youtubeVideo: {
         type: String
     }, 

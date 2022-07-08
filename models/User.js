@@ -47,23 +47,33 @@ var UserSchema = new Schema({
         validate: {
             validator: Number.isInteger, 
             message: '{VALUE} is not an integer value'
-        }
+        }, 
+        default: 0
     }, 
     level: {
         type: Number, 
         validate: {
             validator: Number.isInteger, 
             message: '{VALUE} is not an integer value'
-        }
+        }, 
+        default: 1 
     }, 
     friends: [{
+        type: mongoose.Types.ObjectId, 
+        ref: 'User'
+    }], 
+    blackList: [{
         type: mongoose.Types.ObjectId, 
         ref: 'User'
     }], 
     conversations: [{
         type: mongoose.Types.ObjectId, 
         ref: 'Conversation'
-    }]
+    }], 
+    daysFollow: {
+        type: mongoose.Types.Map, 
+        of: [String]
+    }
 })
 
 module.exports = mongoose.model('User', UserSchema);
