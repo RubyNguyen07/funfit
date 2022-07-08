@@ -52,7 +52,11 @@ workflows:
   # For more details on extending your workflow, see the configuration docs: https://circleci.com/docs/2.0/configuration-reference/#workflows
   build_my_test:
     jobs:
-      - build
+      - build: 
+        filters: 
+          branches: 
+            - only: main
+            - pull_request: true 
       - test:
           requires:
             - build
