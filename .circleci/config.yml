@@ -1,0 +1,64 @@
+# Use the latest 2.1 version of CircleCI pipeline process engine.
+# See: https://circleci.com/docs/2.0/configuration-reference
+version: 2.1
+
+# Orbs are reusable packages of CircleCI configuration that you may share across projects, enabling you to create encapsulated, parameterized commands, jobs, and executors that can be used across multiple projects.
+# See: https://circleci.com/docs/2.0/orb-intro/
+orbs:
+  node: circleci/node@4.1
+  # The heroku orb contains a set of prepackaged CircleCI configuration you can utilize to deploy applications to heroku
+  # Orbs reduce the amount of configuration required for common tasks.
+  # See the orb documentation here: https://circleci.com/developer/orbs/orb/circleci/heroku
+  # NOTE: Environment variables containing the necessary secrets can be setup in the CircleCI UI
+  # See here https://circleci.com/docs/2.0/env-vars/#setting-an-environment-variable-in-a-project
+  heroku: circleci/heroku@1.2.6
+  newman: postman/newman@1.0.0
+
+
+jobs:
+  build: # this can be any name you choose
+    executor: node/default # use the default executor defined within the orb
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: npm
+      # - run:
+      #     command: npm run test
+      #     name: Run tests
+      - run: 
+          command: npm install 
+          name: Install packages
+#       - run:
+#           command: npm run start
+#           name: Build app
+          
+  test: 
+    executor: newman/postman-newman-docker
+    steps:
+      - checkout
+      - newman/newman-run:
+          collection: ./Funfit.postman_collection.json 
+  
+#   deploy: 
+#     executor: heroku/default 
+#     steps: 
+#     - heroku/deploy-via-git: 
+#         force: true 
+
+workflows:
+  # Below is the definition of your workflow.
+  # Inside the workflow, you provide the jobs you want to run, e.g this workflow runs the build-and-test job above.
+  # CircleCI will run this workflow on every commit.
+  # For more details on extending your workflow, see the configuration docs: https://circleci.com/docs/2.0/configuration-reference/#workflows
+  build_my_test:
+    jobs:
+      - build: 
+        filters: 
+          branches: 
+            - pull_request: true 
+      - test:
+          requires:
+            - build
+      - heroku/deploy-via-git:
+          requires:
+            - test # only run deploy-via-git job if the build job has completed
