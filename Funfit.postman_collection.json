@@ -216,10 +216,6 @@
 						"exec": [
 							"pm.test(\"Status code\", () => {",
 							"    pm.response.to.have.status(200);",
-							"})",
-							"",
-							"pm.test(\"Validate schema\", () => {",
-							"    pm.response.to.have.jsonSchema(schema); ",
 							"})"
 						],
 						"type": "text/javascript"
