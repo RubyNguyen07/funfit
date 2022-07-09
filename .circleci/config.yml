@@ -64,5 +64,7 @@ workflows:
             - test # only run deploy-via-git job if the build job has completed
           filters: 
             branches: 
-              - only: main 
-              - ignore: /.*/
+              only: 
+                - main 
+              ignore:
+                - /.*/
