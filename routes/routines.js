@@ -38,9 +38,6 @@ router.put('/editRoutine', routineController.editRoutine);
 // //Generate audio files from a routine 
 // router.get('/generateAudioFiles', routineController.generateAudioFiles); 
 
-// //Add days to routine 
-// router.post('/addDaysFollow', routineController.addRoutineDay); 
-
 // Add days and points to routine
 router.post('/addDaysFollow', routineController.addRoutineDay);
 
