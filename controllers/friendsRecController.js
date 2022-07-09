@@ -24,8 +24,9 @@ exports.getRecommendedFriends = async (req, res) => {
 
             const selectedUsers = []; 
             const friends = user.friends;
+            const blackList =  user.blackList; 
             await User.find().select('_id country workoutInterests').cursor().eachAsync(doc => {
-                if (!friends.includes(doc._id)) {
+                if (!friends.includes(doc._id) && !blackList.includes(doc._id)) {
                     selectedUsers.push(doc);
                 } 
             })
@@ -58,7 +59,8 @@ exports.getRecommendedFriends = async (req, res) => {
             return res.status(200).send(res);
         }
 
-        var recUsersFromGraph = graphUtil.findNeighbors(graphHelper.graph, id); 
+        var recUsersFromGraphRaw = graphUtil.findNeighbors(graphHelper.graph, id); 
+        var recUsersFromGraph = recUsersFromGraphRaw.filter(id => !user.blackList.includes(id)); 
         // recFriendsId.forEach(async id => {
         //     const newFriend = await User.findById(id); 
         //     recUsersFromGraph.push(newFriend);

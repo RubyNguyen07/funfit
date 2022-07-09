@@ -7,6 +7,7 @@ var randomstring = require('randomstring');
 var { sendEmail } = require('../utils/email/sendEmail'); 
 var { v4: uuidv4 } = require('uuid');
 var sendNoti = require('../utils/sendNoti');
+var mongoose = require('mongoose');
 
 exports.getAll = async (req, res) => {
     try {
@@ -217,21 +218,36 @@ exports.passwordReset = async (req, res) => {
     const salt = await bcrypt.genSalt(Number(process.env.BCRYPT_SALT)); 
     const hash = await bcrypt.hash(password, salt); 
 
-    await User.updateOne(
-        {
-            _id: userId, 
-        }, 
-        {
-            $set: {
-                password: hash
-            }
-        }, 
-        {
-            new: true
-        }
-    ); 
-
     const user = await User.findById({_id: userId});
+
+    try {
+        const sess = await mongoose.startSession(); 
+        sess.startTransaction(); 
+
+        await User.updateOne(
+            {
+                _id: userId, 
+            }, 
+            {
+                $set: {
+                    password: hash
+                }
+            }, 
+            {
+                new: true
+            }, 
+            {
+                session: sess
+            }
+        ); 
+
+        await passwordResetToken.deleteOne({ session: sess }); 
+
+        await sess.commitTransaction(); 
+
+    } catch (err) {
+        return res.status(500).send(err.message);
+    }
 
     sendEmail(
         user.email, 
@@ -239,7 +255,6 @@ exports.passwordReset = async (req, res) => {
         "Hi " + user.name + ", you have successfully reset your password on Funfit"
     ); 
 
-    await passwordResetToken.deleteOne(); 
 
     try {
         var message = 'You have just reset your password!'
@@ -285,6 +300,37 @@ exports.getUserProfile = async (req, res) => {
         }
 
         return res.status(200).send(user);
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+}
+
+exports.getDaysFollow = async (req, res) => {
+    try {
+        const data = await User.findById(req.user.id, 'daysFollow');
+        res.status(200).json(data.daysFollow);  
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+}
+
+exports.getLevel = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id);
+        // var badge = '';
+        // if (level > 0 && level < 6) {
+        //     badge =  'Iron'
+        // } else if (level > 5 && level < 9) {
+        //     badge =  'Bronze'
+        // } else if (level > 8 && level < 12) {
+        //     badge =  'Silver'
+        // } else if (level > 11 && level < 12) {
+        //     badge =  'Silver'
+        // }
+        res.status(200).send({
+            level: user.level, 
+            points: user.points
+        })
     } catch (err) {
         res.status(500).send(err.message);
     }

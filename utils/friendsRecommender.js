@@ -1,4 +1,3 @@
-let ug = require('ug'); 
 let User = require('../models/User'); 
 // const graph =  new ug.Graph(); 
 // const graph = require('../app');
@@ -21,12 +20,9 @@ exports.createGraph = async (inputGraph) => {
             }
         }   
     })
-
-    // return inputGraph; 
 }
 
 exports.findNeighbors = (inputGraph, id) => {
-    // console.log(inputGraph.nodes(id).query().first());
 
     const paths = inputGraph.closest(
         inputGraph.nodes(id).query().first(), {

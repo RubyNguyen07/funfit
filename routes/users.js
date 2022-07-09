@@ -50,4 +50,10 @@ router.get('/downloadPic', uploadController.download);
 // Retrieve information about other user's profile
 router.get('/getUserProfile', userController.getUserProfile);
 
+// Get days complete whole routine 
+router.get('/getDaysFollow', userController.getDaysFollow);
+
+// Get level and points
+router.get('/level', userController.getLevel);
+
 module.exports = router; 

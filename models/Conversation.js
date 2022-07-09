@@ -6,7 +6,7 @@ var ConversationSchema = new Schema({
     users: {
         type: [mongoose.Types.ObjectId], 
         required: true, 
-        unique: true  
+        // unique: true  
     }, 
     messages: [{
         type: mongoose.Types.ObjectId, 

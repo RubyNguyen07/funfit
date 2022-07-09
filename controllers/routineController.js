@@ -1,6 +1,7 @@
 var RecRoutine = require('../models/Routine'); 
 var MyRoutine = require('../models/MyRoutine'); 
-var GTTS = require('gtts');
+var User = require('../models/User');
+var mongoose = require('mongoose');
 
 exports.getMyRoutines = async (req, res) => {
     try {
@@ -69,7 +70,38 @@ exports.createNewRoutine = async (req, res) => {
 
         await newRoutine.save(); 
         //Later change to save successfully 
-        res.status(201).send(newRoutine); 
+        res.status(201).send("New routine created"); 
+
+    } catch (err) {
+        res.status(500).send(err.message); 
+    }
+}
+
+exports.addToMyLibrary = async (req, res) => {
+    try {
+        const recRoutineId = req.body.id; 
+        const recRoutine = await RecRoutine.findById(recRoutineId); 
+        
+        const hasExisted = await MyRoutine.find({ userId: req.user.id, youtubeVideo: recRoutine.youtubeVideo });
+        if (hasExisted.length > 0) {
+            return res.status(400).send("Rec routine has already been added to your library"); 
+        }
+
+        const newRoutine = new MyRoutine({
+            name: "RecRoutine: " + recRoutine.name, 
+            duration: recRoutine.duration,
+            genre: recRoutine.genre, 
+            userId: req.user.id, 
+            reminder: recRoutine.reminder, 
+            youtubeVideo: recRoutine.youtubeVideo, 
+            difficulty: recRoutine.difficulty, 
+            description: recRoutine.description, 
+            thumbnail: recRoutine.thumbnail
+        })
+
+        await newRoutine.save(); 
+        //Later change to save successfully 
+        res.status(201).send("Added to library"); 
 
     } catch (err) {
         res.status(500).send(err.message); 
@@ -109,52 +141,113 @@ exports.editRoutine = async (req, res) => {
     }
 }
 
-// Should download it to user's phone or else it might be too much to get the audio aroung all the time 
-exports.generateAudioFiles = async (req, res) => {
-    try {
-        const { id } = req.body; 
-        const routine = await MyRoutine.findById(id); 
+// // Should download it to user's phone or else it might be too much to get the audio aroung all the time 
+// exports.generateAudioFiles = async (req, res) => {
+//     try {
+//         const { id } = req.body; 
+//         const routine = await MyRoutine.findById(id); 
 
-        if (routine == null) {
-            return res.status(400).send("Routine does not exist"); 
-        }
+//         if (routine == null) {
+//             return res.status(400).send("Routine does not exist"); 
+//         }
 
-        if (routine.audioGenerated) {
-            return res.status(400).send("Audio already generated"); 
-        }
+//         if (routine.audioGenerated) {
+//             return res.status(400).send("Audio already generated"); 
+//         }
 
-        const { steps } = routine; 
-        const fileName = id + ".mp3"; 
-        for (let i = 0; i < steps.length; i++) {
-            var gtts = new GTTS(steps[i], 'en'); 
-            gtts.save(i + "-" + fileName, (err, result) => {
-                if (err) {
-                    return res.send(err.message); 
-                }
-            })
-        }
+//         const { steps } = routine; 
+//         const fileName = id + ".mp3"; 
+//         for (let i = 0; i < steps.length; i++) {
+//             var gtts = new GTTS(steps[i], 'en'); 
+//             gtts.save(i + "-" + fileName, (err, result) => {
+//                 if (err) {
+//                     return res.send(err.message); 
+//                 }
+//             })
+//         }
         
-        await MyRoutine.findByIdAndUpdate(id, {audioGenerated: true}); 
-        return res.status(200).send("Routine audio created");
+//         await MyRoutine.findByIdAndUpdate(id, {audioGenerated: true}); 
+//         return res.status(200).send("Routine audio created");
 
-    } catch (err) {
-        return res.status(500).send(err.message); 
-    }
+//     } catch (err) {
+//         return res.status(500).send(err.message); 
+//     }
+// }
+
+var addPointsHelper = (user, levelPoints) => {
+    var originalPoints = user.points; 
+    user.points = (user.points + 100) % levelPoints; 
+    user.level = originalPoints >= user.points 
+                    ? ( user.level === 20 
+                        ? ( user.points = 10000 )
+                        : ++user.level 
+                      )
+                    : user.level; 
 }
 
+
+// Test this later when have more information about date added 
 exports.addRoutineDay = async (req, res) => {
     try {
         const { id } = req.body; 
+        const user = await User.findById(req.user.id); 
+        var daysFollow = user.daysFollow;
+
         const routine = await MyRoutine.findById(id); 
         if (routine == null) {
             return res.status(400).send("Routine does not exist"); 
         }
     
-        const oldDaysFollow = routine.daysFollow; 
-        await MyRoutine.findByIdAndUpdate(id, {daysFollow: oldDaysFollow.push(Date.now())}); 
-        return res.status(200).send("Date added"); 
+        const currDate = new Date().toLocaleDateString('en-CA'); 
+
+        var fooArr = [routine.name]; 
+        if (!daysFollow) {
+            daysFollow = new Map([[currDate, fooArr]])
+        } else if (daysFollow.has(currDate)) {
+            var oldDaysFollow = daysFollow.get(currDate); 
+            oldDaysFollow.push(routine.name); 
+            daysFollow.set(currDate, oldDaysFollow);
+
+            await User.updateOne(
+                {
+                    _id: req.user.id, 
+                }, 
+                {
+                    $set: {
+                        daysFollow: daysFollow
+                    }
+                }, 
+                {
+                    new: true
+                }
+            ); 
+    
+        } else {
+            daysFollow.set(currDate, [routine.name]); 
+        }
+
+        if (user.level > 0 && user.level <= 5) {
+            addPointsHelper(user, 1000);
+        } else if (user.level >= 6 && user.level <= 8){
+            addPointsHelper(user, 1500);
+        } else if (user.level >= 9 && user.level <= 12) {
+            addPointsHelper(user, 2000);
+        } else if (user.level >=13 && user.level <=  15) {
+            addPointsHelper(user, 3000);
+        } else if (user.level >=16 && user.level <= 17) {
+            addPointsHelper(user, 5000);
+        } else if (user.level <= 18 && user.level >= 19) {
+            addPointsHelper(user, 8000);
+        }  else {
+            addPointsHelper(user, 10000);
+        }
+
+        await user.save(); 
+        return res.status(200).send("Date added and Points added"); 
     } catch (err) {
         return res.status(500).send(err.message)
     }
 
 }
+
+// exports.getFollow

@@ -77,7 +77,3 @@ exports.deleteStory = async (req, res) => {
 	}
 }
 
-// exports.viewAllStories = async (req, res) => {
-//     const { idArray } = req;
-
-// }

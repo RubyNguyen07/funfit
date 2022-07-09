@@ -4,6 +4,8 @@ var router = express.Router();
 var chatController = require('../controllers/chatController');
 var middleware = require('../middlewares/auth');
 
+// router.post('/insertConvo', chatController.createNewConvo); 
+
 //Authorization 
 router.use(middleware.auth); 
 

@@ -12,9 +12,9 @@ var MessageSchema = new Schema({
         type: String, 
         required: true
     }, 
-    image: {
-        type: String
-    }
+    // image: {
+    //     type: String
+    // }
 }, { timestamps: true});
 
 module.exports = mongoose.model('Message', MessageSchema);
