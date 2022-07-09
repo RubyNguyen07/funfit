@@ -55,7 +55,6 @@ workflows:
       - build: 
         filters: 
           branches: 
-            - only: main
             - pull_request: true 
       - test:
           requires:
