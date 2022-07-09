@@ -79,22 +79,24 @@ exports.createNewRoutine = async (req, res) => {
 
 exports.addToMyLibrary = async (req, res) => {
     try {
-        const hasExisted = await MyRoutine.find({userId: req.user.id, name: req.body.name})
-
-        if (hasExisted.length > 0) {
-            return res.status(400).send("Please choose a different name"); 
-        }
+        const recRoutineId = req.body.id; 
+        const recRoutine = await RecRoutine.findById(recRoutineId); 
         
-        const newRoutine = new MyRoutine ({
-            name: req.body.name, 
-            duration: req.body.duration,
-            genre: req.body.genre, 
+        const hasExisted = await MyRoutine.find({ userId: req.user.id, youtubeVideo: recRoutine.youtubeVideo });
+        if (hasExisted.length > 0) {
+            return res.status(400).send("Rec routine has already been added to your library"); 
+        }
+
+        const newRoutine = new MyRoutine({
+            name: "RecRoutine: " + recRoutine.name, 
+            duration: recRoutine.duration,
+            genre: recRoutine.genre, 
             userId: req.user.id, 
-            reminder: req.body.reminder, 
-            youtubeVideo: req.body.youtubeVideo, 
-            difficulty: req.body.difficulty, 
-            description: req.body.description, 
-            thumbnail: req.body.thumbnail
+            reminder: recRoutine.reminder, 
+            youtubeVideo: recRoutine.youtubeVideo, 
+            difficulty: recRoutine.difficulty, 
+            description: recRoutine.description, 
+            thumbnail: recRoutine.thumbnail
         })
 
         await newRoutine.save(); 
