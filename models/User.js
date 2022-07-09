@@ -71,8 +71,9 @@ var UserSchema = new Schema({
         ref: 'Conversation'
     }], 
     daysFollow: {
-        type: mongoose.Types.Map, 
-        of: [String]
+        type: Schema.Types.Map, 
+        of: [String],
+        default: new Map()
     }
 })
 

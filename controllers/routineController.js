@@ -70,7 +70,36 @@ exports.createNewRoutine = async (req, res) => {
 
         await newRoutine.save(); 
         //Later change to save successfully 
-        res.status(201).send(newRoutine); 
+        res.status(201).send("New routine created"); 
+
+    } catch (err) {
+        res.status(500).send(err.message); 
+    }
+}
+
+exports.addToMyLibrary = async (req, res) => {
+    try {
+        const hasExisted = await MyRoutine.find({userId: req.user.id, name: req.body.name})
+
+        if (hasExisted.length > 0) {
+            return res.status(400).send("Please choose a different name"); 
+        }
+        
+        const newRoutine = new MyRoutine ({
+            name: req.body.name, 
+            duration: req.body.duration,
+            genre: req.body.genre, 
+            userId: req.user.id, 
+            reminder: req.body.reminder, 
+            youtubeVideo: req.body.youtubeVideo, 
+            difficulty: req.body.difficulty, 
+            description: req.body.description, 
+            thumbnail: req.body.thumbnail
+        })
+
+        await newRoutine.save(); 
+        //Later change to save successfully 
+        res.status(201).send("Added to library"); 
 
     } catch (err) {
         res.status(500).send(err.message); 
@@ -160,7 +189,7 @@ exports.addRoutineDay = async (req, res) => {
     try {
         const { id } = req.body; 
         const user = await User.findById(req.user.id); 
-        const daysFollow = user.daysFollow;
+        var daysFollow = user.daysFollow;
 
         const routine = await MyRoutine.findById(id); 
         if (routine == null) {
@@ -168,15 +197,32 @@ exports.addRoutineDay = async (req, res) => {
         }
     
         const currDate = new Date().toLocaleDateString('en-CA'); 
-        if (daysFollow.has(currDate)) {
+
+        var fooArr = [routine.name]; 
+        if (!daysFollow) {
+            daysFollow = new Map([[currDate, fooArr]])
+        } else if (daysFollow.has(currDate)) {
             var oldDaysFollow = daysFollow.get(currDate); 
             oldDaysFollow.push(routine.name); 
-        } else {
-            daysFollow.set(currDate, routine.name); 
-        }
+            daysFollow.set(currDate, oldDaysFollow);
 
-        // const oldDaysFollow = routine.daysFollow; 
-        // await MyRoutine.findByIdAndUpdate(id, {daysFollow: oldDaysFollow.push(Date.now())}); 
+            await User.updateOne(
+                {
+                    _id: req.user.id, 
+                }, 
+                {
+                    $set: {
+                        daysFollow: daysFollow
+                    }
+                }, 
+                {
+                    new: true
+                }
+            ); 
+    
+        } else {
+            daysFollow.set(currDate, [routine.name]); 
+        }
 
         if (user.level > 0 && user.level <= 5) {
             addPointsHelper(user, 1000);

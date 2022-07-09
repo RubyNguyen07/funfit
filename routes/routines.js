@@ -26,6 +26,9 @@ router.get('/recRoutine', routineController.getRecRoutine);
 //Create a new routine or Add a recommended routine to user's library 
 router.post('/newRoutine', routineController.createNewRoutine); 
 
+// Add a recommended routine to user's library 
+router.post('/addToLibrary', routineController.addToMyLibrary);
+
 // Delete a routine or unsave a recommended routine 
 router.delete('/deleteRoutine', routineController.deleteRoutine); 
 
@@ -35,7 +38,10 @@ router.put('/editRoutine', routineController.editRoutine);
 // //Generate audio files from a routine 
 // router.get('/generateAudioFiles', routineController.generateAudioFiles); 
 
-//Add days to routine 
-router.post('/addDaysFollow', routineController.addRoutineDay); 
+// //Add days to routine 
+// router.post('/addDaysFollow', routineController.addRoutineDay); 
+
+// Add days and points to routine
+router.post('/addDaysFollow', routineController.addRoutineDay);
 
 module.exports = router; 
