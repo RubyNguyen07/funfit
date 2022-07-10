@@ -334,7 +334,7 @@ describe("/chat", () => {
             })
         
         expect(response.status).to.equal(204);
-    })    
+    }).timeout(10000)    
 
     after(async () =>  {
         await MyRoutine.findOneAndDelete({ userId: process.env.USERID, name: "Yoga practice for Beginner"}); 
