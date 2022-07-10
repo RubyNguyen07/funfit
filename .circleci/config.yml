@@ -32,13 +32,17 @@ jobs:
 #           command: npm run start
 #           name: Build app
           
-  test: 
-    executor: newman/postman-newman-docker
-    steps:
-      - checkout
-      - newman/newman-run:
-          collection: ./Funfit.postman_collection.json 
-  
+  # test: 
+  #   executor: newman/postman-newman-docker
+  #   steps:
+  #     - checkout
+  #     - newman/newman-run:
+  #         collection: ./Funfit.postman_collection.json 
+  test:
+    steps: 
+      - run:
+          command: npm run test 
+          name: Test app
 #   deploy: 
 #     executor: heroku/default 
 #     steps: 
