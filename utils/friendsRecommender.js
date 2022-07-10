@@ -3,18 +3,25 @@ let User = require('../models/User');
 // const graph = require('../app');
 
 exports.createGraph = async (inputGraph) => {
+    // Create a node according to each user 
     await User.find().cursor().eachAsync(doc => {
         inputGraph.createNode(doc._id, {email: doc.email});
     })
 
     let run_through = []; 
 
+    // Create edges, if name has been run over then do not do anything else  
     await User.find().cursor().eachAsync((doc) => {
         if (!(doc._id in run_through)) {        
             let friends = doc.friends; 
             let curr = inputGraph.nodes(doc._id).query().first(); 
             run_through.push(doc._id);
             for (let i = 0; i < friends.length; i++) {
+                const friend = inputGraph.nodes(friends[i]._id).query().first();
+                // If user has been deleted 
+                if (!friend) {
+                    continue; 
+                }
                 run_through.push(friends[i]._id);
                 inputGraph.createEdge('friends').link(curr, inputGraph.nodes(friends[i]._id).query().first()); 
             }

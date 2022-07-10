@@ -88,26 +88,25 @@ exports.initiateChat = async (req, res) => {
                 users: [userId, anotherUserId]
             })
 
-            try {
-                const sess = await mongoose.startSession(); 
-                sess.startTransaction(); 
-                await newConvo.save({ session: sess }); 
-                
-                user.friends.push(anotherUserId); 
-                user.conversations.push(newConvo._id); 
-                await user.save({ session: sess }); 
-    
-                anotherUser.friends.push(userId); 
-                anotherUser.conversations.push(newConvo._id); 
-                await anotherUser.save({ session: sess }); 
+            user.friends.push(anotherUserId); 
+            user.conversations.push(newConvo._id); 
 
-                await sess.commitTransaction(); 
+            anotherUser.friends.push(userId); 
+            anotherUser.conversations.push(newConvo._id); 
+
+            try {
+                const sess = await mongoose.startSession();
+                await sess.withTransaction( async () => {
+                    await newConvo.save({ session: sess });
+                    await user.save({ session: sess });
+                    await anotherUser.save({ session: sess }); 
+                })
     
             } catch (err) {
                 return res.status(500).send(err.message);
             }
 
-            return res.status(201).send("New conversation started");
+            return res.status(201).send(newConvo._id);
         } 
 
         return res.status(400).send("Already has conversation with this person or This person has been blocked");
@@ -126,22 +125,24 @@ exports.deleteConvo = async (req, res) => {
         const user = await User.findById(userId); 
         const anotherUser = await User.findById(anotherUserId); 
 
+        if (hasDeleted == null) {
+            return res.status(400).json({message:"Conversation or Participants do not exist"});
+        }
+
+        user.conversations = user.conversations.filter(id => id !== convoId); 
+        user.friends = user.friends.filter(id => id !== anotherUserId);
+        user.blackList.push(anotherUserId); 
+
+        anotherUser.conversations = anotherUser.conversations.filter(id => id !== convoId); 
+        anotherUser.friends = anotherUser.friends.filter(id => id !== userId);
+        anotherUser.blackList.push(userId);  
+
         try {
             const sess = await mongoose.startSession(); 
-            sess.startTransaction(); 
-
-            user.conversations = user.conversations.filter(id => id !== convoId); 
-            user.friends = user.friends.filter(id => id !== anotherUserId);
-            user.blackList.push(anotherUserId); 
-            await user.save({ session: sess }); 
-
-            anotherUser.conversations = anotherUser.conversations.filter(id => id !== convoId); 
-            anotherUser.friends = anotherUser.friends.filter(id => id !== userId);
-            anotherUser.blackList.push(userId);  
-            await anotherUser.save({ session: sess }); 
-
-            await session.commitTransaction(); 
-
+            await sess.withTransaction(async () => {
+                await user.save({ session: sess }); 
+                await anotherUser.save({ session: sess }); 
+            })
         } catch (err) {
             return res.status(500).send(err.message);
         }
@@ -150,7 +151,7 @@ exports.deleteConvo = async (req, res) => {
             return res.status(204).send("Conversation deleted")
         }
 
-        return res.status(400).send("Conversation does not exist"); 
+        return res.status(400).json({message: "Conversation does not exist"}); 
 
     } catch (err) {
         res.status(500).send(err.message); 

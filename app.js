@@ -72,3 +72,6 @@ var io = socket(server, {
 
 var chatFunfit = io.of('/chatFunfit');
 chatConfig(chatFunfit); 
+
+
+exports.app = app;
