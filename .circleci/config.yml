@@ -32,7 +32,7 @@ jobs:
           command: npm install multer
           name: Install this package
       - run: 
-          command: npm test
+          command: npm run test
           name: Test the app
 #       - run:
 #           command: npm run start
