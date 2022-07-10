@@ -11,8 +11,14 @@ const Conversation = require('../models/Conversation');
 const User = require('../models/User');
 var convoId = "";
 var deleteFriendId = "";
+const InitiateMongo = require('../config/db');
+
 
 describe("/user", () => {
+    before(async ()  => {
+        await InitiateMongo(); 
+    })
+
     it("POST /signup success", async () => {
         let res = await chai
             .request(app)
