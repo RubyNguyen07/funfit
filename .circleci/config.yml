@@ -29,7 +29,7 @@ jobs:
           command: npm install 
           name: Install packages
       - run: 
-          command: npm run test
+          command: npm test
           name: Test the app
 #       - run:
 #           command: npm run start
