@@ -189,7 +189,6 @@ describe("/routine", () => {
             //     // done();
             // })
         expect(res.status).to.equal(200);
-        expect(res.body).to.have.length.greaterThan(0);
     })
 
     it("GET /getRecRoutines", async () => {
