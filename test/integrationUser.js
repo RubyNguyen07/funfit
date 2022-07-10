@@ -13,12 +13,11 @@ var convoId = "";
 var deleteFriendId = "";
 const InitiateMongo = require('../config/db');
 
+InitiateMongo().then(() => {
+    console.log("Connected");
+}); 
 
 describe("/user", () => {
-    before(async ()  => {
-        await InitiateMongo(); 
-    })
-
     it("POST /signup success", async () => {
         let res = await chai
             .request(app)
