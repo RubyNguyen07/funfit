@@ -10,7 +10,7 @@ var { chatConfig } = require('./utils/chat');
 
 var user = require('./routes/users'); 
 var routine = require('./routes/routines'); 
-var homeController = require('./controllers/homeController');
+// var homeController = require('./controllers/homeController');
 
 var story = require('./routes/stories');
 var noti = require('./routes/notis');
