@@ -11,11 +11,6 @@ const Conversation = require('../models/Conversation');
 const User = require('../models/User');
 var convoId = "";
 var deleteFriendId = "";
-const InitiateMongo = require('../config/db');
-
-InitiateMongo().then(() => {
-    console.log("Connected");
-}); 
 
 describe("/user", () => {
     it("POST /signup success", async () => {
@@ -40,7 +35,7 @@ describe("/user", () => {
 
         expect(res.status).to.equal(201);
         expect(res.body).to.have.property('token');
-    })
+    }).timeout(10000)
 
     it("POST /signup error blank", async () => {
         let res = await chai
