@@ -28,17 +28,23 @@ jobs:
       - run: 
           command: npm install 
           name: Install packages
+      - run: 
+          command: npm install multer
+          name: Install this package
+      - run: 
+          command: npm run test
+          name: Test the app
 #       - run:
 #           command: npm run start
 #           name: Build app
           
-  test: 
-    executor: newman/postman-newman-docker
-    steps:
-      - checkout
-      - newman/newman-run:
-          collection: ./Funfit.postman_collection.json 
-  
+  # test: 
+  #   executor: newman/postman-newman-docker
+  #   steps:
+  #     - checkout
+  #     - newman/newman-run:
+  #         collection: ./Funfit.postman_collection.json 
+
 #   deploy: 
 #     executor: heroku/default 
 #     steps: 
@@ -56,12 +62,9 @@ workflows:
         filters: 
           branches: 
             - pull_request: true 
-      - test:
-          requires:
-            - build
       - heroku/deploy-via-git:
           requires:
-            - test # only run deploy-via-git job if the build job has completed
+            - build # only run deploy-via-git job if the build job has completed
           filters: 
             branches: 
               only: 

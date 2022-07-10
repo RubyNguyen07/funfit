@@ -10,7 +10,7 @@ var { chatConfig } = require('./utils/chat');
 
 var user = require('./routes/users'); 
 var routine = require('./routes/routines'); 
-var homeController = require('./controllers/homeController');
+// var homeController = require('./controllers/homeController');
 
 var story = require('./routes/stories');
 var noti = require('./routes/notis');
@@ -41,7 +41,7 @@ app.use('/user', user);
 app.use('/routine', routine); 
 
 app.use('/story', story);
-app.use('/story', homeController.getHome);
+// app.use('/story', homeController.getHome);
 
 app.use('/noti', noti);
 app.use('/chat', chat);
@@ -72,3 +72,6 @@ var io = socket(server, {
 
 var chatFunfit = io.of('/chatFunfit');
 chatConfig(chatFunfit); 
+
+
+exports.app = app;
