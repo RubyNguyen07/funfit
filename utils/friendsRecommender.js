@@ -17,6 +17,11 @@ exports.createGraph = async (inputGraph) => {
             let curr = inputGraph.nodes(doc._id).query().first(); 
             run_through.push(doc._id);
             for (let i = 0; i < friends.length; i++) {
+                const friend = inputGraph.nodes(friends[i]._id).query().first();
+                // If user has been deleted 
+                if (!friend) {
+                    continue; 
+                }
                 run_through.push(friends[i]._id);
                 inputGraph.createEdge('friends').link(curr, inputGraph.nodes(friends[i]._id).query().first()); 
             }

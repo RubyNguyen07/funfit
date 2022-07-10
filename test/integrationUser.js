@@ -5,7 +5,6 @@ chai.use(chaiHttp);
 const app = require('../app').app;
 const should = chai.should(); 
 const expect = chai.expect; 
-const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI5MWRlOGQwYzI5NDA0YTBlNWMxNTAyIn0sImlhdCI6MTY1NjE0OTQxMSwiZXhwIjoxNjU5NzQ5NDExfQ.xepwI448ObcNDIYsNDAJaj6CNu9hukKcgAEbQG1_zX0";
 const MyRoutine = require('../models/MyRoutine');
 const RecRoutine = require('../models/Routine');
 const Conversation = require('../models/Conversation');
@@ -132,7 +131,7 @@ describe("/user", () => {
         let res = await chai
             .request(app)
             .get('/user/getUserProfile')
-            .auth(accessToken, { type: 'bearer' })
+            .auth(process.env.ACCESS_TOKEN, { type: 'bearer' })
             .query({
                 otherId: "628b584b988dca06a2db3282"
             })
@@ -150,11 +149,10 @@ describe("/user", () => {
     })
 
     it("GET /getUserProfile error", async () => {
-        var accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI5MWRlOGQwYzI5NDA0YTBlNWMxNTAyIn0sImlhdCI6MTY1NjE0OTQxMSwiZXhwIjoxNjU5NzQ5NDExfQ.xepwI448ObcNDIYsNDAJaj6CNu9hukKcgAEbQG1_zX0";
         let res = await chai
             .request(app)
             .get('/user/getUserProfile')
-            .auth(accessToken, { type: 'bearer' })
+            .auth(process.env.ACCESS_TOKEN, { type: 'bearer' })
             .query({
                 otherId: "628b584b988dca06a2db3283"
             })
