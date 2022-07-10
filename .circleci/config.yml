@@ -29,6 +29,9 @@ jobs:
           command: npm install 
           name: Install packages
       - run: 
+          command: npm install multer
+          name: Install this package
+      - run: 
           command: npm test
           name: Test the app
 #       - run:
