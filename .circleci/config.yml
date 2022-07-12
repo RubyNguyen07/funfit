@@ -28,12 +28,20 @@ jobs:
       - run: 
           command: npm install 
           name: Install packages
+      - run: mkdir ~/junit
       - run: 
           command: npm install multer
           name: Install this package
-      - run: 
-          command: npm run test
-          name: Test the app
+      # - run: 
+      #     command: npm run test
+      #     name: Test the app
+      - run:
+          command: mocha test --reporter mocha-junit-reporter
+          environment:
+            MOCHA_FILE: ~/junit/test-results.xml
+          when: always
+      - store_test_results:
+          path: ~/junit
 #       - run:
 #           command: npm run start
 #           name: Build app
@@ -62,9 +70,6 @@ workflows:
         filters: 
           branches: 
             - pull_request: true 
-      - store_test_results:
-          requires: build
-          path: test-results
       - heroku/deploy-via-git:
           requires:
             - build # only run deploy-via-git job if the build job has completed
