@@ -41,4 +41,7 @@ router.put('/editRoutine', routineController.editRoutine);
 // Add days and points to routine
 router.post('/addDaysFollow', routineController.addRoutineDay);
 
+// Add reminder to a routine
+router.post('/addReminder', routineController.addReminder);
+
 module.exports = router; 

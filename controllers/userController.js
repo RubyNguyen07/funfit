@@ -1,4 +1,5 @@
 var User = require('../models/User'); 
+var ReminderList = require('../models/ReminderList');
 var bcrypt = require('bcryptjs/dist/bcrypt');
 var jwt = require('jsonwebtoken');
 var RefreshToken = require('../models/RefreshToken'); 
@@ -21,7 +22,6 @@ exports.getAll = async (req, res) => {
 
 exports.signup = async (req, res) => {
     try {
-        const { expoPushToken } = req.body; 
         const user = new User({
             email: req.body.email.toLowerCase(), 
             password: req.body.password, 
@@ -34,13 +34,6 @@ exports.signup = async (req, res) => {
         user.password = await bcrypt.hash(user.password, salt); 
 
         await user.save(); 
-
-        // try {
-        //     var message = 'Congratulations on your decision to build a healthier life! We are here to support you!'
-        //     await sendNoti(expoPushToken, 'template', 'Welcome to Funfit', message, req.body.name); 
-        // } catch (err) {
-        //     console.log(err.message); 
-        // }
         
         const payload = {
             user: {
@@ -331,6 +324,16 @@ exports.getLevel = async (req, res) => {
             level: user.level, 
             points: user.points
         })
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+}
+
+
+exports.getReminderList = async (req, res) => {
+    try {
+        const item = await ReminderList.findOne({ userId: req.user.id });
+        res.status(200).send(item.reminderList); 
     } catch (err) {
         res.status(500).send(err.message);
     }

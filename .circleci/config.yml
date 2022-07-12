@@ -34,6 +34,7 @@ jobs:
       - run: 
           command: npm run test
           name: Test the app
+
 #       - run:
 #           command: npm run start
 #           name: Build app

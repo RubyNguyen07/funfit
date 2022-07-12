@@ -53,6 +53,9 @@ router.get('/getUserProfile', userController.getUserProfile);
 // Get days complete whole routine 
 router.get('/getDaysFollow', userController.getDaysFollow);
 
+// Get reminder list for routines 
+router.get('/getReminderList', userController.getReminderList);
+
 // Get level and points
 router.get('/level', userController.getLevel);
 
