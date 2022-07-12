@@ -24,14 +24,6 @@ describe("/user", () => {
                 country: "Singapore",
                 sex: "Female"
             })
-            // .end((err, res) => {
-            //     if (err) {
-            //         console.log(err); 
-            //     }
-            //     expect(res.status).to.equal(201);
-            //     expect(res.body).to.have.property('token');
-            //     done(); 
-            // })
 
         expect(res.status).to.equal(201);
         expect(res.body).to.have.property('token');
@@ -48,13 +40,6 @@ describe("/user", () => {
                 country: "",
                 sex: ""
             })
-            // .end((err, res) => {
-            //     if (err) {
-            //         console.log(err); 
-            //     }
-            //     expect(res.status).to.equal(500);
-            //     done(); 
-            // })
             
         expect(res.status).to.equal(500);
 
@@ -71,14 +56,6 @@ describe("/user", () => {
                 country: "Vietnam",
                 sex: "Male"
             })
-            // .end((err, res) => {
-            //     if (err) {
-            //         console.log(err); 
-            //     }
-            //     expect(res.status).to.equal(400);
-            //     expect(res.body).to.have.property('message');
-            //     done(); 
-            // })
 
         expect(res.status).to.equal(400);
         expect(res.body).to.have.property('message');
@@ -92,15 +69,6 @@ describe("/user", () => {
                 email:  "rubynguyen2003@gmail.com",
                 password: "1234567890"
             })
-            // .end((err, res) => {
-            //     if (err) {
-            //         console.log(err);
-            //     }
-            //     expect(res.status).to.equal(200);
-            //     expect(res.body).to.have.property('token');
-            //     expect(res.body).to.have.property('refreshToken');
-            //     done();
-            // })
 
         expect(res.status).to.equal(200);
         expect(res.body).to.have.property('token');
@@ -115,14 +83,7 @@ describe("/user", () => {
                 email: "rubynguyen2003@gmail.com",
                 password: "12345678"
             })
-            // .end((err, res) => {
-            //     if (err) {
-            //         console.log(err);
-            //     }
-            //     expect(res.status).to.equal(400);
-            //     done();
-            // })
-            
+
         expect(res.status).to.equal(400);
 
     })
@@ -135,14 +96,6 @@ describe("/user", () => {
             .query({
                 otherId: "628b584b988dca06a2db3282"
             })
-            // .end((err, res) => {
-            //     if (err) {
-            //         console.log(err);
-            //     }
-            //     expect(res.status).to.equal(200);
-            //     // res.body.should.have.property('name', 'country', 'sex', 'level', 'points', 'workoutInterests'); 
-            //     done();
-            // })
 
         expect(res.status).to.equal(200);
 
@@ -156,14 +109,6 @@ describe("/user", () => {
             .query({
                 otherId: "628b584b988dca06a2db3283"
             })
-            // .end((err, res) => {
-            //     if (err) {
-            //         console.log(err);
-            //     }
-            //     expect(res.status).to.equal(400);
-            //     // res.body.should.have.property('name', 'country', 'sex', 'level', 'points', 'workoutInterests'); 
-            //     // done();
-            // })
 
         expect(res.status).to.equal(400);
 
@@ -180,14 +125,7 @@ describe("/routine", () => {
             .request(app)
             .get('/routine/getMyRoutines')
             .auth(process.env.ACCESS_TOKEN, { type: 'bearer' })
-            // .end((err, res) => {
-            //     if (err) {
-            //         console.log(err);
-            //     }
-            //     expect(res.status).to.equal(200);
-            //     expect(res.body).to.have.length.greaterThan(0);
-            //     // done();
-            // })
+    
         expect(res.status).to.equal(200);
     })
 
@@ -196,14 +134,7 @@ describe("/routine", () => {
             .request(app)
             .get('/routine/getRecRoutines')
             .auth(process.env.ACCESS_TOKEN, { type: 'bearer' })
-            // .end((err, res) => {
-            //     if (err) {
-            //         console.log(err);
-            //     }
-            //     expect(res.status).to.equal(200);
-            //     expect(res.body).to.have.length.greaterThan(0);
-            //     // done(); 
-            // })
+    
         expect(res.status).to.equal(200);
     })
 
@@ -220,13 +151,6 @@ describe("/routine", () => {
                 genre: "yoga",
                 reminder: "" 
             })
-            // .end((err, res) => {
-            //     if (err) {
-            //         console.log(err);
-            //     }
-            //     expect(res.status).to.equal(201);
-            //     // done(); 
-            // })
 
         expect(res.status).to.equal(201);
     })
@@ -342,4 +266,28 @@ describe("/chat", () => {
         await User.findByIdAndDelete(deleteFriendId);
     })
 
+})
+
+
+describe("Story", () => {
+    it("GET /story/recommendedFriends", async () => {
+        let res = await chai
+        .request(app)
+        .get('/story/recommendedFriends')
+        .auth(process.env.ACCESS_TOKEN, { type: 'bearer' })
+        
+        expect(res.status).to.equal(200);
+    }).timeout(10000);
+
+    it ("GET /story/getStoriesInfo", async () => {
+        let res = await chai
+        .request(app)
+        .get('/story/getStoriesInfo')
+        .auth(process.env.ACCESS_TOKEN, { type: 'bearer' })
+        .query({
+            id: process.env.USERID
+        })
+
+        expect(res.status).to.be.oneOf([200, 400]);
+    }).timeout(10000);
 })

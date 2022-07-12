@@ -1,6 +1,7 @@
 var RecRoutine = require('../models/Routine'); 
 var MyRoutine = require('../models/MyRoutine'); 
 var User = require('../models/User');
+var ReminderList = require('../models/ReminderList');
 var mongoose = require('mongoose');
 
 exports.getMyRoutines = async (req, res) => {
@@ -251,3 +252,54 @@ exports.addRoutineDay = async (req, res) => {
 }
 
 // exports.getFollow
+
+
+exports.addReminder = async (req, res) => {
+    try {
+        const reminderMessage = req.body.reminderMessage; 
+        if (reminderMessage == "" ) {
+            return res.status(400).send("Null reminder message");
+        } 
+
+        const formattedDate = new Date(req.body.date);
+        if (formattedDate == "Invalid Date") {
+            return res.status(400).send("Invalid date type");
+        }
+        const date = formattedDate.toLocaleDateString('en-CA'); 
+        const formattedMessage = formattedDate.getHours() + ":" + formattedDate.getMinutes() + " - " + reminderMessage;
+
+        const item = await ReminderList.findOne({ userId: req.user.id });
+        var reminderList = item.reminderList; 
+
+        if (!reminderList) {
+            await new ReminderList({
+                userId: req.user.id, 
+                reminderList: new Map([[date, [formattedMessage]]])
+            }).save(); 
+        } else if (reminderList.has(date)) {
+            var currDateList = reminderList.get(date); 
+            currDateList.push(formattedMessage); 
+        } else {
+            reminderList.set(date, [formattedMessage]);
+        }
+
+        await ReminderList.updateOne(
+            {
+                userId: req.user.id
+            },
+            {
+                $set: {
+                    reminderList: reminderList
+                }
+            }, 
+            {
+                new: true
+            }
+        )
+
+        return res.status(200).send("Reminder added"); 
+
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+}

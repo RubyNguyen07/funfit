@@ -62,6 +62,9 @@ workflows:
         filters: 
           branches: 
             - pull_request: true 
+      - store_test_results:
+          requires: build
+          path: test-results
       - heroku/deploy-via-git:
           requires:
             - build # only run deploy-via-git job if the build job has completed
