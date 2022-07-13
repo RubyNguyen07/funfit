@@ -333,6 +333,9 @@ exports.getLevel = async (req, res) => {
 exports.getReminderList = async (req, res) => {
     try {
         const item = await ReminderList.findOne({ userId: req.user.id });
+        if (!item) {
+            return res.status(200).send("No reminder added yet")
+        }
         res.status(200).send(item.reminderList); 
     } catch (err) {
         res.status(500).send(err.message);
