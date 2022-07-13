@@ -269,14 +269,16 @@ exports.addReminder = async (req, res) => {
         const formattedMessage = formattedDate.getHours() + ":" + formattedDate.getMinutes() + " - " + reminderMessage;
 
         const item = await ReminderList.findOne({ userId: req.user.id });
-        var reminderList = item.reminderList; 
-
-        if (!reminderList) {
+        if (!item) {
             await new ReminderList({
                 userId: req.user.id, 
                 reminderList: new Map([[date, [formattedMessage]]])
             }).save(); 
-        } else if (reminderList.has(date)) {
+            return res.status(200).send("Reminder added"); 
+        }
+
+        var reminderList = item.reminderList; 
+        if (reminderList.has(date)) {
             var currDateList = reminderList.get(date); 
             currDateList.push(formattedMessage); 
         } else {
