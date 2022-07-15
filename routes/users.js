@@ -26,6 +26,9 @@ router.use(authMiddleware.auth)
 // Get profile 
 router.get('/me', userController.me); 
 
+// Get level and  points 
+router.get('/level', userController.getLevel); 
+
 // Update profile 
 router.put('/updateProfile', userController.updateProfile); 
 
@@ -46,8 +49,5 @@ router.get('/getDaysFollow', userController.getDaysFollow);
 
 // Get reminder list for routines 
 router.get('/getReminderList', userController.getReminderList);
-
-// // Get level and points
-// router.get('/level', userController.getLevel);
 
 module.exports = router; 

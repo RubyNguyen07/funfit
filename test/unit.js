@@ -110,6 +110,17 @@ describe("/user", () => {
         expect(res.body).to.have.property('message').eql('This user does not exist');
     })
 
+    it("GET /level success", async () => {
+        let res = await chai
+            .request(app)
+            .get('/user/level')
+            .auth(process.env.ACCESS_TOKEN, { type: 'bearer' })
+
+        expect(res.status).to.equal(200);
+        expect(res.body).to.have.property('level');
+        expect(res.body).to.have.property('points');
+    })
+
     after(async () => {
         await User.findOneAndDelete({email: "testmocha@gmail.com"});
     })

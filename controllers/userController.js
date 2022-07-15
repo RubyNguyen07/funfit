@@ -280,6 +280,19 @@ exports.getUserProfile = async (req, res) => {
     }
 }
 
+// Get user's level and points 
+exports.getLevel = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id, 'points level'); 
+        return res.status(200).send({
+            level: user.level, 
+            points: user.points
+        });
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+}
+
 // Fetch days completing any routines
 exports.getDaysFollow = async (req, res) => {
     try {
