@@ -6,6 +6,7 @@ var mongoClient = new MongoClient(url);
 var Story = require('../models/Story');
 var mongoose = require('mongoose');
 
+// Upload a picture to user's stories board 
 exports.uploadFile = async (req, res) => {
 	try {
     	await mongoClient.connect();
@@ -19,6 +20,7 @@ exports.uploadFile = async (req, res) => {
 	}
 };
 
+// Get information about stories of a user with given id 
 exports.getStoriesInfo = async (req, res) => {
 	try {
         const { id }  = req.query; 
@@ -35,6 +37,7 @@ exports.getStoriesInfo = async (req, res) => {
 	}
 };
 
+// Fetch a story 
 exports.downloadStory = async (req, res) => {
 	try {
 		await mongoClient.connect();
@@ -68,10 +71,10 @@ exports.deleteStory = async (req, res) => {
 		const hasDeleted = await Story.findByIdAndDelete(storyId); 
 
 		if (!hasDeleted) {
-			return res.status(400).send('Story does not exist');
+			return res.status(400).send({ message: 'Story does not exist' });
 		}
 		
-		return res.status(204).send("Story has been deleted");
+		return res.status(204).end();
 	} catch (err) {
 		res.status(500).send(err.message);
 	}

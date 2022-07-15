@@ -2,6 +2,7 @@ var RecRoutine = require('../models/Routine');
 var User = require('../models/User'); 
 var vectorsUtil = require('../utils/vectors'); 
 
+// Fetch recommended routines 
 exports.getSimilarRoutines = async (req, res) => {
     try {
         const { id } = req.user; 
@@ -11,7 +12,7 @@ exports.getSimilarRoutines = async (req, res) => {
         var user = await User.findById(id); 
         var trainedData = vectorsUtil.createVectorsFromData(formattedData); 
 
-        let similarRoutines = vectorsUtil.returnSimilarItems(user, trainedData); 
+        let similarRoutines = vectorsUtil.returnSimilarItems(user, trainedData, "routine"); 
 
         let routines = []; 
 

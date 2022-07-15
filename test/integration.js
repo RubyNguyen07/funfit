@@ -3,66 +3,65 @@ const chaiHttp = require('chai-http');
 const { beforeEach, afterEach, after } = require('mocha');
 chai.use(chaiHttp); 
 const app = require('../app').app;
-const should = chai.should(); 
 const expect = chai.expect; 
 const MyRoutine = require('../models/MyRoutine');
-const RecRoutine = require('../models/Routine');
+// const RecRoutine = require('../models/Routine');
 const Conversation = require('../models/Conversation');
 const User = require('../models/User');
 var convoId = "";
 var deleteFriendId = "";
 
 describe("/user", () => {
-    it("POST /signup success", async () => {
-        let res = await chai
+    it("Create new user + Get user profile", async () => {
+        let firstRes = await chai 
             .request(app)
             .post('/user/signup')
             .send({
-                name: "Test",
-                email: "testMocha@gmail.com",
+                name: "TestUser",
+                email: "testuser@gmail.com",
                 password: "12345678",
-                country: "Singapore",
+                country: "Vietnam",
                 sex: "Female"
             })
 
-        expect(res.status).to.equal(201);
-        expect(res.body).to.have.property('token');
+        expect(firstRes.status).to.equal(201);
+        expect(firstRes.body).to.have.property('token');
+
+        let secondRes = await chai 
+            .request(app)
+            .put('/user/updateProfile')
+            .auth(firstRes.body.token, { type: 'bearer' })
+            .send({
+                name: "UpdatedUser",
+                email: "testuser@gmail.com",
+                password: "1234567890",
+                country: "Vietnam",
+                sex: "Female"
+            })
+
+        expect(secondRes.status).to.equal(200);
+
+        let res = await chai 
+            .request(app)
+            .get('/user/me')
+            .auth(firstRes.body.token, { type: 'bearer' })
+        
+        expect(res.status).to.equal(200);
+        expect(res.body).to.have.property('name').eql("UpdatedUser");
+        expect(res.body).to.have.property('country');
+        expect(res.body).to.have.property('sex');
     }).timeout(10000)
 
-    it("POST /signup error blank", async () => {
-        let res = await chai
-            .request(app)
-            .post('/user/signup')
-            .send({
-                name: "",
-                email: "",
-                password: "",
-                country: "",
-                sex: ""
-            })
-            
-        expect(res.status).to.equal(500);
-
+    after(async () => {
+        await User.findOneAndDelete({ email: "testuser@gmail.com" });
     })
+})
 
-    it("POST /signup error already existed", async () => {
-        let res = await chai
-            .request(app)
-            .post('/user/signup')
-            .send({
-                name: "Shel",
-                email: "shel@gmail.com",
-                password: "12345",
-                country: "Vietnam",
-                sex: "Male"
-            })
+describe("/routine", () => {
+    it("Log in + Create + Edit + Get + Delete routine", async () => {
+        var routineAccessToken = "";
 
-        expect(res.status).to.equal(400);
-        expect(res.body).to.have.property('message');
-    })
-
-    it("POST /login success", async () => {
-        let res = await chai
+        let logRes = await chai
             .request(app)
             .post('/user/login')
             .send({
@@ -70,117 +69,60 @@ describe("/user", () => {
                 password: "1234567890"
             })
 
-        expect(res.status).to.equal(200);
-        expect(res.body).to.have.property('token');
-        expect(res.body).to.have.property('refreshToken');
-    })
-
-    it("POST /login error", async () => {
-        let res = await chai
-            .request(app)
-            .post('/user/login')
-            .send({
-                email: "rubynguyen2003@gmail.com",
-                password: "12345678"
-            })
-
-        expect(res.status).to.equal(400);
-
-    })
-
-    it("GET /getUserProfile success", async () => {
-        let res = await chai
-            .request(app)
-            .get('/user/getUserProfile')
-            .auth(process.env.ACCESS_TOKEN, { type: 'bearer' })
-            .query({
-                otherId: "628b584b988dca06a2db3282"
-            })
-
-        expect(res.status).to.equal(200);
-
-    })
-
-    it("GET /getUserProfile error", async () => {
-        let res = await chai
-            .request(app)
-            .get('/user/getUserProfile')
-            .auth(process.env.ACCESS_TOKEN, { type: 'bearer' })
-            .query({
-                otherId: "628b584b988dca06a2db3283"
-            })
-
-        expect(res.status).to.equal(400);
-
-    })
-
-    after(async () => {
-        await User.findOneAndDelete({email: "testmocha@gmail.com"});
-    })
-})
-
-describe("/routine", () => {
-    it("GET /getMyRoutines", async () => {
-        let res = await chai
-            .request(app)
-            .get('/routine/getMyRoutines')
-            .auth(process.env.ACCESS_TOKEN, { type: 'bearer' })
-    
-        expect(res.status).to.equal(200);
-    })
-
-    it("GET /getRecRoutines", async () => {
-        let res = await chai
-            .request(app)
-            .get('/routine/getRecRoutines')
-            .auth(process.env.ACCESS_TOKEN, { type: 'bearer' })
-    
-        expect(res.status).to.equal(200);
-    })
-
-    it("POST /newRoutine", async () => {
-        let res = await chai
+        expect(logRes.status).to.equal(200);
+        expect(logRes.body).to.have.property('token');
+        expect(logRes.body).to.have.property('refreshToken');
+        routineAccessToken = logRes.body.token;
+            
+        let createRes = await chai
             .request(app)
             .post('/routine/newRoutine')
-            .auth(process.env.ACCESS_TOKEN, { type: 'bearer' })
+            .auth(routineAccessToken, { type: 'bearer' })
             .send({
-                name: "Yoga practice for Beginner",
+                name: "Routine to be deleted",
                 duration: ["1", "1", "1"], 
                 steps: ["1", "1"],  
                 timings: [["1", "1", "1"], ["1", "1", "1"]],
-                genre: "yoga",
-                reminder: "" 
+                genre: ["yoga"],
+                reminder: "", 
+                userId: process.env.USERID
+            })
+        expect(createRes.status).to.equal(201);
+        expect(createRes.body).to.have.property('id');
+
+        let editRes = await chai
+            .request(app)
+            .put('/routine/editRoutine')
+            .auth(routineAccessToken, { type: 'bearer' })
+            .send({
+                id: createRes.body.id,
+                genre: ["gym"]
             })
 
-        expect(res.status).to.equal(201);
-    })
+        expect(editRes.status).to.equal(200);
+        expect(editRes.body).to.have.property('message').eql("Update successfully");
 
-    it("DELETE /deleteRoutine", async () => {
-        var newRoutine = await MyRoutine({
-            name: "Routine to be deleted",
-            duration: ["1", "1", "1"], 
-            steps: ["1", "1"],  
-            timings: [["1", "1", "1"], ["1", "1", "1"]],
-            genre: "yoga",
-            reminder: "", 
-            userId: process.env.USERID
-        });
-        await newRoutine.save(); 
+        let getRes = await chai
+            .request(app)
+            .get('/routine/myRoutine')
+            .auth(routineAccessToken, { type: 'bearer' })
+            .query({
+                id: createRes.body.id
+            })
+
+        expect(getRes.status).to.equal(200);
+        expect(getRes.body).to.have.property('genre').eql(["gym"]);
 
         let res = await chai
             .request(app)
             .delete('/routine/deleteRoutine')
-            .auth(process.env.ACCESS_TOKEN, { type: 'bearer' })
+            .auth(routineAccessToken, { type: 'bearer' })
             .send({
-                id: newRoutine._id
+                id: createRes.body.id
             })
 
         expect(res.status).to.equal(204);
-    })
-
-    after(async () => {
-        await MyRoutine.findOneAndDelete({ userId: process.env.USERID, name: "Yoga practice for Beginner"}); 
-    })
+    }).timeout(10000)
 })
 
 describe("/chat", () => {
@@ -196,48 +138,7 @@ describe("/chat", () => {
         deleteFriendId = friend._id;
     })
 
-    it("GET /getAllConvos", done => {
-        chai
-            .request(app)
-            .get('/chat/getAllConvos')
-            .auth(process.env.ACCESS_TOKEN, { type: 'bearer' })
-            .end((err, res) => {
-                if (err) {
-                    console.log(err);
-                } 
-                expect(res.status).to.equal(200);
-                done()
-            })
-    })
-
-    it("GET /getAConvo", async () => {
-        var friend = new User({
-            name: "Test2",
-            email: "testMocha2@gmail.com",
-            password: "12345678",
-            country: "Singapore",
-            sex: "Female"
-        })
-        await friend.save(); 
-
-        var newConvo = new Conversation({
-            users: [process.env.USERID, friend._id]
-        })
-        await newConvo.save(); 
-        convoId = newConvo._id; 
-
-        const res = await chai
-            .request(app)
-            .get('/chat/getAConvo')
-            .auth(process.env.ACCESS_TOKEN, { type: 'bearer' })
-            .query({
-                convoId: convoId
-            })
-
-        expect(res.status).to.equal(200);
-    })
-
-    it("DELETE /deleteConvo", async () => {
+    it("Initiate + Delete convo", async () => {
         let res = await chai
         .request(app)
         .post('/chat/initiateConvo')
@@ -256,38 +157,14 @@ describe("/chat", () => {
                 convoId: res.body,
                 anotherUserId: deleteFriendId
             })
-        
         expect(response.status).to.equal(204);
+
     }).timeout(10000)    
 
     after(async () =>  {
-        await MyRoutine.findOneAndDelete({ userId: process.env.USERID, name: "Yoga practice for Beginner"}); 
-        await User.findOneAndDelete({ email: "testMocha2@gmail.com" || "testmocha@gmail.com"});
         await User.findByIdAndDelete(deleteFriendId);
     })
 
 })
 
 
-describe("Story", () => {
-    it("GET /story/recommendedFriends", async () => {
-        let res = await chai
-        .request(app)
-        .get('/story/recommendedFriends')
-        .auth(process.env.ACCESS_TOKEN, { type: 'bearer' })
-        
-        expect(res.status).to.equal(200);
-    }).timeout(10000);
-
-    it ("GET /story/getStoriesInfo", async () => {
-        let res = await chai
-        .request(app)
-        .get('/story/getStoriesInfo')
-        .auth(process.env.ACCESS_TOKEN, { type: 'bearer' })
-        .query({
-            id: process.env.USERID
-        })
-
-        expect(res.status).to.be.oneOf([200, 400]);
-    }).timeout(10000);
-})

@@ -4,12 +4,14 @@ const GridFSBucket = require("mongodb").GridFSBucket;
 const url = process.env.DB_URL;
 const mongoClient = new MongoClient(url);
 
+// Upload profile picture 
 exports.uploadFile = async (req, res) => {
 	try {
 		const { id } = req.user; 
     	await mongoClient.connect();
 		const database = mongoClient.db(process.env.DB);
 		const images = database.collection(process.env.BUCKET + ".files");
+		// Delete old profile picture 
 		await images.findOneAndDelete({ filename: id });
 		await upload(req, res);
 		if (req.file == undefined) {
@@ -21,6 +23,7 @@ exports.uploadFile = async (req, res) => {
 	}
 };
 
+// Get information about user's own profile pic 
 exports.getProfilePic = async (req, res) => {
 	try {
 		await mongoClient.connect();
@@ -43,6 +46,7 @@ exports.getProfilePic = async (req, res) => {
 	}
 };
 
+// Fetch user's own profile pic 
 exports.download = async (req, res) => {
 	try {
 		await mongoClient.connect();

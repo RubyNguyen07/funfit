@@ -2,8 +2,10 @@ var RecRoutine = require('../models/Routine');
 var MyRoutine = require('../models/MyRoutine'); 
 var User = require('../models/User');
 var ReminderList = require('../models/ReminderList');
+var DaysFollow = require('../models/DaysFollow');
 var mongoose = require('mongoose');
 
+// Fetch user's own routines 
 exports.getMyRoutines = async (req, res) => {
     try {
         const { id } = req.user; 
@@ -14,6 +16,7 @@ exports.getMyRoutines = async (req, res) => {
     }
 }
 
+// Fetch a routine in user's library 
 exports.getMyRoutine = async (req, res) => {
     try {
         const { id } = req.query; 
@@ -24,6 +27,7 @@ exports.getMyRoutine = async (req, res) => {
     }
 }
 
+// Fetch a recommended routine 
 exports.getRecRoutine = async (req, res) => {
     try {
         const { id } = req.query; 
@@ -34,6 +38,7 @@ exports.getRecRoutine = async (req, res) => {
     }
 }
 
+// Fetch recommended routines based on genre
 exports.getRoutinesByGenre = async (req, res) => {
     try {
         const { genre } = req.query; 
@@ -44,16 +49,17 @@ exports.getRoutinesByGenre = async (req, res) => {
     }
 }
 
+// Create a new routine 
 exports.createNewRoutine = async (req, res) => {
     try {
-        if (req.body.steps !== null && (req.body.steps.length !== req.body.timings.length)) {
-            return res.status(400).send("Number of steps is not equal to that of timings"); 
+        if (req.body.steps.length == 0 || (req.body.steps.length !== req.body.timings.length)) {
+            return res.status(400).send({ message: "Invalid steps or timings" }); 
         }
 
         const hasExisted = await MyRoutine.find({userId: req.user.id, name: req.body.name})
 
         if (hasExisted.length > 0) {
-            return res.status(400).send("Please choose a different name"); 
+            return res.status(400).send({ message: "Please choose a different name" }); 
         }
         
         const newRoutine = new MyRoutine ({
@@ -70,14 +76,14 @@ exports.createNewRoutine = async (req, res) => {
         })
 
         await newRoutine.save(); 
-        //Later change to save successfully 
-        res.status(201).send("New routine created"); 
+        res.status(201).send({id: newRoutine._id}); 
 
     } catch (err) {
         res.status(500).send(err.message); 
     }
 }
 
+// Add a recommended routine to user's own library 
 exports.addToMyLibrary = async (req, res) => {
     try {
         const recRoutineId = req.body.id; 
@@ -85,7 +91,7 @@ exports.addToMyLibrary = async (req, res) => {
         
         const hasExisted = await MyRoutine.find({ userId: req.user.id, youtubeVideo: recRoutine.youtubeVideo });
         if (hasExisted.length > 0) {
-            return res.status(400).send("Rec routine has already been added to your library"); 
+            return res.status(400).send({ message: "Rec routine has already been added to your library" }); 
         }
 
         const newRoutine = new MyRoutine({
@@ -101,24 +107,28 @@ exports.addToMyLibrary = async (req, res) => {
         })
 
         await newRoutine.save(); 
-        //Later change to save successfully 
-        res.status(201).send("Added to library"); 
+        res.status(201).send({ message: "Added to library" }); 
 
     } catch (err) {
         res.status(500).send(err.message); 
     }
 }
 
+// Delete a routine 
 exports.deleteRoutine = async (req, res) => {
     try {
         const { id } = req.body; 
-        await MyRoutine.findByIdAndDelete(id); 
-        res.status(204).send("Routine deleted from my library");
+        const hasDeleted = await MyRoutine.findByIdAndDelete(id); 
+        if (hasDeleted) {
+            return res.status(204).end();
+        }
+        res.status(400).send({ message: "Routine does not exist" });
     } catch (err) {
         res.status(500).send(err.message); 
     }
 }
 
+// Edit a routine 
 exports.editRoutine = async (req, res) => {
     try {
         const { id } = req.body; 
@@ -135,7 +145,7 @@ exports.editRoutine = async (req, res) => {
         }; 
 
         await MyRoutine.findByIdAndUpdate(id, updatedFields); 
-        res.status(200).send("Update successfully"); 
+        res.status(200).send({ message: "Update successfully" }); 
 
     } catch (err) {
         res.status(500).send(err.message); 
@@ -175,6 +185,10 @@ exports.editRoutine = async (req, res) => {
 //     }
 // }
 
+/** Helper function to increase points and level of a given user 
+ * @param { User } user: given user 
+ * @param { number } levelPoints: points need to be added  
+ */
 var addPointsHelper = (user, levelPoints) => {
     var originalPoints = user.points; 
     user.points = (user.points + 100) % levelPoints; 
@@ -187,46 +201,42 @@ var addPointsHelper = (user, levelPoints) => {
 }
 
 
-// Test this later when have more information about date added 
+// Add a day to DaysFollow after completing a routine 
 exports.addRoutineDay = async (req, res) => {
     try {
         const { id } = req.body; 
         const user = await User.findById(req.user.id); 
-        var daysFollow = user.daysFollow;
 
         const routine = await MyRoutine.findById(id); 
         if (routine == null) {
             return res.status(400).send("Routine does not exist"); 
         }
-    
-        const currDate = new Date().toLocaleDateString('en-CA'); 
 
-        var fooArr = [routine.name]; 
-        if (!daysFollow) {
-            daysFollow = new Map([[currDate, fooArr]])
-        } else if (daysFollow.has(currDate)) {
+        const currDate = new Date().toLocaleDateString('en-CA'); 
+    
+        const item = await DaysFollow.findOne({ userId: req.user.id });
+        // If there is no DaysFollow created to this user yet, create one with the given date and routine 
+        if (!item) {
+            await new DaysFollow({
+                userId: req.user.id, 
+                reminderList: new Map([[currDate, [routine.name]]])
+            }).save(); 
+            return res.status(200).send("Day follow routine added"); 
+        }
+
+        const daysFollow = item.daysFollow; 
+        // If a date already exists in daysFollow, then have to fetch the 
+        // array of the date and push new date to it 
+        if (daysFollow.has(currDate)) {
             var oldDaysFollow = daysFollow.get(currDate); 
             oldDaysFollow.push(routine.name); 
             daysFollow.set(currDate, oldDaysFollow);
-
-            await User.updateOne(
-                {
-                    _id: req.user.id, 
-                }, 
-                {
-                    $set: {
-                        daysFollow: daysFollow
-                    }
-                }, 
-                {
-                    new: true
-                }
-            ); 
-    
         } else {
+            // Else, set a new date as key 
             daysFollow.set(currDate, [routine.name]); 
         }
 
+        // Add points according to user's level 
         if (user.level > 0 && user.level <= 5) {
             addPointsHelper(user, 1000);
         } else if (user.level >= 6 && user.level <= 8){
@@ -243,21 +253,40 @@ exports.addRoutineDay = async (req, res) => {
             addPointsHelper(user, 10000);
         }
 
-        await user.save(); 
+        const sess = await mongoose.startSession(); 
+        await sess.withTransaction( async () => {
+            await DaysFollow.updateOne(
+                {
+                    userId: req.user.id, 
+                }, 
+                {
+                    $set: {
+                        daysFollow: daysFollow
+                    }
+                }, 
+                {
+                    new: true,
+                    session: sess
+
+                }
+            ); 
+            
+            await user.save({ session: sess });
+        })
+  
         return res.status(200).send("Date added and Points added"); 
+
     } catch (err) {
         return res.status(500).send(err.message)
     }
 
 }
 
-// exports.getFollow
-
-
+// Add reminder to a routine 
 exports.addReminder = async (req, res) => {
     try {
         const reminderMessage = req.body.reminderMessage; 
-        if (reminderMessage == "" ) {
+        if (reminderMessage == "") {
             return res.status(400).send("Null reminder message");
         } 
 
@@ -269,6 +298,7 @@ exports.addReminder = async (req, res) => {
         const formattedMessage = formattedDate.getHours() + ":" + formattedDate.getMinutes() + " - " + reminderMessage;
 
         const item = await ReminderList.findOne({ userId: req.user.id });
+        // If there is no ReminderList created to this user yet, create one with the given date and routine 
         if (!item) {
             await new ReminderList({
                 userId: req.user.id, 
@@ -279,9 +309,12 @@ exports.addReminder = async (req, res) => {
 
         var reminderList = item.reminderList; 
         if (reminderList.has(date)) {
+            // If a date already exists in reminderList, then have to fetch the 
+            // array of the date and push new date to it 
             var currDateList = reminderList.get(date); 
             currDateList.push(formattedMessage); 
         } else {
+            // Else, set a new date as key
             reminderList.set(date, [formattedMessage]);
         }
 

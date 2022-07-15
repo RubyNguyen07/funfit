@@ -2,6 +2,7 @@ var Conversation = require('../models/Conversation');
 var User = require('../models/User'); 
 var mongoose = require('mongoose'); 
 
+// Fetch all conversations user used to have 
 exports.getAllConversations = async (req, res) => {
     try {
         const { id } = req.user; 
@@ -29,6 +30,7 @@ exports.getAllConversations = async (req, res) => {
         var toReturn = conversations.map(convo => {
             var numOfMessages = convo.messages.length; 
 
+            // Format conversation returned with the following fields 
             return {
                 friend: convo.users.filter((user) => user._id != id), 
                 convoId: convo._id, 
@@ -43,6 +45,7 @@ exports.getAllConversations = async (req, res) => {
     }
 }
 
+// Fetch a conversation with given id 
 exports.getConversationById = async (req, res) => {
     try {
         const { convoId } = req.query; 
@@ -66,12 +69,12 @@ exports.getConversationById = async (req, res) => {
     }
 }
 
-
+// Start a new conversation with a user
 exports.initiateChat = async (req, res) => {
     try {
         const userId = req.user.id; 
         const { anotherUserId } = req.body; 
-
+        // Check if another user with given id exists 
         const anotherUser = await User.findById(anotherUserId);
         if (!anotherUser) {
             return res.status(400).send("This user does not exist");
@@ -81,8 +84,8 @@ exports.initiateChat = async (req, res) => {
         const friends = user.friends; 
 
         // If one user decided to delete the chat, then all the chat disappeared for both users 
-        // (~ like block unless suggested, but should be in blacklist array so that will not 
-        // be suggested again)
+        // (it is similar to blocking unless still in suggested friends list, but should be in blacklist array 
+        // so that the blocked user will not be suggested as friends again)
         if (!friends.includes(anotherUserId)) {
             const newConvo = new Conversation({
                 users: [userId, anotherUserId]
@@ -94,17 +97,12 @@ exports.initiateChat = async (req, res) => {
             anotherUser.friends.push(userId); 
             anotherUser.conversations.push(newConvo._id); 
 
-            try {
-                const sess = await mongoose.startSession();
-                await sess.withTransaction( async () => {
-                    await newConvo.save({ session: sess });
-                    await user.save({ session: sess });
-                    await anotherUser.save({ session: sess }); 
-                })
-    
-            } catch (err) {
-                return res.status(500).send(err.message);
-            }
+            const sess = await mongoose.startSession();
+            await sess.withTransaction( async () => {
+                await newConvo.save({ session: sess });
+                await user.save({ session: sess });
+                await anotherUser.save({ session: sess }); 
+            });
 
             return res.status(201).send(newConvo._id);
         } 
@@ -116,6 +114,7 @@ exports.initiateChat = async (req, res) => {
     }
 }
 
+// Delete a conversation 
 exports.deleteConvo = async (req, res) => {
     try {
         const { convoId, anotherUserId } = req.body; 
@@ -129,26 +128,28 @@ exports.deleteConvo = async (req, res) => {
             return res.status(400).json({message:"Conversation or Participants do not exist"});
         }
 
+        // Delete conversation from current conversation list
         user.conversations = user.conversations.filter(id => id !== convoId); 
+        // Delete from friends list 
         user.friends = user.friends.filter(id => id !== anotherUserId);
+        // Put into user's blacklist 
         user.blackList.push(anotherUserId); 
 
+        // Delete conversation from current conversation list
         anotherUser.conversations = anotherUser.conversations.filter(id => id !== convoId); 
+        // Delete from friends list 
         anotherUser.friends = anotherUser.friends.filter(id => id !== userId);
+        // Put into user's blacklist 
         anotherUser.blackList.push(userId);  
 
-        try {
-            const sess = await mongoose.startSession(); 
-            await sess.withTransaction(async () => {
-                await user.save({ session: sess }); 
-                await anotherUser.save({ session: sess }); 
-            })
-        } catch (err) {
-            return res.status(500).send(err.message);
-        }
+        const sess = await mongoose.startSession(); 
+        await sess.withTransaction(async () => {
+            await user.save({ session: sess }); 
+            await anotherUser.save({ session: sess }); 
+        })
 
         if (hasDeleted) {
-            return res.status(204).send("Conversation deleted")
+            return res.status(204).end()
         }
 
         return res.status(400).json({message: "Conversation does not exist"}); 
@@ -157,16 +158,3 @@ exports.deleteConvo = async (req, res) => {
         res.status(500).send(err.message); 
     }
 }
-
-
-// /// TO delete 
-// exports.createNewConvo = async (req, res) => {
-//     try {
-//         await new Conversation({
-//             users: [req.body.first, req.body.second]
-//         }).save(); 
-//         res.status(200).send("inserted"); 
-//     } catch (err) {
-//         res.status(500).send(err.message);
-//     }
-// }

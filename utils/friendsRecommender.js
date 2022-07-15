@@ -1,7 +1,8 @@
 let User = require('../models/User'); 
-// const graph =  new ug.Graph(); 
-// const graph = require('../app');
 
+/** Modify input graph into a new graph based on existing users in database
+ * @param { graph } inputGraph 
+ */
 exports.createGraph = async (inputGraph) => {
     // Create a node according to each user 
     await User.find().cursor().eachAsync(doc => {
@@ -10,7 +11,7 @@ exports.createGraph = async (inputGraph) => {
 
     let run_through = []; 
 
-    // Create edges, if name has been run over then do not do anything else  
+    // Create edges between friends, if name has been run over then do not do anything else  
     await User.find().cursor().eachAsync((doc) => {
         if (!(doc._id in run_through)) {        
             let friends = doc.friends; 
@@ -18,17 +19,23 @@ exports.createGraph = async (inputGraph) => {
             run_through.push(doc._id);
             for (let i = 0; i < friends.length; i++) {
                 const friend = inputGraph.nodes(friends[i]._id).query().first();
-                // If user has been deleted 
+                // If user has been deleted then ignore 
                 if (!friend) {
                     continue; 
                 }
                 run_through.push(friends[i]._id);
+                // Create edges between friends
                 inputGraph.createEdge('friends').link(curr, inputGraph.nodes(friends[i]._id).query().first()); 
             }
         }   
     })
 }
 
+/** Find users that have connection to the user with the given id  
+ * @param { graph } inputGraph 
+ * @param { id } id 
+ * @returns users that have connection to the user with the given id  
+ */
 exports.findNeighbors = (inputGraph, id) => {
 
     const paths = inputGraph.closest(
