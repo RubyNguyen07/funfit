@@ -4,26 +4,17 @@ var userController = require('../controllers/userController');
 var checkUniqueMiddleware = require('../middlewares/checkUniqueEmail'); 
 var authMiddleware = require('../middlewares/auth'); 
 var uploadController = require('../controllers/uploadController');
-var checkExpoMiddleware = require('../middlewares/checkExpoPushToken');
-
-//Tesing 
-router.get('/getAll', userController.getAll);
 
 // Sign up 
-// router.post('/signup', checkUniqueMiddleware.checkUniqueEmail, checkExpoMiddleware.checkPushToken, userController.signup); 
 router.post('/signup', checkUniqueMiddleware.checkUniqueEmail, userController.signup); 
 
 // Log in 
 router.post('/login', userController.login); 
 
-// Log out 
-router.get('/logout', userController.logout); 
-
 // Refresh token 
 router.post('/refreshToken', userController.refreshToken);
 
 // Reset password
-// router.post('/resetPassword', checkExpoMiddleware.checkPushToken, userController.passwordReset); 
 router.post('/resetPassword', userController.passwordReset); 
 
 // Forgot password 
@@ -34,6 +25,9 @@ router.use(authMiddleware.auth)
 
 // Get profile 
 router.get('/me', userController.me); 
+
+// Get level and  points 
+router.get('/level', userController.getLevel); 
 
 // Update profile 
 router.put('/updateProfile', userController.updateProfile); 
@@ -55,8 +49,5 @@ router.get('/getDaysFollow', userController.getDaysFollow);
 
 // Get reminder list for routines 
 router.get('/getReminderList', userController.getReminderList);
-
-// Get level and points
-router.get('/level', userController.getLevel);
 
 module.exports = router; 

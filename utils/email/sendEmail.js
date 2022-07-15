@@ -1,5 +1,10 @@
 var nodemailer = require('nodemailer');
 
+/** Send email 
+ * @param { string } email 
+ * @param { string } subject 
+ * @param { string } message 
+ */ 
 exports.sendEmail = async (email, subject, message) => {
     try {
         var transporter = nodemailer.createTransport({
@@ -16,21 +21,21 @@ exports.sendEmail = async (email, subject, message) => {
             }
         });
 
-        var mainOptions = { // thiết lập đối tượng, nội dung gửi mail
+        var mainOptions = { 
             to: email,
             subject: subject,
             text: message
         }
 
+        // Might throw error due to token not being refreshed properly 
         transporter.sendMail(mainOptions, function(err, info){
             if (err) {
                 console.log(err);
-                // res.redirect('/');
             } else {
                 console.log('Message sent: ' +  info.response);
-                // res.redirect('/');
             }
         });
+
     } catch (err) {
         console.log(err.message)
     }

@@ -11,20 +11,18 @@ var { chatConfig } = require('./utils/chat');
 var user = require('./routes/users'); 
 var routine = require('./routes/routines'); 
 // var homeController = require('./controllers/homeController');
-
 var story = require('./routes/stories');
-var noti = require('./routes/notis');
 var chat = require('./routes/chats');
 
 let ug = require('ug'); 
-let User = require('./models/User'); 
 let inputGraph = new ug.Graph();
 let helper = require('./utils/friendsRecommender');
 
+// Start mongodb 
 InitiateMongoServer().then(async () => {
+    // Create friends graph 
     await helper.createGraph(inputGraph);
 })
-
 exports.graph = inputGraph; 
 
 const app = express(); 
@@ -37,13 +35,10 @@ app.use(cors());
 
 
 app.use('/user', user); 
-
 app.use('/routine', routine); 
-
 app.use('/story', story);
 // app.use('/story', homeController.getHome);
-
-app.use('/noti', noti);
+// app.use('/noti', noti);
 app.use('/chat', chat);
 
 // app.get('/', (req, res) => {
@@ -72,6 +67,5 @@ var io = socket(server, {
 
 var chatFunfit = io.of('/chatFunfit');
 chatConfig(chatFunfit); 
-
 
 exports.app = app;

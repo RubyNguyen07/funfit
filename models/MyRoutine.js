@@ -9,15 +9,18 @@ var MyRoutineSchema = new Schema({
     }, 
     duration: {
         type: [String], 
-        required: true
+        required: true,
+        default: [""]
     }, 
     steps: {
         type: [String], 
-        required: true
+        required: true,
+        default: [""]
     }, 
     timings: {
         type: [[String]], 
-        required: true
+        required: true,
+        default: [[""]]
     }, 
     genre: {
         type: [String] 

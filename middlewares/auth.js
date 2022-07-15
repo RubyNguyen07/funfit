@@ -1,5 +1,6 @@
 var jwt = require('jsonwebtoken');
 
+// Check if input token is valid 
 exports.auth = (req, res, next) => {
     var token = req.headers.authorization.split(" ")[1]; 
     if (!token) {

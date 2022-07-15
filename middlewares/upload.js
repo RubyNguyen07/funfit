@@ -2,6 +2,7 @@ const util = require("util");
 const multer = require('multer');
 const { GridFsStorage } = require("multer-gridfs-storage");
 
+// Set up storage to upload profile picture 
 var storage = new GridFsStorage({
 	url: process.env.DB_URL,
 	options: { useNewUrlParser: true, useUnifiedTopology: true },
