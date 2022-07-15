@@ -156,7 +156,7 @@ describe("/routine", () => {
                 reminder: "" 
             })
         expect(res.status).to.equal(201);
-        expect(res.body).to.have.property("message").eql("New routine created");
+        expect(res.body).to.have.property("id");
     })
 
     it("POST /newRoutine empty steps", async () => {
