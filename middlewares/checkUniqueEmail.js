@@ -1,17 +1,19 @@
 var User = require('../models/User'); 
 
 exports.checkUniqueEmail = async (req, res, next) => {
-    
-    await User.findOne({
-        email: req.body.email.toLowerCase()
-    }, (err, result) => {
-        if (err) {
-            return res.status(500).send(err.message); 
+    try {
+        if (req.body.email == null) {
+            return res.status(400).send({message: "Email field is empty"});
         }
-        else if (result) {
+        const user = await User.findOne({
+            email: req.body.email.toLowerCase()
+        }); 
+        if (user) {
             return res.status(400).send({message: "User already existed"}); 
         }
         next(); 
-    })
+    } catch (err) {
+        return res.status(500).send(err.message);
+    }
 }
 
