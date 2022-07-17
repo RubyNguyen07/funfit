@@ -1,9 +1,9 @@
 var RecRoutine = require('../models/Routine'); 
 var MyRoutine = require('../models/MyRoutine'); 
 var User = require('../models/User');
-var ReminderList = require('../models/ReminderList');
-var DaysFollow = require('../models/DaysFollow');
+var CalendarList = require('../models/CalendarList');
 var mongoose = require('mongoose');
+var findPos = require('../utils/arrayUtil');
 
 // Fetch user's own routines 
 exports.getMyRoutines = async (req, res) => {
@@ -200,7 +200,6 @@ var addPointsHelper = (user, levelPoints) => {
                     : user.level; 
 }
 
-
 // Add a day to DaysFollow after completing a routine 
 exports.addRoutineDay = async (req, res) => {
     try {
@@ -211,29 +210,32 @@ exports.addRoutineDay = async (req, res) => {
         if (routine == null) {
             return res.status(400).send("Routine does not exist"); 
         }
+        const name = "C: " + routine.name; 
 
         const currDate = new Date().toLocaleDateString('en-CA'); 
     
-        const item = await DaysFollow.findOne({ userId: req.user.id });
-        // If there is no DaysFollow created to this user yet, create one with the given date and routine 
+        const item = await CalendarList.findOne({ userId: req.user.id });
+        // If there is no CalendarList created to this user yet, create one with the given date and routine 
         if (!item) {
-            await new DaysFollow({
+            addPointsHelper(user, 1000);
+            await new CalendarList({
                 userId: req.user.id, 
-                reminderList: new Map([[currDate, [routine.name]]])
-            }).save(); 
-            return res.status(200).send("Day follow routine added"); 
+                calendarList: new Map([[currDate, [name]]])
+            }).save();
+            await user.save();  
+            return res.status(200).send("Date added and points added"); 
         }
 
-        const daysFollow = item.daysFollow; 
+        const calendarList = item.calendarList; 
         // If a date already exists in daysFollow, then have to fetch the 
         // array of the date and push new date to it 
-        if (daysFollow.has(currDate)) {
-            var oldDaysFollow = daysFollow.get(currDate); 
-            oldDaysFollow.push(routine.name); 
-            daysFollow.set(currDate, oldDaysFollow);
+        if (calendarList.has(currDate)) {
+            var oldCalendarList = calendarList.get(currDate); 
+            findPos(oldCalendarList, name, oldCalendarList.length, true)
+            calendarList.set(currDate, oldCalendarList);
         } else {
             // Else, set a new date as key 
-            daysFollow.set(currDate, [routine.name]); 
+            calendarList.set(currDate, [name]); 
         }
 
         // Add points according to user's level 
@@ -255,13 +257,13 @@ exports.addRoutineDay = async (req, res) => {
 
         const sess = await mongoose.startSession(); 
         await sess.withTransaction( async () => {
-            await DaysFollow.updateOne(
+            await CalendarList.updateOne(
                 {
                     userId: req.user.id, 
                 }, 
                 {
                     $set: {
-                        daysFollow: daysFollow
+                        calendarList: calendarList
                     }
                 }, 
                 {
@@ -294,37 +296,50 @@ exports.addReminder = async (req, res) => {
         if (formattedDate == "Invalid Date") {
             return res.status(400).send("Invalid date type");
         }
-        const date = formattedDate.toLocaleDateString('en-CA'); 
-        const formattedMessage = formattedDate.getHours() + ":" + formattedDate.getMinutes() + " - " + reminderMessage;
+        if (formattedDate < new Date(Date.now())) {
+            return res.status(400).send("Cannot set reminder in the past");
+        }
 
-        const item = await ReminderList.findOne({ userId: req.user.id });
+        const date = formattedDate.toLocaleDateString('en-CA'); 
+        var min = formattedDate.getMinutes();
+        var finalMin = min < 10 
+            ? 0 + "" + min
+            : min;
+        var hour = formattedDate.getHours(); 
+        var finalHour = hour < 10 
+            ? 0 + "" + hour
+            : hour; 
+        const formattedMessage = "R: " + finalHour + ":" + finalMin + " - " + reminderMessage;
+
+        const item = await CalendarList.findOne({ userId: req.user.id });
         // If there is no ReminderList created to this user yet, create one with the given date and routine 
         if (!item) {
-            await new ReminderList({
+            await new CalendarList({
                 userId: req.user.id, 
-                reminderList: new Map([[date, [formattedMessage]]])
+                calendarList: new Map([[date, [formattedMessage]]])
             }).save(); 
             return res.status(200).send("Reminder added"); 
         }
 
-        var reminderList = item.reminderList; 
-        if (reminderList.has(date)) {
+        var calendarList = item.calendarList; 
+        if (calendarList.has(date)) {
             // If a date already exists in reminderList, then have to fetch the 
             // array of the date and push new date to it 
-            var currDateList = reminderList.get(date); 
-            currDateList.push(formattedMessage); 
+            var currDateList = calendarList.get(date); 
+            // currDateList.push(formattedMessage); 
+            findPos(currDateList, formattedMessage, currDateList.length, false);
         } else {
             // Else, set a new date as key
-            reminderList.set(date, [formattedMessage]);
+            calendarList.set(date, [formattedMessage]);
         }
 
-        await ReminderList.updateOne(
+        await CalendarList.updateOne(
             {
                 userId: req.user.id
             },
             {
                 $set: {
-                    reminderList: reminderList
+                    calendarList: calendarList
                 }
             }, 
             {

@@ -1,5 +1,5 @@
-var graphUtil = require('../utils/friendsRecommender');
-var vectorUtil = require('../utils/vectors');
+var graphUtil = require('../utils/friendsRecommenderUtil');
+var vectorUtil = require('../utils/vectorUtil');
 var graphHelper = require('../app');
 var User = require('../models/User');
 var RecFriends = require('../models/RecFriends');

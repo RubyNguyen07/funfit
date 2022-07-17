@@ -43,7 +43,7 @@
     "helmet": "^5.1.0",
     "jsonwebtoken": "^8.5.1",
     "mocha": "^10.0.0",
-    "mongoose": "^6.3.4",
+    "mongoose": "^6.4.4",
     "multer-gridfs-storage": "^5.0.2",
     "natural": "^5.2.2",
     "nodemailer": "^6.7.5",

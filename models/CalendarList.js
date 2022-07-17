@@ -2,16 +2,15 @@ var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema; 
 
-var ReminderListSchema = new Schema({
+var CalendarListSchema = new Schema({
     userId: {
         type: Schema.Types.ObjectId, 
         required: true 
     },
-    reminderList: {
+    calendarList: {
         type: Schema.Types.Map, 
-        of: [String],
         default: new Map()
     }
 });
 
-module.exports = mongoose.model('ReminderList', ReminderListSchema);
+module.exports = mongoose.model('CalendarList', CalendarListSchema);
