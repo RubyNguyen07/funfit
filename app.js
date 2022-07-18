@@ -6,7 +6,7 @@ var cors = require('cors');
 var socket = require('socket.io');
 require('dotenv').config(); 
 var InitiateMongoServer = require('./config/db');
-var { chatConfig } = require('./utils/chat'); 
+var { chatConfig } = require('./utils/chatUtil'); 
 
 var user = require('./routes/users'); 
 var routine = require('./routes/routines'); 
@@ -16,7 +16,7 @@ var chat = require('./routes/chats');
 
 let ug = require('ug'); 
 let inputGraph = new ug.Graph();
-let helper = require('./utils/friendsRecommender');
+let helper = require('./utils/friendsRecommenderUtil');
 
 // Start mongodb 
 InitiateMongoServer().then(async () => {

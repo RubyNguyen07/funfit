@@ -1,5 +1,5 @@
 var User = require('../models/User'); 
-var ReminderList = require('../models/ReminderList');
+var ReminderList = require('../models/CalendarList');
 var DaysFollow = require('../models/DaysFollow');
 var bcrypt = require('bcryptjs/dist/bcrypt');
 var jwt = require('jsonwebtoken');

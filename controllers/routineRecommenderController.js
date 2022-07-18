@@ -1,6 +1,6 @@
 var RecRoutine = require('../models/Routine'); 
 var User = require('../models/User'); 
-var vectorsUtil = require('../utils/vectors'); 
+var vectorsUtil = require('../utils/vectorUtil'); 
 
 // Fetch recommended routines 
 exports.getSimilarRoutines = async (req, res) => {

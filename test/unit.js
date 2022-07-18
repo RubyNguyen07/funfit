@@ -5,7 +5,6 @@ chai.use(chaiHttp);
 const app = require('../app').app;
 const expect = chai.expect; 
 const MyRoutine = require('../models/MyRoutine');
-// const RecRoutine = require('../models/Routine');
 const User = require('../models/User');
 
 describe("/user", () => {
