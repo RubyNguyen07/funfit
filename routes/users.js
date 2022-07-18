@@ -44,10 +44,14 @@ router.get('/downloadPic', uploadController.download);
 // Retrieve information about other user's profile
 router.get('/getUserProfile', userController.getUserProfile);
 
-// Get days complete whole routine 
-router.get('/getDaysFollow', userController.getDaysFollow);
+// // Get days complete whole routine 
+// router.get('/getDaysFollow', userController.getDaysFollow);
+
+// // Get reminder list for routines 
+// router.get('/getReminderList', userController.getReminderList);
 
 // Get reminder list for routines 
-router.get('/getReminderList', userController.getReminderList);
+router.get('/getCalendarList', userController.getCalendarList);
+
 
 module.exports = router; 
