@@ -14,7 +14,8 @@ var storage = new GridFsStorage({
 			await new Story({
 				userId: req.user.id, 
 				filename: name, 
-				contentType: file.mimetype
+				contentType: file.mimetype,
+				expiredAt: new Date()
 			}).save();	
 		} catch (err) {
 			throw new Error("Unable to save story");
