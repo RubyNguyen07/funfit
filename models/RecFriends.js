@@ -4,11 +4,12 @@ var Schema = mongoose.Schema;
 
 var RecFriendsSchema = new Schema({
     userId: {
-        type: [Schema.Types.ObjectId]
+        type: Schema.Types.ObjectId,
+        ref: 'User',
     },
     recFriends: {
         type: [Schema.Types.ObjectId], 
-        ref: 'User'
+        ref: 'User',
     }, 
     expiredAt: {
         type: Date, 
