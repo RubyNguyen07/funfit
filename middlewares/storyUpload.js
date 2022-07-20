@@ -13,7 +13,7 @@ var storage = new GridFsStorage({
 		try  {
 			await new Story({
 				userId: req.user.id, 
-				filename: name, 
+				filename: name,
 				contentType: file.mimetype,
 				expiredAt: new Date(),
 			}).save();	

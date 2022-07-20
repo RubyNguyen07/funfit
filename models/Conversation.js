@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 var ConversationSchema = new Schema({
     users: {
         type: [mongoose.Types.ObjectId], 
-        required: true, 
+        required: true,
         ref: 'User'
     }, 
     messages: [{
