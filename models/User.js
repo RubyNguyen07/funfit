@@ -69,12 +69,7 @@ var UserSchema = new Schema({
     conversations: [{
         type: mongoose.Types.ObjectId, 
         ref: 'Conversation'
-    }], 
-    // daysFollow: {
-    //     type: Schema.Types.Map, 
-    //     of: [String],
-    //     default: new Map()
-    // }
+    }]
 })
 
 module.exports = mongoose.model('User', UserSchema);

@@ -26,14 +26,9 @@ var MyRoutineSchema = new Schema({
         type: [String] 
     }, 
     userId: {
-        type: Schema.Types.ObjectId
+        type: Schema.Types.ObjectId,
+        ref: 'User'
     }, 
-    // reminder: {
-    //     type: Date 
-    // }, 
-    // daysFollow: {
-    //     type: [Date]
-    // }, 
     youtubeVideo: {
         type: String
     }, 

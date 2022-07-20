@@ -5,7 +5,8 @@ var Schema = mongoose.Schema;
 var CalendarListSchema = new Schema({
     userId: {
         type: Schema.Types.ObjectId, 
-        required: true 
+        required: true,
+        ref: 'User'
     },
     calendarList: {
         type: Schema.Types.Map, 

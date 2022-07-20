@@ -5,7 +5,8 @@ var Schema = mongoose.Schema;
 var StorySchema = new Schema({
     userId: {
         type: mongoose.Types.ObjectId,  
-        required: true 
+        required: true,
+        ref: 'User'
     },
     filename: {
         type: String, 
