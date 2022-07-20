@@ -4,8 +4,7 @@ var Schema = mongoose.Schema;
 
 var RecFriendsSchema = new Schema({
     userId: {
-        type: Schema.Types.ObjectId,
-        ref: 'User'
+        type: [Schema.Types.ObjectId]
     },
     recFriends: {
         type: [Schema.Types.ObjectId], 

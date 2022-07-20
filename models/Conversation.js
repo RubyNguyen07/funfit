@@ -6,7 +6,6 @@ var ConversationSchema = new Schema({
     users: {
         type: [mongoose.Types.ObjectId], 
         required: true, 
-        ref: 'User'
         // unique: true  
     }, 
     messages: [{

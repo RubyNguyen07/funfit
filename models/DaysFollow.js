@@ -2,15 +2,16 @@ var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema; 
 
-var CalendarListSchema = new Schema({
+var DaysFollowSchema = new Schema({
     userId: {
         type: Schema.Types.ObjectId, 
         required: true 
     },
-    calendarList: {
+    daysFollow: {
         type: Schema.Types.Map, 
+        of: [String],
         default: new Map()
     }
 });
 
-module.exports = mongoose.model('CalendarList', CalendarListSchema);
+module.exports = mongoose.model('DaysFollow', DaysFollowSchema);
