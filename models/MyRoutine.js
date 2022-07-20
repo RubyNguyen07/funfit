@@ -27,7 +27,7 @@ var MyRoutineSchema = new Schema({
     }, 
     userId: {
         type: Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
     }, 
     youtubeVideo: {
         type: String
