@@ -10,7 +10,7 @@ exports.chatConfig = (io) => {
                 socket.emit('joined', chatId); 
                 socket.activeConvo = chatId;  
             } catch (err) {
-                console.error(e); 
+                console.error(err); 
             }
         })
 
@@ -32,7 +32,7 @@ exports.chatConfig = (io) => {
 
                 socket.to(socket.activeConvo).emit('receive new message', newMessage); 
             } catch (err) {
-                console.error(e); 
+                console.error(err); 
             }
         })
     })
