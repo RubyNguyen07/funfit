@@ -1,6 +1,8 @@
 var Conversation = require('../models/Conversation'); 
+var User = require('../models/User');
 var Message = require('../models/Message');
 var mongoose = require('mongoose');
+var { sendEmail } = require('./email/sendEmail');
 
 exports.chatConfig = (io) => {
     io.on('connection', async (socket) => {
@@ -31,6 +33,21 @@ exports.chatConfig = (io) => {
                 })
 
                 socket.to(socket.activeConvo).emit('receive new message', newMessage); 
+
+                var convo = new Conversation.findById(socket.activeConvo);
+                if (!convo) {
+                    console.log("Convo does not exist");
+                }
+                
+                const receiverId = convo.users.filter(id => id !== userId)[0];
+                const receiver = await User.findById(receiverId).email;
+                const sender = await User.findById(userId).name;
+
+                sendEmail(
+                    receiver.email, 
+                    "New message", 
+                    `Hi, you received a new message from ${sender.name}`
+                );
             } catch (err) {
                 console.error(err); 
             }
