@@ -39,18 +39,18 @@ exports.chatConfig = (io) => {
                     console.log("Convo does not exist");
                 }
                 
+                console.log(convo.users);
+                console.log(userId); 
                 const receiverId = convo.users.filter(id => id.toString() !== userId)[0];
                 const receiver = await User.findById(receiverId, 'email');
                 console.log(receiver);
                 const sender = await User.findById(userId, 'name');
 
-                setInterval(() => {
-                    sendEmail(
-                        receiver.email, 
-                        "New message", 
-                        `Hi, you received a new message from ${sender.name}`
-                    );
-                }, 60000)
+                sendEmail(
+                    receiver.email, 
+                    "New message", 
+                    `Hi, you received a new message from ${sender.name}`
+                );
             } catch (err) {
                 console.error(err); 
             }
