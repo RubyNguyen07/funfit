@@ -34,7 +34,7 @@ exports.chatConfig = (io) => {
 
                 socket.to(socket.activeConvo).emit('receive new message', newMessage); 
 
-                var convo = new Conversation.findById(socket.activeConvo);
+                var convo = await Conversation.findById(socket.activeConvo);
                 if (!convo) {
                     console.log("Convo does not exist");
                 }
