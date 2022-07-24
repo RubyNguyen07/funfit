@@ -109,7 +109,7 @@ exports.login = async (req, res) => {
 exports.refreshToken = async (req, res) => {
     try {
         if (req.body.refreshToken == null) {
-            return res.status(500).send(err.message); 
+            return res.status(500).send("Null refresh token"); 
         }
 
         const token = await RefreshToken.findOne({token: req.body.refreshToken}); 
