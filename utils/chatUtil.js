@@ -39,7 +39,7 @@ exports.chatConfig = (io) => {
                     console.log("Convo does not exist");
                 }
                 
-                console.log(convo.users.filter(id => id !== userId));
+                console.log(convo.users.filter(id => id !== mongoose.Types.ObjectId(userId)));
                 const receiverId = convo.users.filter(id => id !== userId)[0];
                 const receiver = await User.findById(receiverId).email;
                 const sender = await User.findById(userId).name;
