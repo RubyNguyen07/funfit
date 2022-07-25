@@ -18,7 +18,7 @@ exports.getAllConversations = async (req, res) => {
                 }, 
                 {
                     path: 'messages', 
-                    select: 'sender content createdAt', 
+                    select: 'receiver content createdAt', 
                     model: 'Message'
                 }
             ], 
@@ -129,16 +129,16 @@ exports.deleteConvo = async (req, res) => {
         }
 
         // Delete conversation from current conversation list
-        user.conversations = user.conversations.filter(id => id !== convoId); 
+        user.conversations = user.conversations.filter(id => id.toString() !== convoId); 
         // Delete from friends list 
-        user.friends = user.friends.filter(id => id !== anotherUserId);
+        user.friends = user.friends.filter(id => id.toString() !== anotherUserId);
         // Put into user's blacklist 
         user.blackList.push(anotherUserId); 
 
         // Delete conversation from current conversation list
-        anotherUser.conversations = anotherUser.conversations.filter(id => id !== convoId); 
+        anotherUser.conversations = anotherUser.conversations.filter(id => id.toString() !== convoId); 
         // Delete from friends list 
-        anotherUser.friends = anotherUser.friends.filter(id => id !== userId);
+        anotherUser.friends = anotherUser.friends.filter(id => id.toString() !== userId);
         // Put into user's blacklist 
         anotherUser.blackList.push(userId);  
 
