@@ -4,6 +4,7 @@ var User = require('../models/User');
 var CalendarList = require('../models/CalendarList');
 var mongoose = require('mongoose');
 var findPos = require('../utils/arrayUtil');
+var { sendEmail } = require('../utils/email/sendEmail');
 
 // Fetch user's own routines 
 exports.getMyRoutines = async (req, res) => {
@@ -191,6 +192,7 @@ exports.editRoutine = async (req, res) => {
  */
 var addPointsHelper = (user, levelPoints) => {
     var originalPoints = user.points; 
+    var originalLevel = user.level; 
     user.points = (user.points + 100) % levelPoints; 
     user.level = originalPoints >= user.points 
                     ? ( user.level === 20 
@@ -198,6 +200,13 @@ var addPointsHelper = (user, levelPoints) => {
                         : ++user.level 
                       )
                     : user.level; 
+    if (user.level > originalLevel) {
+        sendEmail(
+            user.email, 
+            "[FUNFIT] NEW LEVEL UNLOCKED", 
+            `Congratulations! You have reached level ${user.level}`
+        );
+    }
 }
 
 // Add a day to DaysFollow after completing a routine 

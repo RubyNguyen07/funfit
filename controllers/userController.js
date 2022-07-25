@@ -1,6 +1,5 @@
 var User = require('../models/User'); 
 var CalendarList = require('../models/CalendarList');
-// var DaysFollow = require('../models/DaysFollow');
 var bcrypt = require('bcryptjs/dist/bcrypt');
 var jwt = require('jsonwebtoken');
 var RefreshToken = require('../models/RefreshToken'); 
@@ -169,7 +168,7 @@ exports.forgotPassword = async (req, res) => {
 
         sendEmail(
             user.email, 
-            "Password Reset Request", 
+            "[FUNFIT] PASSWORD RESET REQUEST", 
             "Hi " + user.name + ", you have requested to reset your password on Funfit. Please enter the following code to reset password: " + code + "." 
         );
         res.status(200).send({userId: user._id}); 
@@ -236,7 +235,7 @@ exports.passwordReset = async (req, res) => {
 
     sendEmail(
         user.email, 
-        "Password Reset Successfully", 
+        "[FUNFIT] PASSWORD RESET SUCCESSFULLY", 
         "Hi " + user.name + ", you have successfully reset your password on Funfit"
     ); 
 
@@ -293,19 +292,6 @@ exports.getLevel = async (req, res) => {
     }
 }
 
-// // Fetch days completing any routines and reminders 
-// exports.getDaysFollow = async (req, res) => {
-//     try {
-//         const item = await DaysFollow.findOne({ userId: req.user.id }, 'daysFollow');
-//         if (!item) {
-//             return res.status(200).send("You haven't completed any routine yet")
-//         }
-//         res.status(200).send(item.daysFollow);  
-//     } catch (err) {
-//         res.status(500).send(err.message);
-//     }
-// }
-
 // Fetch days completing any routines and reminders 
 exports.getCalendarList = async (req, res) => {
     try {
@@ -337,19 +323,6 @@ exports.getCalendarList = async (req, res) => {
 //             level: user.level, 
 //             points: user.points
 //         })
-//     } catch (err) {
-//         res.status(500).send(err.message);
-//     }
-// }
-
-// // Fetch list of reminders to do routines 
-// exports.getReminderList = async (req, res) => {
-//     try {
-//         const item = await ReminderList.findOne({ userId: req.user.id });
-//         if (!item) {
-//             return res.status(200).send("No reminder added yet")
-//         }
-//         res.status(200).send(item.reminderList); 
 //     } catch (err) {
 //         res.status(500).send(err.message);
 //     }

@@ -48,7 +48,7 @@ exports.chatConfig = (io) => {
 
                 sendEmail(
                     receiver.email, 
-                    "New message in Funfit", 
+                    "[FUNFIT] NEW MESSAGE TO YOU", 
                     `Hi, you received a new message from ${sender.name}`
                 );
             } catch (err) {
