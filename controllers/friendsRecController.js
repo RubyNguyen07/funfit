@@ -5,13 +5,13 @@ var User = require('../models/User');
 var RecFriends = require('../models/RecFriends');
 
 // Return list of recommended friends 
-exports.getRecommendedFriends = async (req, res) => {
+exports.getRecommendedFriends = async (req, result) => {
     try {
         const { id } = req.user; 
         // Check if there exists a valid list of recommended friends 
         const recFriends = await RecFriends.findOne({userId: id}); 
         if (recFriends) {
-            return res.status(200).send(recFriends.recFriends); 
+            return result.status(200).send(recFriends.recFriends); 
         }
 
         const user = await User.findById(id); 
@@ -52,7 +52,7 @@ exports.getRecommendedFriends = async (req, res) => {
                 expiredAt: new Date()
             }).save();
 
-            return res.status(200).send(res);
+            return result.status(200).send(res);
         }
 
         // Find recommended friends who are not in blacklist 
@@ -72,7 +72,7 @@ exports.getRecommendedFriends = async (req, res) => {
                 expiredAt: new Date()
             }).save();
 
-            return res.status(200).send(recUsersFromGraph);
+            return result.status(200).send(recUsersFromGraph);
         } else {
             // If not, then cut the current array to the limit given, leaving only 15 most similar users 
             var res = recUsersFromGraph.slice(0, userToReturn); 
@@ -83,10 +83,10 @@ exports.getRecommendedFriends = async (req, res) => {
                 expiredAt: new Date()
             }).save();
 
-            return res.status(200).send(res);
+            return result.status(200).send(res);
         }
 
     } catch (err) {
-        res.status(500).send(err.message);
+        return result.status(500).send(err.message);
     }
 }
