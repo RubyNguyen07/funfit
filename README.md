@@ -15,6 +15,8 @@ For more information, please refer to the README file: https://docs.google.com/d
 ## This repository 
 This repository contains the code for the backend of Funfit. This is built using Express.js as the backend framework, MongoDB as the database, mongoose as the ODM and socket.IO for real-time chat.  
 
+The frontend repository can be found here: https://github.com/lilythchu/FunFitFE.
+
 ## Set up instructions 
 1. Clone git repository 
 2. Create an .env file in the app's route containing fields as in the env_fields.txt
